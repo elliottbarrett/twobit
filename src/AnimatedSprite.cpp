@@ -15,7 +15,7 @@ AnimatedSprite::~AnimatedSprite()
 
 }
 
-virtual void AnimatedSprite::draw(sf::RenderTarget& target, sf::RenderStates states) const
+void AnimatedSprite::draw(sf::RenderTarget& target, sf::RenderStates states) const
 {
     states.transform *= getTransform();
     // target.draw( , states);

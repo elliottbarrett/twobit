@@ -3,6 +3,8 @@
 #ifndef ANIMATION_H_INCLUDED
 #define ANIMATION_H_INCLUDED
 
+#include <vector>
+
 class Animation
 {
 public:
@@ -12,6 +14,8 @@ private:
 	// Methods
 
 	// Members
-}
+	float timePerFrame;
+	std::vector<sf::IntRect> frames;
+};
 
 #endif
