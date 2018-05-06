@@ -29,7 +29,6 @@ void AnimatedSprite::update(float dt)
 
 	if (timeInFrame >= timePerFrame)
 	{
-		std::cout << "changing frame from " << currentFrame << std::endl;
 		timeInFrame -= timePerFrame;
 		setFrame((currentFrame + 1) % frameCount); // TODO: Update this for animation "types"
 	}

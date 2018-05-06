@@ -5,6 +5,8 @@
 #include <iostream>
 
 #include "AnimatedSprite.h"
+#include "GameContext.h"
+#include "TitleContext.h"
 
 #define GB_WIDTH 160
 #define GB_HEIGHT 144
@@ -21,11 +23,11 @@ int main()
     auto pokemonSprite = sf::Sprite(pokemonTexture);
     pokemonSprite.setScale(WINDOW_SCALE, WINDOW_SCALE);
 
-    std::cout << "Hello twobit!" << std::endl;
-
     AnimatedSprite testSprite;
     testSprite.setTexture(&pokemonTexture);
     testSprite.setScale(WINDOW_SCALE, WINDOW_SCALE);
+
+    GameContext* ctx = new TitleContext();
 
     while (window.isOpen())
     {
@@ -43,8 +45,10 @@ int main()
         }
 
         testSprite.update(dt);
+        ctx->update(dt);
 
         window.clear();
+        ctx->render(window);
         window.draw(testSprite);
         window.display();
     }
