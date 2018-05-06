@@ -10,6 +10,11 @@ class Animation
 public:
 	Animation();
 	~Animation();
+
+	sf::IntRect getFrame(int frameIndex);
+	float getTimePerFrame();
+	int getFrameCount();
+
 private:
 	// Methods
 

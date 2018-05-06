@@ -1,3 +1,5 @@
+rm = rm -f
+
 LIBS=-lsfml-graphics -lsfml-window -lsfml-system
 CXX := g++
 LINKER = g++
@@ -21,27 +23,7 @@ $(OBJECTS): $(OBJDIR)/%.o : $(SRCDIR)/%.cpp
 	@$(CC) $(CFLAGS) -c $< -o $@
 	@echo "Compiled "$<" successfully!"
 
-
-# all: twobit
-
-# %.o: %.cpp
-# 	$(CXX) -c $< -o $@
-
-# %.o: %.hpp
-# 	$(CXX) -c $< -o $@
-
-# twobit: main.o
-# 	@echo "** Building twobit"
-# 	$(CXX) -o twobit main.o $(LIBS)
-
-# clean:
-# 	@echo "** Removing object files and executable..."
-# 	rm -f twobit *.o
-
-# install:
-# 	@echo '** Installing...'
-# 	cp twobit /usr/bin/
-
-# uninstall:
-# 	@echo '** Uninstalling...'
-# 	$(RM) /usr/bin/twobit
+.PHONY: clean
+clean:
+	@$(rm) $(OBJECTS)
+	@echo "Cleanup complete!"
