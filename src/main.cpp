@@ -41,7 +41,10 @@ int main()
                 window.close();
 
             if (event.type == sf::Event::KeyReleased)
+            {
+                std::cout << event.key.code;
                 window.close();
+            }
         }
 
         testSprite.update(dt);
