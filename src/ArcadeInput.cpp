@@ -60,7 +60,7 @@ InputState ArcadeInput::getPlayerTwoState()
 	return state;
 }
 
-static bool isWhiteButtonPressed()
+bool ArcadeInput::isWhiteButtonPressed()
 {
 	return sf::Keyboard::isKeyPressed(sf::Keyboard::Key::Escape);
 }

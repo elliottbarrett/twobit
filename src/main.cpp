@@ -7,6 +7,8 @@
 #include "AnimatedSprite.h"
 #include "GameContext.h"
 #include "TitleContext.h"
+#include "ArcadeInput.h"
+#include "TileMap.h"
 
 #define GB_WIDTH 160
 #define GB_HEIGHT 144
@@ -29,6 +31,17 @@ int main()
 
     GameContext* ctx = new TitleContext();
 
+    // Test some TileMap stuff
+    TileMap tileMap;
+    tileMap.setScale(4, 4);
+    
+    if (!tileMap.load())
+    {
+        std::cout << "TileMap load failed" << std::endl;
+        return -1;
+    }
+
+
     while (window.isOpen())
     {
         sf::Event event;
@@ -40,9 +53,8 @@ int main()
             if (event.type == sf::Event::Closed)
                 window.close();
 
-            if (event.type == sf::Event::KeyReleased)
+            if (ArcadeInput::isWhiteButtonPressed())
             {
-                std::cout << event.key.code;
                 window.close();
             }
         }
@@ -51,8 +63,9 @@ int main()
         ctx->update(dt);
 
         window.clear();
-        ctx->render(window);
-        window.draw(testSprite);
+        // ctx->render(window);
+        // window.draw(testSprite);
+        window.draw(tileMap);
         window.display();
     }
 
