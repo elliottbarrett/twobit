@@ -12,7 +12,7 @@ public:
 	AnimatedSprite(const AnimatedSprite &other);
 	~AnimatedSprite();
 
-	void update(float dt);
+	virtual void update(float dt);
 	void setTexture(sf::Texture *texture);
 	void playAnimation(Animation *animation);
 

@@ -9,6 +9,7 @@
 #include "TitleContext.h"
 #include "ArcadeInput.h"
 #include "TileMap.h"
+#include "Player.h"
 
 #define GB_WIDTH 160
 #define GB_HEIGHT 144
@@ -20,21 +21,27 @@ int main()
     sf::Clock frameTimeClock;
     window.setVerticalSyncEnabled(true);
 
+    // Fixing the fucking coordinate system...
+    sf::View yIsUpView = window.getDefaultView();
+    yIsUpView.setSize(yIsUpView.getSize().x, yIsUpView.getSize().y * -1);
+    yIsUpView.zoom(0.25);
+    yIsUpView.setCenter(GB_WIDTH/2, GB_HEIGHT/2);
+    window.setView(yIsUpView);
+
     sf::Texture pokemonTexture;
     pokemonTexture.loadFromFile("assets/pokemon.png");
     auto pokemonSprite = sf::Sprite(pokemonTexture);
     pokemonSprite.setScale(WINDOW_SCALE, WINDOW_SCALE);
 
-    AnimatedSprite testSprite;
+    Player testSprite;
     testSprite.setTexture(&pokemonTexture);
-    testSprite.setScale(WINDOW_SCALE, WINDOW_SCALE);
+    // testSprite.setScale(WINDOW_SCALE, WINDOW_SCALE);
 
     GameContext* ctx = new TitleContext();
 
     // Test some TileMap stuff
     TileMap tileMap;
-    tileMap.setScale(4, 4);
-    
+
     if (!tileMap.load())
     {
         std::cout << "TileMap load failed" << std::endl;
@@ -64,8 +71,8 @@ int main()
 
         window.clear();
         // ctx->render(window);
-        // window.draw(testSprite);
         window.draw(tileMap);
+        window.draw(testSprite);
         window.display();
     }
 

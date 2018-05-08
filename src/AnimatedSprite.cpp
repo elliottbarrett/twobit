@@ -62,10 +62,10 @@ void AnimatedSprite::setFrame(int newFrame)
 	float top = frameBounds.top;
 	float bottom = frameBounds.top + frameBounds.height;
 
-	vertices[0].texCoords = sf::Vector2f(left, top);
-	vertices[1].texCoords = sf::Vector2f(left, bottom);
-	vertices[2].texCoords = sf::Vector2f(right, bottom);
-	vertices[3].texCoords = sf::Vector2f(right, top);
+	vertices[0].texCoords = sf::Vector2f(left, bottom);
+	vertices[1].texCoords = sf::Vector2f(left, top);
+	vertices[2].texCoords = sf::Vector2f(right, top);
+	vertices[3].texCoords = sf::Vector2f(right, bottom);
 }
 
 void AnimatedSprite::playAnimation(Animation *animation)
