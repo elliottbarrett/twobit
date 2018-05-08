@@ -7,12 +7,20 @@ class TileMap : public sf::Drawable, public sf::Transformable
 {
 public:
 	TileMap();
-bool load();
+	bool load();
+	bool setTile(int x, int y, int val);
 
 private:
     virtual void draw(sf::RenderTarget& target, sf::RenderStates states) const;
+    virtual void build();
+
     sf::Texture tileTexture;
     sf::VertexArray vertices;
+    sf::Vector2u tileSize;
+    
+    int* level;
+    int levelWidth;
+    int levelHeight;
 };
 
 #endif

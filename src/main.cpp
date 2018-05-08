@@ -89,10 +89,25 @@ int main()
             if (event.type == sf::Event::Closed)
                 window.close();
 
-            if (ArcadeInput::isWhiteButtonPressed())
+            if (event.type == sf::Event::MouseButtonPressed)
             {
-                window.close();
+                sf::Vector2f worldPos = window.mapPixelToCoords(sf::Mouse::getPosition(window));
+                int worldX = (int) worldPos.x;
+                int worldY = (int) worldPos.y;
+
+
+                int tileX = worldX / 16;
+                int tileY = worldY / 16;
+
+                std::cout << tileX << " " << tileY << std::endl;
+
+                tileMap.setTile(tileX, tileY, paletteTileNumber);
             }
+        }
+
+        if (ArcadeInput::isWhiteButtonPressed())
+        {
+            window.close();
         }
 
         testSprite.update(dt);
@@ -120,8 +135,6 @@ int main()
 
                 paletteSelectionHighlight.setPosition(16 * tileX, 16 * tileY);
                 paletteTileNumber = (tileY * (paletteSize.x / 16)) + tileX;
-
-                std::cout << paletteTileNumber << std::endl;
             }
         }
 
