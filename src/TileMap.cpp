@@ -8,21 +8,6 @@ TileMap::TileMap()
 
 }
 
-// int main(int argc, char * argv[])
-// {
-//     std::fstream myfile("D:\\data.txt", std::ios_base::in);
-
-//     float a;
-//     while (myfile >> a)
-//     {
-//         printf("%f ", a);
-//     }
-
-//     getchar();
-
-//     return 0;
-// }
-
 bool TileMap::load()
 {
 	// TODO: Read width and height from file
@@ -42,7 +27,6 @@ bool TileMap::load()
 		levelReadIndex++;
 	}
 
-
 	vertices.setPrimitiveType(sf::Quads);
 	vertices.resize(levelWidth * levelHeight * 4);
 	
@@ -51,30 +35,7 @@ bool TileMap::load()
 		return false;
 	}
 
-	for (unsigned int i = 0; i < levelWidth; i++)
-	{
-		for (unsigned int j = 0; j < levelHeight; j++)
-		{
-			int currentTileIndex = level[i + j * levelWidth];
-
-			int tu = currentTileIndex % (tileTexture.getSize().x / tileSize.x);
-			int tv = currentTileIndex / (tileTexture.getSize().x / tileSize.x);
-
-			sf::Vertex* quad = &vertices[(i + j * levelWidth) * 4];
-
-            // define its 4 corners
-            quad[0].position = sf::Vector2f(i * tileSize.x, j * tileSize.y);
-            quad[1].position = sf::Vector2f((i + 1) * tileSize.x, j * tileSize.y);
-            quad[2].position = sf::Vector2f((i + 1) * tileSize.x, (j + 1) * tileSize.y);
-            quad[3].position = sf::Vector2f(i * tileSize.x, (j + 1) * tileSize.y);
-
-            // define its 4 texture coordinates
-            quad[0].texCoords = sf::Vector2f(tu * tileSize.x, tv * tileSize.y);
-            quad[1].texCoords = sf::Vector2f((tu + 1) * tileSize.x, tv * tileSize.y);
-            quad[2].texCoords = sf::Vector2f((tu + 1) * tileSize.x, (tv + 1) * tileSize.y);
-            quad[3].texCoords = sf::Vector2f(tu * tileSize.x, (tv + 1) * tileSize.y);
-		}
-	}
+	build();
     
 	return true;
 }
@@ -103,16 +64,19 @@ void TileMap::build()
             quad[2].texCoords = sf::Vector2f((tu + 1) * tileSize.x, tv * tileSize.y);
             quad[1].texCoords = sf::Vector2f((tu + 1) * tileSize.x, (tv + 1) * tileSize.y);
             quad[0].texCoords = sf::Vector2f(tu * tileSize.x, (tv + 1) * tileSize.y);
-            // quad[0].texCoords = sf::Vector2f(tu * tileSize.x, tv * tileSize.y);
-            // quad[1].texCoords = sf::Vector2f((tu + 1) * tileSize.x, tv * tileSize.y);
-            // quad[2].texCoords = sf::Vector2f((tu + 1) * tileSize.x, (tv + 1) * tileSize.y);
-            // quad[3].texCoords = sf::Vector2f(tu * tileSize.x, (tv + 1) * tileSize.y);
 		}
 	}
 }
 
 bool TileMap::setTile(int x, int y, int val)
 {
+	int currentTileValue = level[y * levelWidth + x];
+
+	if (currentTileValue == val)
+	{
+		return true;
+	}
+
 	level[y * levelWidth + x] = val;
 	build();
 	return true;

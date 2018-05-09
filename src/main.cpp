@@ -21,12 +21,13 @@ int main()
     sf::RenderWindow window(sf::VideoMode(GB_WIDTH * WINDOW_SCALE, GB_HEIGHT * WINDOW_SCALE), "SFML works!");
     window.setVerticalSyncEnabled(true);
 
-    // Editor palette
+    // Editor code
     sf::Texture paletteTexture;
     sf::Sprite paletteSprite;
     sf::Vector2u paletteSize;
     sf::View paletteView;
     int paletteTileNumber = 0;
+    bool editorIsPainting = false;
 
     paletteTexture.loadFromFile("assets/LevelTileset.png");
     paletteSize = paletteTexture.getSize();
@@ -65,7 +66,6 @@ int main()
 
     Player testSprite;
     testSprite.setTexture(&pokemonTexture);
-    // testSprite.setScale(WINDOW_SCALE, WINDOW_SCALE);
 
     GameContext* ctx = new TitleContext();
 
@@ -87,21 +87,35 @@ int main()
         while (window.pollEvent(event))
         {
             if (event.type == sf::Event::Closed)
+            {
                 window.close();
-
-            if (event.type == sf::Event::MouseButtonPressed)
+            }
+            else if (event.type == sf::Event::MouseButtonPressed)
             {
                 sf::Vector2f worldPos = window.mapPixelToCoords(sf::Mouse::getPosition(window));
+
                 int worldX = (int) worldPos.x;
                 int worldY = (int) worldPos.y;
-
-
                 int tileX = worldX / 16;
                 int tileY = worldY / 16;
-
-                std::cout << tileX << " " << tileY << std::endl;
-
                 tileMap.setTile(tileX, tileY, paletteTileNumber);
+                editorIsPainting = true;
+            }
+            else if (event.type == sf::Event::MouseMoved && editorIsPainting)
+            {
+                sf::Vector2f worldPos = window.mapPixelToCoords(sf::Mouse::getPosition(window));
+                
+                int worldX = (int) worldPos.x;
+                int worldY = (int) worldPos.y;
+                int tileX = worldX / 16;
+                int tileY = worldY / 16;
+                tileMap.setTile(tileX, tileY, paletteTileNumber);
+                editorIsPainting = true;
+                 
+            }
+            else if (event.type == sf::Event::MouseButtonReleased)
+            {
+                editorIsPainting = false;
             }
         }
 
