@@ -21,6 +21,9 @@ bool TileMap::load()
 	int levelReadIndex = 0;
 	int levelReadValue;
 
+	levelStream >> levelWidth;
+	levelStream >> levelHeight;
+
 	while (levelStream >> levelReadValue)
 	{
 		level[levelReadIndex] = levelReadValue;
@@ -38,6 +41,22 @@ bool TileMap::load()
 	build();
     
 	return true;
+}
+
+bool TileMap::save()
+{
+	std::ofstream outputStream;
+	int tileCount = levelWidth * levelHeight;
+
+	outputStream.open("assets/TwoBit.tbw");
+	outputStream << levelWidth << " " << levelHeight << " ";
+
+	for (int i = 0; i < levelWidth * levelHeight; i++)
+	{
+		outputStream << level[i] << " ";
+	}
+
+	outputStream.close();
 }
 
 void TileMap::build()

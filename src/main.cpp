@@ -98,6 +98,7 @@ int main()
                 int worldY = (int) worldPos.y;
                 int tileX = worldX / 16;
                 int tileY = worldY / 16;
+
                 tileMap.setTile(tileX, tileY, paletteTileNumber);
                 editorIsPainting = true;
             }
@@ -109,9 +110,8 @@ int main()
                 int worldY = (int) worldPos.y;
                 int tileX = worldX / 16;
                 int tileY = worldY / 16;
+
                 tileMap.setTile(tileX, tileY, paletteTileNumber);
-                editorIsPainting = true;
-                 
             }
             else if (event.type == sf::Event::MouseButtonReleased)
             {
@@ -158,5 +158,6 @@ int main()
         paletteWindow.display();
     }
 
+    tileMap.save();
     return 0;
 }
