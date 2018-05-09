@@ -49,8 +49,13 @@ int main()
     paletteView.zoom(0.5);
     paletteWindow.setView(paletteView);
 
-    // Timer
+    bool editorIsPanning = false;
+    bool pannedThisFrame = false;
+    sf::Vector2f panMouseCoordinatesLastFrame;
+
+    // Timer / frame management
     sf::Clock frameTimeClock;
+    unsigned int frameCount = 0;
 
     // Fixing the fucking coordinate system...
     sf::View yIsUpView = window.getDefaultView();
@@ -84,6 +89,9 @@ int main()
         sf::Time frameTime = frameTimeClock.restart();
         float dt = frameTime.asSeconds();
 
+        frameCount++;
+        pannedThisFrame = false;
+
         while (window.pollEvent(event))
         {
             if (event.type == sf::Event::Closed)
@@ -92,31 +100,70 @@ int main()
             }
             else if (event.type == sf::Event::MouseButtonPressed)
             {
-                sf::Vector2f worldPos = window.mapPixelToCoords(sf::Mouse::getPosition(window));
+                sf::Vector2f mousePositionInWorld = window.mapPixelToCoords(sf::Mouse::getPosition(window));
 
-                int worldX = (int) worldPos.x;
-                int worldY = (int) worldPos.y;
+                int worldX = (int) mousePositionInWorld.x;
+                int worldY = (int) mousePositionInWorld.y;
                 int tileX = worldX / 16;
                 int tileY = worldY / 16;
 
-                tileMap.setTile(tileX, tileY, paletteTileNumber);
-                editorIsPainting = true;
+                if (event.mouseButton.button == sf::Mouse::Left)
+                {
+                    tileMap.setTile(tileX, tileY, paletteTileNumber);
+                    editorIsPainting = true;
+                }
             }
-            else if (event.type == sf::Event::MouseMoved && editorIsPainting)
+            else if (event.type == sf::Event::MouseMoved)
             {
-                sf::Vector2f worldPos = window.mapPixelToCoords(sf::Mouse::getPosition(window));
+                sf::Vector2f mousePositionInWorld = window.mapPixelToCoords(sf::Mouse::getPosition(window));
                 
-                int worldX = (int) worldPos.x;
-                int worldY = (int) worldPos.y;
-                int tileX = worldX / 16;
-                int tileY = worldY / 16;
+                float worldX = mousePositionInWorld.x;
+                float worldY = mousePositionInWorld.y;
 
-                tileMap.setTile(tileX, tileY, paletteTileNumber);
+                if (editorIsPainting)
+                {
+                    int tileX = ((int) worldX) / 16;
+                    int tileY = ((int) worldY) / 16;
+                    tileMap.setTile(tileX, tileY, paletteTileNumber);
+                }
             }
             else if (event.type == sf::Event::MouseButtonReleased)
             {
+                // TODO: Fix for the case where someone was both panning and painting
                 editorIsPainting = false;
+                editorIsPanning = false;
             }
+            else if (event.type == sf::Event::MouseWheelMoved)
+            {
+                // Zoom view
+                sf::View zoomingView = window.getView();
+                float zoomFactor = 1.0 + event.mouseWheel.delta * 0.05;
+                zoomingView.zoom(zoomFactor);
+                window.setView(zoomingView);
+            }
+        }
+
+        // Editor panning
+        if (sf::Mouse::isButtonPressed(sf::Mouse::Button::Right))
+        {
+            sf::Vector2f mousePositionInWorld = window.mapPixelToCoords(sf::Mouse::getPosition(window));
+            
+            if (editorIsPanning == false)
+            {
+                editorIsPanning = true;
+            }
+            else
+            {
+                float panDeltaX = panMouseCoordinatesLastFrame.x - mousePositionInWorld.x;
+                float panDeltaY = panMouseCoordinatesLastFrame.y - mousePositionInWorld.y;
+
+                auto currentView = window.getView();
+                currentView.move(panDeltaX, panDeltaY);
+
+                window.setView(currentView);
+            }
+
+            panMouseCoordinatesLastFrame = window.mapPixelToCoords(sf::Mouse::getPosition(window));
         }
 
         if (ArcadeInput::isWhiteButtonPressed())
@@ -140,9 +187,9 @@ int main()
 
             if (event.type == sf::Event::MouseButtonPressed)
             {
-                sf::Vector2f worldPos = paletteWindow.mapPixelToCoords(sf::Mouse::getPosition(paletteWindow));
-                int paletteX = (int) worldPos.x;
-                int paletteY = (int) worldPos.y;
+                sf::Vector2f mousePositionInPalette = paletteWindow.mapPixelToCoords(sf::Mouse::getPosition(paletteWindow));
+                int paletteX = (int) mousePositionInPalette.x;
+                int paletteY = (int) mousePositionInPalette.y;
 
                 int tileX = paletteX / 16;
                 int tileY = paletteY / 16;

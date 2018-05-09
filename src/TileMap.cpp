@@ -10,12 +10,6 @@ TileMap::TileMap()
 
 bool TileMap::load()
 {
-	// TODO: Read width and height from file
-	levelWidth = 10;
-	levelHeight = 9;
-	level = new int[90];
-	tileSize = sf::Vector2u(16, 16);
-
 	std::string levelFile = "assets/TwoBit.tbw";
 	std::fstream levelStream(levelFile, std::ios_base::in);
 	int levelReadIndex = 0;
@@ -23,6 +17,15 @@ bool TileMap::load()
 
 	levelStream >> levelWidth;
 	levelStream >> levelHeight;
+
+	level = new int[levelWidth * levelHeight];
+	tileSize = sf::Vector2u(16, 16);
+
+	// Set all tiles to 0 in case level is just width and height or not enough tiles...
+	for (int i = 0; i < levelWidth * levelHeight; i++)
+	{
+		level[i] = 0;
+	}
 
 	while (levelStream >> levelReadValue)
 	{
@@ -39,7 +42,7 @@ bool TileMap::load()
 	}
 
 	build();
-    
+	
 	return true;
 }
 
@@ -65,26 +68,31 @@ void TileMap::build()
 	{
 		for (unsigned int j = 0; j < levelHeight; j++)
 		{
-			int currentTileIndex = level[i + j * levelWidth];
-
-			int tu = currentTileIndex % (tileTexture.getSize().x / tileSize.x);
-			int tv = currentTileIndex / (tileTexture.getSize().x / tileSize.x);
-
-			sf::Vertex* quad = &vertices[(i + j * levelWidth) * 4];
-
-            // define its 4 corners
-            quad[0].position = sf::Vector2f(i * tileSize.x, j * tileSize.y);
-            quad[1].position = sf::Vector2f((i + 1) * tileSize.x, j * tileSize.y);
-            quad[2].position = sf::Vector2f((i + 1) * tileSize.x, (j + 1) * tileSize.y);
-            quad[3].position = sf::Vector2f(i * tileSize.x, (j + 1) * tileSize.y);
-
-            // define its 4 texture coordinates
-            quad[3].texCoords = sf::Vector2f(tu * tileSize.x, tv * tileSize.y);
-            quad[2].texCoords = sf::Vector2f((tu + 1) * tileSize.x, tv * tileSize.y);
-            quad[1].texCoords = sf::Vector2f((tu + 1) * tileSize.x, (tv + 1) * tileSize.y);
-            quad[0].texCoords = sf::Vector2f(tu * tileSize.x, (tv + 1) * tileSize.y);
+			updateTileQuad(i, j);
 		}
 	}
+}
+
+void TileMap::updateTileQuad(int x, int y)
+{
+	int currentTileIndex = level[x + y * levelWidth];
+
+	int tu = currentTileIndex % (tileTexture.getSize().x / tileSize.x);
+	int tv = currentTileIndex / (tileTexture.getSize().x / tileSize.x);
+
+	sf::Vertex* quad = &vertices[(x + y * levelWidth) * 4];
+
+    // define its 4 corners
+    quad[0].position = sf::Vector2f(x * tileSize.x, y * tileSize.y);
+    quad[1].position = sf::Vector2f((x + 1) * tileSize.x, y * tileSize.y);
+    quad[2].position = sf::Vector2f((x + 1) * tileSize.x, (y + 1) * tileSize.y);
+    quad[3].position = sf::Vector2f(x * tileSize.x, (y + 1) * tileSize.y);
+
+    // define its 4 texture coordinates
+    quad[3].texCoords = sf::Vector2f(tu * tileSize.x, tv * tileSize.y);
+    quad[2].texCoords = sf::Vector2f((tu + 1) * tileSize.x, tv * tileSize.y);
+    quad[1].texCoords = sf::Vector2f((tu + 1) * tileSize.x, (tv + 1) * tileSize.y);
+    quad[0].texCoords = sf::Vector2f(tu * tileSize.x, (tv + 1) * tileSize.y);
 }
 
 bool TileMap::setTile(int x, int y, int val)
@@ -97,7 +105,7 @@ bool TileMap::setTile(int x, int y, int val)
 	}
 
 	level[y * levelWidth + x] = val;
-	build();
+	updateTileQuad(x, y);
 	return true;
 }
 

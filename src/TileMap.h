@@ -14,7 +14,7 @@ public:
 private:
     virtual void draw(sf::RenderTarget& target, sf::RenderStates states) const;
     virtual void build();
-    
+    void updateTileQuad(int x, int y);
 
     sf::Texture tileTexture;
     sf::VertexArray vertices;

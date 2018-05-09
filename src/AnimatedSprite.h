@@ -16,7 +16,7 @@ public:
 	void setTexture(sf::Texture *texture);
 	void playAnimation(Animation *animation);
 
-private:
+protected:
     virtual void draw(sf::RenderTarget& target, sf::RenderStates states) const;
     void setFrame(int newFrame);
 

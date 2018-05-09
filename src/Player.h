@@ -9,6 +9,11 @@ public:
 	Player();
 	~Player();
 	void update(float dt);
+
+private:
+    virtual void draw(sf::RenderTarget& target, sf::RenderStates states) const;
+
+    sf::RectangleShape collisionRect;
 };
 
 #endif
