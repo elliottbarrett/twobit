@@ -5,7 +5,22 @@
 
 TileMap::TileMap()
 {
-
+    topLeftCollisionRect = sf::RectangleShape(sf::Vector2f(16,16));
+    topLeftCollisionRect.setFillColor(sf::Color::Transparent);
+    topLeftCollisionRect.setOutlineColor(sf::Color(0,255,0));
+    topLeftCollisionRect.setOutlineThickness(-1);
+    topRightCollisionRect = sf::RectangleShape(sf::Vector2f(16,16));
+    topRightCollisionRect.setFillColor(sf::Color::Transparent);
+    topRightCollisionRect.setOutlineColor(sf::Color(0,255,0));
+    topRightCollisionRect.setOutlineThickness(-1);
+    bottomLeftCollisionRect = sf::RectangleShape(sf::Vector2f(16,16));
+    bottomLeftCollisionRect.setFillColor(sf::Color::Transparent);
+    bottomLeftCollisionRect.setOutlineColor(sf::Color(0,255,0));
+    bottomLeftCollisionRect.setOutlineThickness(-1);
+    bottomRightCollisionRect = sf::RectangleShape(sf::Vector2f(16,16));
+    bottomRightCollisionRect.setFillColor(sf::Color::Transparent);
+    bottomRightCollisionRect.setOutlineColor(sf::Color(0,255,0));
+    bottomRightCollisionRect.setOutlineThickness(-1);
 }
 
 bool TileMap::load()
@@ -109,9 +124,80 @@ bool TileMap::setTile(int x, int y, int val)
     return true;
 }
 
+bool TileMap::checkWorldCollisions(sf::FloatRect rect)
+{
+    int tileMapLeft = (int)(rect.left / 16);
+    int tileMapRight = (int)((rect.left + rect.width) / 16);
+    int tileMapTop = (int)((rect.top) / 16);
+    int tileMapBottom = (int)((rect.top + rect.height) / 16);
+
+    int topLeftTile = tileMapLeft + tileMapTop * levelWidth;
+    int topRightTile = tileMapRight + tileMapTop * levelWidth;
+    int bottomLeftTile = tileMapLeft + tileMapBottom * levelWidth;
+    int bottomRightTile = tileMapRight + tileMapBottom * levelWidth;
+
+    // TODO: Better level defined tile collision info. For now, 0 is no collision, 1 is collision
+    // TODO: Do something about flipped Y-axis (top-left is rendering on bottom and vice-versa)
+
+    // check top-left collision
+    topLeftCollisionRect.setPosition(((int)rect.left / 16) * 16.0, ((int)(rect.top / 16)) * 16.0);
+
+    if (topLeftTile >= 0 && level[topLeftTile] != 0)
+    {
+        topLeftCollisionRect.setOutlineColor(sf::Color(255,0,0));
+    }
+    else
+    {
+        topLeftCollisionRect.setOutlineColor(sf::Color(0,255,0));
+    }
+
+    // check top-right collision
+    topRightCollisionRect.setPosition(((int)(rect.left + rect.width) / 16) * 16.0, ((int)(rect.top / 16)) * 16.0);
+
+    if (topRightTile >= 0 && level[topRightTile] != 0)
+    {
+        topRightCollisionRect.setOutlineColor(sf::Color(255,0,0));
+    }
+    else
+    {
+        topRightCollisionRect.setOutlineColor(sf::Color(0,255,0));
+    }
+
+    // check bottom-left collision
+    bottomLeftCollisionRect.setPosition(((int)rect.left / 16) * 16.0, ((int)((rect.top + rect.height) / 16)) * 16.0);
+
+    if (bottomLeftTile >= 0 && level[bottomLeftTile] != 0)
+    {
+        bottomLeftCollisionRect.setOutlineColor(sf::Color(255,0,0));
+    }
+    else
+    {
+        bottomLeftCollisionRect.setOutlineColor(sf::Color(0,255,0));
+    }
+
+    // check bottom-right collision
+    bottomRightCollisionRect.setPosition((int)((rect.left + rect.width) / 16) * 16.0, ((int)((rect.top + rect.height) / 16)) * 16.0);
+
+    if (bottomRightTile >= 0 && level[bottomRightTile] != 0)
+    {
+        bottomRightCollisionRect.setOutlineColor(sf::Color(255,0,0));
+    }
+    else
+    {
+        bottomRightCollisionRect.setOutlineColor(sf::Color(0,255,0));
+    }
+
+    return false;
+}
+
 void TileMap::draw(sf::RenderTarget& target, sf::RenderStates states) const
 {
     states.transform *= getTransform();
     states.texture = &tileTexture;
     target.draw(vertices, states);
+    target.draw(topLeftCollisionRect, states);
+    target.draw(topRightCollisionRect, states);
+    target.draw(bottomLeftCollisionRect, states);
+    target.draw(bottomRightCollisionRect, states);
+
 }

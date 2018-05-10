@@ -46,7 +46,6 @@ int main()
 
     GameContext* ctx = new TitleContext();
 
-
     if (!tileMap.load())
     {
         std::cout << "TileMap load failed" << std::endl;
@@ -78,6 +77,8 @@ int main()
 
         testSprite.update(dt);
         ctx->update(dt);
+
+        tileMap.checkWorldCollisions(testSprite.getCollisionBounds());
 
         window.clear();
         // ctx->render(window);

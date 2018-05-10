@@ -10,6 +10,7 @@ public:
     bool load();
     bool save();
     bool setTile(int x, int y, int val);
+    bool checkWorldCollisions(sf::FloatRect rect);
 
 private:
     virtual void draw(sf::RenderTarget& target, sf::RenderStates states) const;
@@ -19,6 +20,11 @@ private:
     sf::Texture tileTexture;
     sf::VertexArray vertices;
     sf::Vector2u tileSize;
+
+    sf::RectangleShape topLeftCollisionRect;
+    sf::RectangleShape topRightCollisionRect;
+    sf::RectangleShape bottomLeftCollisionRect;
+    sf::RectangleShape bottomRightCollisionRect;
 
     int* level;
     int levelWidth;

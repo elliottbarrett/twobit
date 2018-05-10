@@ -10,6 +10,8 @@ public:
     ~Player();
     void update(float dt);
 
+    sf::FloatRect getCollisionBounds();
+
 private:
     virtual void draw(sf::RenderTarget& target, sf::RenderStates states) const;
 

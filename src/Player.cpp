@@ -19,7 +19,6 @@ void Player::update(float dt)
     AnimatedSprite::update(dt);
 
     InputState input = ArcadeInput::getPlayerOneState();
-    // Vector2f 
 
     if (input.direction & JoyDirection::RIGHT)
     {
@@ -38,6 +37,13 @@ void Player::update(float dt)
         move(0,-1);
     }
 
+}
+
+sf::FloatRect Player::getCollisionBounds()
+{
+    auto transform = getTransform();
+    sf::FloatRect bounds = transform.transformRect(sf::FloatRect(1,0,14,16));
+    return bounds;
 }
 
 void Player::draw(sf::RenderTarget& target, sf::RenderStates states) const
