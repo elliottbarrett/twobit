@@ -8,19 +8,19 @@
 class Animation
 {
 public:
-	Animation();
-	~Animation();
+    Animation();
+    ~Animation();
 
-	sf::IntRect getFrame(int frameIndex);
-	float getTimePerFrame();
-	int getFrameCount();
+    sf::IntRect getFrame(int frameIndex);
+    float getTimePerFrame();
+    int getFrameCount();
 
 private:
-	// Methods
+    // Methods
 
-	// Members
-	float timePerFrame;
-	std::vector<sf::IntRect> frames;
+    // Members
+    float timePerFrame;
+    std::vector<sf::IntRect> frames;
 };
 
 #endif

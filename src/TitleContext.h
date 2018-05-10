@@ -7,13 +7,13 @@
 class TitleContext : public GameContext
 {
 public:
-	TitleContext();
-	virtual void update(float dt);
-	virtual void render(sf::RenderWindow &window);
+    TitleContext();
+    virtual void update(float dt);
+    virtual void render(sf::RenderWindow &window);
 
 private:
-	sf::Texture backgroundTexture;
-	sf::Sprite backgroundSprite;
+    sf::Texture backgroundTexture;
+    sf::Sprite backgroundSprite;
 };
 
 #endif

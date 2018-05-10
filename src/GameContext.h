@@ -3,15 +3,15 @@
 
 namespace sf
 {
-	class RenderWindow;
+    class RenderWindow;
 }
 
 class GameContext
 {
 public:
-	GameContext();
-	virtual void update(float dt);
-	virtual void render(sf::RenderWindow &window);
+    GameContext();
+    virtual void update(float dt);
+    virtual void render(sf::RenderWindow &window);
 
 protected:
 

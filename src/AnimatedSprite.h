@@ -8,13 +8,13 @@ class Animation;
 class AnimatedSprite : public sf::Drawable, public sf::Transformable
 {
 public:
-	AnimatedSprite();
-	AnimatedSprite(const AnimatedSprite &other);
-	~AnimatedSprite();
+    AnimatedSprite();
+    AnimatedSprite(const AnimatedSprite &other);
+    ~AnimatedSprite();
 
-	virtual void update(float dt);
-	void setTexture(sf::Texture *texture);
-	void playAnimation(Animation *animation);
+    virtual void update(float dt);
+    void setTexture(sf::Texture *texture);
+    void playAnimation(Animation *animation);
 
 protected:
     virtual void draw(sf::RenderTarget& target, sf::RenderStates states) const;
