@@ -10,6 +10,7 @@
 #include "ArcadeInput.h"
 #include "TileMap.h"
 #include "Player.h"
+#include "WorldEditor.h"
 
 #define GB_WIDTH 160
 #define GB_HEIGHT 144
@@ -18,40 +19,14 @@
 int main()
 {
     // Main window
-    sf::RenderWindow window(sf::VideoMode(GB_WIDTH * WINDOW_SCALE, GB_HEIGHT * WINDOW_SCALE), "SFML works!");
+    sf::RenderWindow window(sf::VideoMode(GB_WIDTH * WINDOW_SCALE, GB_HEIGHT * WINDOW_SCALE), "twobit");
     window.setVerticalSyncEnabled(true);
 
-    // Editor code
-    sf::Texture paletteTexture;
-    sf::Sprite paletteSprite;
-    sf::Vector2u paletteSize;
-    sf::View paletteView;
-    int paletteTileNumber = 0;
-    bool editorIsPainting = false;
+    // Test some TileMap stuff
+    TileMap tileMap;
 
-    paletteTexture.loadFromFile("assets/LevelTileset.png");
-    paletteSize = paletteTexture.getSize();
-    paletteSprite.setTexture(paletteTexture);
-
-    sf::RectangleShape paletteSelectionHighlight(sf::Vector2f(16,16));
-    paletteSelectionHighlight.setFillColor(sf::Color::Transparent);
-    paletteSelectionHighlight.setOutlineThickness(1);
-    paletteSelectionHighlight.setOutlineColor(sf::Color(250, 150, 100));
-
-    sf::RenderWindow paletteWindow(sf::VideoMode(paletteSize.x * 2, paletteSize.y * 2), "Editor Palette");
-    paletteWindow.setSize(sf::Vector2u(2 * paletteSize.x, 2 * paletteSize.y));
-    paletteWindow.setView(sf::View(sf::FloatRect(0, 0, (float) paletteTexture.getSize().x, (float) paletteTexture.getSize().y)));
-    paletteWindow.setPosition(sf::Vector2i(900, 0));
-    paletteWindow.setVerticalSyncEnabled(true);
-
-    paletteView = paletteWindow.getDefaultView();
-    paletteView.setCenter(paletteSize.x / 2, paletteSize.y / 2);
-    paletteView.zoom(0.5);
-    paletteWindow.setView(paletteView);
-
-    bool editorIsPanning = false;
-    bool pannedThisFrame = false;
-    sf::Vector2f panMouseCoordinatesLastFrame;
+    // Editor window
+    WorldEditor worldEditor(&window, &tileMap);
 
     // Timer / frame management
     sf::Clock frameTimeClock;
@@ -64,18 +39,13 @@ int main()
     yIsUpView.setCenter(GB_WIDTH/2, GB_HEIGHT/2);
     window.setView(yIsUpView);
 
+    Player testSprite;
     sf::Texture pokemonTexture;
     pokemonTexture.loadFromFile("assets/pokemon.png");
-    auto pokemonSprite = sf::Sprite(pokemonTexture);
-    pokemonSprite.setScale(WINDOW_SCALE, WINDOW_SCALE);
-
-    Player testSprite;
     testSprite.setTexture(&pokemonTexture);
 
     GameContext* ctx = new TitleContext();
 
-    // Test some TileMap stuff
-    TileMap tileMap;
 
     if (!tileMap.load())
     {
@@ -90,7 +60,6 @@ int main()
         float dt = frameTime.asSeconds();
 
         frameCount++;
-        pannedThisFrame = false;
 
         while (window.pollEvent(event))
         {
@@ -98,72 +67,8 @@ int main()
             {
                 window.close();
             }
-            else if (event.type == sf::Event::MouseButtonPressed)
-            {
-                sf::Vector2f mousePositionInWorld = window.mapPixelToCoords(sf::Mouse::getPosition(window));
 
-                int worldX = (int) mousePositionInWorld.x;
-                int worldY = (int) mousePositionInWorld.y;
-                int tileX = worldX / 16;
-                int tileY = worldY / 16;
-
-                if (event.mouseButton.button == sf::Mouse::Left)
-                {
-                    tileMap.setTile(tileX, tileY, paletteTileNumber);
-                    editorIsPainting = true;
-                }
-            }
-            else if (event.type == sf::Event::MouseMoved)
-            {
-                sf::Vector2f mousePositionInWorld = window.mapPixelToCoords(sf::Mouse::getPosition(window));
-                
-                float worldX = mousePositionInWorld.x;
-                float worldY = mousePositionInWorld.y;
-
-                if (editorIsPainting)
-                {
-                    int tileX = ((int) worldX) / 16;
-                    int tileY = ((int) worldY) / 16;
-                    tileMap.setTile(tileX, tileY, paletteTileNumber);
-                }
-            }
-            else if (event.type == sf::Event::MouseButtonReleased)
-            {
-                // TODO: Fix for the case where someone was both panning and painting
-                editorIsPainting = false;
-                editorIsPanning = false;
-            }
-            else if (event.type == sf::Event::MouseWheelMoved)
-            {
-                // Zoom view
-                sf::View zoomingView = window.getView();
-                float zoomFactor = 1.0 + event.mouseWheel.delta * 0.05;
-                zoomingView.zoom(zoomFactor);
-                window.setView(zoomingView);
-            }
-        }
-
-        // Editor panning
-        if (sf::Mouse::isButtonPressed(sf::Mouse::Button::Right))
-        {
-            sf::Vector2f mousePositionInWorld = window.mapPixelToCoords(sf::Mouse::getPosition(window));
-            
-            if (editorIsPanning == false)
-            {
-                editorIsPanning = true;
-            }
-            else
-            {
-                float panDeltaX = panMouseCoordinatesLastFrame.x - mousePositionInWorld.x;
-                float panDeltaY = panMouseCoordinatesLastFrame.y - mousePositionInWorld.y;
-
-                auto currentView = window.getView();
-                currentView.move(panDeltaX, panDeltaY);
-
-                window.setView(currentView);
-            }
-
-            panMouseCoordinatesLastFrame = window.mapPixelToCoords(sf::Mouse::getPosition(window));
+            worldEditor.handleWorldEvent(event);
         }
 
         if (ArcadeInput::isWhiteButtonPressed())
@@ -180,29 +85,8 @@ int main()
         window.draw(testSprite);
         window.display();
 
-        while (paletteWindow.pollEvent(event))
-        {
-            if (event.type == sf::Event::Closed)
-                paletteWindow.close();
-
-            if (event.type == sf::Event::MouseButtonPressed)
-            {
-                sf::Vector2f mousePositionInPalette = paletteWindow.mapPixelToCoords(sf::Mouse::getPosition(paletteWindow));
-                int paletteX = (int) mousePositionInPalette.x;
-                int paletteY = (int) mousePositionInPalette.y;
-
-                int tileX = paletteX / 16;
-                int tileY = paletteY / 16;
-
-                paletteSelectionHighlight.setPosition(16 * tileX, 16 * tileY);
-                paletteTileNumber = (tileY * (paletteSize.x / 16)) + tileX;
-            }
-        }
-
-        paletteWindow.clear();
-        paletteWindow.draw(paletteSprite);
-        paletteWindow.draw(paletteSelectionHighlight);
-        paletteWindow.display();
+        worldEditor.update();
+        worldEditor.render();
     }
 
     tileMap.save();
