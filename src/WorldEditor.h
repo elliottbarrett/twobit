@@ -16,6 +16,9 @@ public:
     void handleWorldEvent(sf::Event &event);
 
 private:
+    void instantiateEditorWindows();
+    void toggleEditorVisibility();
+
     sf::RenderWindow* worldWindow;
     sf::RenderWindow* paletteWindow;
     sf::Texture paletteTexture;
@@ -27,6 +30,7 @@ private:
     int paletteTileNumber;
     bool isPainting;
     bool isPanning;
+    bool isActive;
 
     sf::Vector2f panWorldCoordinatesLastFrame;
 };

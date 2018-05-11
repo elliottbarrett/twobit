@@ -1,14 +1,25 @@
 #include "WorldEditor.h"
 #include "TileMap.h"
 
+#include <iostream>
+
 WorldEditor::WorldEditor(sf::RenderWindow *worldWindow, TileMap *world)
     : worldWindow(worldWindow), 
       world(world),
       paletteSelectionHighlight(sf::Vector2f(16, 16)),
-      isPainting(false)
+      paletteTileNumber(0),
+      isPainting(false),
+      isPanning(false),
+      isActive(true)
 {
     paletteTexture.loadFromFile("assets/LevelTileset.png");
     paletteSize = paletteTexture.getSize();
+
+    instantiateEditorWindows();
+}
+
+void WorldEditor::instantiateEditorWindows()
+{
     paletteWindow = new sf::RenderWindow(sf::VideoMode(paletteSize.x * 2, paletteSize.y * 2), "Tile Palette");
     paletteSprite.setTexture(paletteTexture);
 
@@ -28,8 +39,21 @@ WorldEditor::WorldEditor(sf::RenderWindow *worldWindow, TileMap *world)
 
 void WorldEditor::handleWorldEvent(sf::Event &event)
 {
-
     sf::Vector2f mousePositionInWorld = worldWindow->mapPixelToCoords(sf::Mouse::getPosition(*worldWindow));
+
+    if (event.type == sf::Event::KeyReleased)
+    {
+        if (event.key.code == sf::Keyboard::E)
+        {
+            toggleEditorVisibility();
+        }
+    }
+
+    // Handle other event types differently
+    if (isActive == false)
+    {
+        return;
+    }
 
     if (event.type == sf::Event::MouseButtonPressed)
     {
@@ -72,8 +96,28 @@ void WorldEditor::handleWorldEvent(sf::Event &event)
     }
 }
 
+void WorldEditor::toggleEditorVisibility()
+{
+    if (isActive)
+    {
+        paletteWindow->close();
+        delete paletteWindow;
+    }
+    else
+    {
+        instantiateEditorWindows();
+    }
+
+    isActive = !isActive;
+}
+
 void WorldEditor::update()
-{ 
+{
+    if (isActive == false)
+    {
+        return;
+    }
+
     sf::Event event;
 
     while (paletteWindow->pollEvent(event))
@@ -82,8 +126,7 @@ void WorldEditor::update()
         {
             paletteWindow->close();
         }
-
-        if (event.type == sf::Event::MouseButtonPressed)
+        else if (event.type == sf::Event::MouseButtonPressed)
         {
             sf::Vector2f mousePositionInPalette = paletteWindow->mapPixelToCoords(sf::Mouse::getPosition(*paletteWindow));
             int paletteX = (int) mousePositionInPalette.x;
@@ -94,6 +137,18 @@ void WorldEditor::update()
 
             paletteSelectionHighlight.setPosition(16 * tileX, 16 * tileY);
             paletteTileNumber = (tileY * (paletteSize.x / 16)) + tileX;
+        }
+        else if (event.type == sf::Event::KeyReleased)
+        {
+            if (event.key.code == sf::Keyboard::E)
+            {
+                toggleEditorVisibility();
+
+                if (!isActive)
+                {
+                    return;
+                }
+            }      
         }
     }
 
@@ -123,6 +178,10 @@ void WorldEditor::update()
 
 void WorldEditor::render()
 {
+    if (isActive == false)
+    {
+        return;
+    }
     paletteWindow->clear();
     paletteWindow->draw(paletteSprite);
     paletteWindow->draw(paletteSelectionHighlight);

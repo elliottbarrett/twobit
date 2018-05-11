@@ -36,7 +36,6 @@ void Player::update(float dt)
     {
         move(0,-1);
     }
-
 }
 
 sf::FloatRect Player::getCollisionBounds()
