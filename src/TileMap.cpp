@@ -128,8 +128,8 @@ bool TileMap::checkWorldCollisions(sf::FloatRect rect)
 {
     int tileMapLeft = (int)(rect.left / 16);
     int tileMapRight = (int)((rect.left + rect.width) / 16);
-    int tileMapTop = (int)((rect.top) / 16);
-    int tileMapBottom = (int)((rect.top + rect.height) / 16);
+    int tileMapTop = (int)((rect.top + rect.height) / 16);
+    int tileMapBottom = (int)((rect.top) / 16);
 
     int topLeftTile = tileMapLeft + tileMapTop * levelWidth;
     int topRightTile = tileMapRight + tileMapTop * levelWidth;
@@ -140,7 +140,7 @@ bool TileMap::checkWorldCollisions(sf::FloatRect rect)
     // TODO: Do something about flipped Y-axis (top-left is rendering on bottom and vice-versa)
 
     // check top-left collision
-    topLeftCollisionRect.setPosition(((int)rect.left / 16) * 16.0, ((int)(rect.top / 16)) * 16.0);
+    topLeftCollisionRect.setPosition(tileMapLeft * 16.0, tileMapTop * 16.0);
 
     if (topLeftTile >= 0 && level[topLeftTile] != 0)
     {
@@ -152,7 +152,7 @@ bool TileMap::checkWorldCollisions(sf::FloatRect rect)
     }
 
     // check top-right collision
-    topRightCollisionRect.setPosition(((int)(rect.left + rect.width) / 16) * 16.0, ((int)(rect.top / 16)) * 16.0);
+    topRightCollisionRect.setPosition(tileMapRight * 16.0, tileMapTop * 16.0);
 
     if (topRightTile >= 0 && level[topRightTile] != 0)
     {
@@ -164,7 +164,7 @@ bool TileMap::checkWorldCollisions(sf::FloatRect rect)
     }
 
     // check bottom-left collision
-    bottomLeftCollisionRect.setPosition(((int)rect.left / 16) * 16.0, ((int)((rect.top + rect.height) / 16)) * 16.0);
+    bottomLeftCollisionRect.setPosition(tileMapLeft * 16.0, tileMapBottom * 16.0);
 
     if (bottomLeftTile >= 0 && level[bottomLeftTile] != 0)
     {
@@ -176,7 +176,7 @@ bool TileMap::checkWorldCollisions(sf::FloatRect rect)
     }
 
     // check bottom-right collision
-    bottomRightCollisionRect.setPosition((int)((rect.left + rect.width) / 16) * 16.0, ((int)((rect.top + rect.height) / 16)) * 16.0);
+    bottomRightCollisionRect.setPosition(tileMapRight * 16.0, tileMapBottom * 16.0);
 
     if (bottomRightTile >= 0 && level[bottomRightTile] != 0)
     {
@@ -199,5 +199,4 @@ void TileMap::draw(sf::RenderTarget& target, sf::RenderStates states) const
     target.draw(topRightCollisionRect, states);
     target.draw(bottomLeftCollisionRect, states);
     target.draw(bottomRightCollisionRect, states);
-
 }
