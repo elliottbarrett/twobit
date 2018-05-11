@@ -3,6 +3,8 @@
 #include <string>
 #include <map>
 #include <iostream>
+#include <math.h>
+#include <stdlib.h>
 
 #include "AnimatedSprite.h"
 #include "GameContext.h"
@@ -22,6 +24,14 @@ int main()
     sf::RenderWindow window(sf::VideoMode(GB_WIDTH * WINDOW_SCALE, GB_HEIGHT * WINDOW_SCALE), "twobit");
     window.setVerticalSyncEnabled(true);
 
+    sf::Shader grainShader;
+
+    if (!grainShader.loadFromFile("shaders/grain.frag", sf::Shader::Type::Fragment))
+    {
+        std::cout << "Shader loading failed!" << std::endl;
+        return -1;
+    }
+
     // Test some TileMap stuff
     TileMap tileMap;
 
@@ -30,7 +40,10 @@ int main()
 
     // Timer / frame management
     sf::Clock frameTimeClock;
+    sf::Clock elapsedTimeClock;
     unsigned int frameCount = 0;
+
+    elapsedTimeClock.restart();
 
     // Fixing the fucking coordinate system...
     sf::View yIsUpView = window.getDefaultView();
@@ -52,6 +65,7 @@ int main()
         return -1;
     }
 
+
     while (window.isOpen())
     {
         sf::Event event;
@@ -60,6 +74,10 @@ int main()
 
         frameCount++;
 
+        // Update shader params
+        grainShader.setUniform("time", elapsedTimeClock.getElapsedTime().asSeconds());
+
+        // Event loop
         while (window.pollEvent(event))
         {
             if (event.type == sf::Event::Closed)
@@ -82,7 +100,11 @@ int main()
 
         window.clear();
         // ctx->render(window);
-        window.draw(tileMap);
+#if GRAIN_EFFECT_ON
+        window.draw(tileMap, &grainShader);
+#else
+        window.draw(tileMap);        
+#endif
         window.draw(testSprite);
         window.display();
 
