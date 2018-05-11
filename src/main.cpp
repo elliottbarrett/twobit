@@ -18,6 +18,8 @@
 #define GB_HEIGHT 144
 #define WINDOW_SCALE 4
 
+#define GRAIN_EFFECT_ON true
+
 int main()
 {
     // Main window
@@ -25,6 +27,10 @@ int main()
     window.setVerticalSyncEnabled(true);
 
     sf::Shader grainShader;
+    sf::Texture grainTexture;
+    sf::Sprite grainSprite;
+    grainTexture.create(GB_WIDTH * WINDOW_SCALE, GB_HEIGHT * WINDOW_SCALE);
+    grainSprite.setTexture(grainTexture);
 
     if (!grainShader.loadFromFile("shaders/grain.frag", sf::Shader::Type::Fragment))
     {
@@ -106,6 +112,14 @@ int main()
         window.draw(tileMap);        
 #endif
         window.draw(testSprite);
+
+#if GRAIN_EFFECT_ON
+        grainTexture.update(window);
+        sf::View currentView = window.getView();
+        window.setView(window.getDefaultView());
+        window.draw(grainSprite);
+        window.setView(currentView);
+#endif
         window.display();
 
         worldEditor.update();
