@@ -1,13 +1,22 @@
 #include "Player.h"
 #include "ArcadeInput.h"
 
-Player::Player()
+#include <iostream>
+
+Player::Player(int playerNumber) :
+    playerNumber(playerNumber),
+    isOnGround(true), wasOnGround(true),
+    isAtCeiling(false), wasAtCeiling(false),
+    isPushingLeftWall(false), wasPushingLeftWall(false),
+    isPushingRightWall(false), wasPushingRightWall(false)
 {
     AnimatedSprite();
     collisionRect = sf::RectangleShape(sf::Vector2f(16,16));
     collisionRect.setFillColor(sf::Color::Transparent);
     collisionRect.setOutlineColor(sf::Color(255,0,255));
     collisionRect.setOutlineThickness(-1);
+    move(20,20);
+    isOnGround ;
 }
 
 Player::~Player()
@@ -18,24 +27,57 @@ void Player::update(float dt)
 {
     AnimatedSprite::update(dt);
 
-    InputState input = ArcadeInput::getPlayerOneState();
+    InputState input = playerNumber == 1 ? ArcadeInput::getPlayerOneState() : ArcadeInput::getPlayerTwoState();
 
-    if (input.direction & JoyDirection::RIGHT)
-    {
-        move(1,0);
-    }
-    if (input.direction & JoyDirection::UP)
-    {
-        move(0,1);
-    }
     if (input.direction & JoyDirection::LEFT)
     {
-        move(-1,0);
+        velocity.x = -walkSpeed;
+    }
+    else if (input.direction & JoyDirection::RIGHT)
+    {
+        velocity.x = walkSpeed;
+    }
+    else
+    {
+        velocity.x = 0;
+    }
+
+    if (input.direction & JoyDirection::UP)
+    {
+        if (isOnGround)
+        {
+            isOnGround = false;
+            velocity.y = jumpSpeed;
+        }
     }
     if (input.direction & JoyDirection::DOWN)
     {
-        move(0,-1);
+        // move(0,-1);
     }
+
+    if (!isOnGround)
+    {
+        velocity.y += gravity * dt;
+    }
+
+    if (input.rightButton) // this is z
+    {
+        velocity.y = jumpSpeed;
+        std::cout << "right button" << std::endl;
+    }
+
+    updatePhysics();
+    move(velocity * dt);
+}
+
+void Player::updatePhysics()
+{
+    wasOnGround = isOnGround;
+    wasAtCeiling = isAtCeiling;
+    wasPushingLeftWall = isPushingLeftWall;
+    wasPushingRightWall = isPushingRightWall;
+
+    
 }
 
 sf::FloatRect Player::getCollisionBounds()
@@ -43,6 +85,16 @@ sf::FloatRect Player::getCollisionBounds()
     auto transform = getTransform();
     sf::FloatRect bounds = transform.transformRect(sf::FloatRect(1,0,14,16));
     return bounds;
+}
+
+void Player::handleWorldCollision(bool didCollide)
+{
+    if (didCollide)
+    {
+        velocity.y = 0;
+    }
+
+    isOnGround = didCollide;
 }
 
 void Player::draw(sf::RenderTarget& target, sf::RenderStates states) const

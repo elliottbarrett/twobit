@@ -26,6 +26,8 @@ int main()
     sf::RenderWindow window(sf::VideoMode(GB_WIDTH * WINDOW_SCALE, GB_HEIGHT * WINDOW_SCALE), "twobit");
     window.setVerticalSyncEnabled(true);
 
+    sfg::SFGUI sfgui;
+
     sf::Shader grainShader;
     sf::Texture grainTexture;
     sf::Sprite grainSprite;
@@ -58,10 +60,10 @@ int main()
     yIsUpView.setCenter(GB_WIDTH/2, GB_HEIGHT/2);
     window.setView(yIsUpView);
 
-    Player testSprite;
+    Player player(1);
     sf::Texture pokemonTexture;
     pokemonTexture.loadFromFile("assets/pokemon.png");
-    testSprite.setTexture(&pokemonTexture);
+    player.setTexture(&pokemonTexture);
 
     GameContext* ctx = new TitleContext();
 
@@ -70,7 +72,6 @@ int main()
         std::cout << "TileMap load failed" << std::endl;
         return -1;
     }
-
 
     while (window.isOpen())
     {
@@ -99,30 +100,28 @@ int main()
             window.close();
         }
 
-        testSprite.update(dt);
+        player.update(dt);
         ctx->update(dt);
 
-        tileMap.checkWorldCollisions(testSprite.getCollisionBounds());
+
+        player.handleWorldCollision(tileMap.checkWorldCollisions(player.getCollisionBounds()));
 
         window.clear();
         // ctx->render(window);
-#if GRAIN_EFFECT_ON
-        window.draw(tileMap, &grainShader);
-#else
-        window.draw(tileMap);        
-#endif
-        window.draw(testSprite);
+
+        window.draw(tileMap);
+        window.draw(player);
 
 #if GRAIN_EFFECT_ON
         grainTexture.update(window);
         sf::View currentView = window.getView();
         window.setView(window.getDefaultView());
-        window.draw(grainSprite);
+        window.draw(grainSprite, &grainShader);
         window.setView(currentView);
 #endif
         window.display();
 
-        worldEditor.update();
+        worldEditor.update(dt);
         worldEditor.render();
     }
 

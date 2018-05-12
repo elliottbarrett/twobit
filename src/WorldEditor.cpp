@@ -20,6 +20,7 @@ WorldEditor::WorldEditor(sf::RenderWindow *worldWindow, TileMap *world)
 
 void WorldEditor::instantiateEditorWindows()
 {
+    // Tile Palette
     paletteWindow = new sf::RenderWindow(sf::VideoMode(paletteSize.x * 2, paletteSize.y * 2), "Tile Palette");
     paletteSprite.setTexture(paletteTexture);
 
@@ -35,6 +36,23 @@ void WorldEditor::instantiateEditorWindows()
     paletteView.setCenter(paletteSize.x / 2, paletteSize.y / 2);
     paletteView.zoom(0.5);
     paletteWindow->setView(paletteView);
+
+    // Inspector window
+    inspectorWindow = new sf::RenderWindow(sf::VideoMode(320, 640), "Inspector");
+    inspectorWindow->resetGLStates();
+    inspectorWindow->setPosition(sf::Vector2i(1300, 0));
+
+    // auto 
+    editorSettingsWindow = sfg::Window::Create();
+    editorSettingsWindow->SetTitle("Editor Setings");
+    editorSettingsWindow->RequestResize();
+
+    auto box = sfg::Box::Create(sfg::Box::Orientation::VERTICAL, 5.f);
+    auto renderCollisionsCheckbox = sfg::CheckButton::Create("Render Collisions");
+    auto applyShaderCheckbox = sfg::CheckButton::Create("Use Grain Shader");
+    box->Pack(renderCollisionsCheckbox);
+    box->Pack(applyShaderCheckbox);
+    editorSettingsWindow->Add(box);
 }
 
 void WorldEditor::handleWorldEvent(sf::Event &event)
@@ -111,7 +129,7 @@ void WorldEditor::toggleEditorVisibility()
     isActive = !isActive;
 }
 
-void WorldEditor::update()
+void WorldEditor::update(float dt)
 {
     if (isActive == false)
     {
@@ -174,6 +192,18 @@ void WorldEditor::update()
         panWorldCoordinatesLastFrame = worldWindow->mapPixelToCoords(sf::Mouse::getPosition(*worldWindow));
     }
 
+    // Inspector window
+    while (inspectorWindow->pollEvent(event))
+    {
+        editorSettingsWindow->HandleEvent(event);
+
+        if (event.type == sf::Event::Closed)
+        {
+
+        }
+    }
+
+    editorSettingsWindow->Update(dt);
 }
 
 void WorldEditor::render()
@@ -186,6 +216,10 @@ void WorldEditor::render()
     paletteWindow->draw(paletteSprite);
     paletteWindow->draw(paletteSelectionHighlight);
     paletteWindow->display();
+
+    inspectorWindow->clear();
+    sfgui.Display(*inspectorWindow);
+    inspectorWindow->display();
 }
 
 WorldEditor::~WorldEditor()

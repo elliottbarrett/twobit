@@ -2,6 +2,8 @@
 #define WORLDEDITOR_H_INCLUDED
 
 #include <SFML/Graphics.hpp>
+#include <SFGUI/SFGUI.hpp>
+#include <SFGUI/Widgets.hpp>
 
 class TileMap;
 
@@ -11,7 +13,7 @@ public:
     WorldEditor(sf::RenderWindow *worldWindow, TileMap *world);
     ~WorldEditor();
 
-    void update();
+    void update(float dt);
     void render();
     void handleWorldEvent(sf::Event &event);
 
@@ -31,6 +33,11 @@ private:
     bool isPainting;
     bool isPanning;
     bool isActive;
+
+    sfg::SFGUI sfgui;
+    sf::RenderWindow* inspectorWindow;
+    sfg::Window::Ptr editorSettingsWindow;
+
 
     sf::Vector2f panWorldCoordinatesLastFrame;
 };

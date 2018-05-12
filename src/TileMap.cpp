@@ -139,12 +139,15 @@ bool TileMap::checkWorldCollisions(sf::FloatRect rect)
     // TODO: Better level defined tile collision info. For now, 0 is no collision, 1 is collision
     // TODO: Do something about flipped Y-axis (top-left is rendering on bottom and vice-versa)
 
+    bool collided = false;
+
     // check top-left collision
     topLeftCollisionRect.setPosition(tileMapLeft * 16.0, tileMapTop * 16.0);
 
     if (topLeftTile >= 0 && level[topLeftTile] != 0)
     {
         topLeftCollisionRect.setOutlineColor(sf::Color(255,0,0));
+        collided = true;
     }
     else
     {
@@ -157,6 +160,7 @@ bool TileMap::checkWorldCollisions(sf::FloatRect rect)
     if (topRightTile >= 0 && level[topRightTile] != 0)
     {
         topRightCollisionRect.setOutlineColor(sf::Color(255,0,0));
+        collided = true;
     }
     else
     {
@@ -169,6 +173,7 @@ bool TileMap::checkWorldCollisions(sf::FloatRect rect)
     if (bottomLeftTile >= 0 && level[bottomLeftTile] != 0)
     {
         bottomLeftCollisionRect.setOutlineColor(sf::Color(255,0,0));
+        collided = true;
     }
     else
     {
@@ -181,13 +186,14 @@ bool TileMap::checkWorldCollisions(sf::FloatRect rect)
     if (bottomRightTile >= 0 && level[bottomRightTile] != 0)
     {
         bottomRightCollisionRect.setOutlineColor(sf::Color(255,0,0));
+        collided = true;
     }
     else
     {
         bottomRightCollisionRect.setOutlineColor(sf::Color(0,255,0));
     }
 
-    return false;
+    return collided;
 }
 
 void TileMap::draw(sf::RenderTarget& target, sf::RenderStates states) const
