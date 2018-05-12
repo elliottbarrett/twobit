@@ -1,7 +1,7 @@
 uniform sampler2D texture;
 uniform float time;
 
-const float noiseStrength = 21.0;
+const float noiseStrength = 40.0;
 
 void main()
 {
