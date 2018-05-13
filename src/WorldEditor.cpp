@@ -50,6 +50,11 @@ void WorldEditor::instantiateEditorWindows()
     auto box = sfg::Box::Create(sfg::Box::Orientation::VERTICAL, 5.f);
     auto renderCollisionsCheckbox = sfg::CheckButton::Create("Render Collisions");
     auto applyShaderCheckbox = sfg::CheckButton::Create("Use Grain Shader");
+
+    applyShaderCheckbox->GetSignal(sfg::ToggleButton::OnToggle).Connect([&applyShaderCheckbox] {
+        applyShaderCheckbox->IsActive();
+    });
+
     box->Pack(renderCollisionsCheckbox);
     box->Pack(applyShaderCheckbox);
     editorSettingsWindow->Add(box);
@@ -82,7 +87,7 @@ void WorldEditor::handleWorldEvent(sf::Event &event)
 
         if (event.mouseButton.button == sf::Mouse::Left)
         {
-            world->setTile(tileX, tileY, paletteTileNumber);
+            world->smartPaint(tileX, tileY, paletteTileNumber != 0, SmartPaintConfig::getDefault());
             isPainting = true;
         }
     }
@@ -101,7 +106,7 @@ void WorldEditor::handleWorldEvent(sf::Event &event)
         {
             int tileX = ((int) worldX) / 16;
             int tileY = ((int) worldY) / 16;
-            world->setTile(tileX, tileY, paletteTileNumber);
+            world->smartPaint(tileX, tileY, paletteTileNumber != 0, SmartPaintConfig::getDefault());
         }
     }
     else if (event.type == sf::Event::MouseWheelMoved)

@@ -3,6 +3,51 @@
 #include <iostream>
 #include <fstream>
 
+int SmartPaintConfig::getTileIndexForNeighbouringFills(bool top, bool left, bool right, bool bottom)
+{
+    unsigned int state = 0;
+    state |= (top ? 0b1000 : 0b0000);
+    state |= (left ? 0b0100 : 0b0000);
+    state |= (right ? 0b0010 : 0b0000);
+    state |= (bottom ? 0b0001 : 0b0000);
+
+    switch (state)
+    {
+        case 0b0000:
+            return loneBlock;
+        case 0b0001:
+            return columnTop;
+        case 0b0010:
+            return platformLeft;
+        case 0b0011:
+            return topLeftCorner;
+        case 0b0100:
+            return platformRight;
+        case 0b0101:
+            return topRightCorner;
+        case 0b0110:
+            return platformMid;
+        case 0b0111:
+            return topLine;
+        case 0b1000:
+            return columnBottom;
+        case 0b1001:
+            return columnMid;
+        case 0b1010:
+            return bottomLeftCorner;
+        case 0b1011:
+            return leftLine;
+        case 0b1100:
+            return bottomRightCorner;
+        case 0b1101:
+            return rightLine;
+        case 0b1110:
+            return bottomLine;
+        case 0b1111:
+            return fillInner;
+    }
+}
+
 TileMap::TileMap()
 {
     topLeftCollisionRect = sf::RectangleShape(sf::Vector2f(16,16));
@@ -122,6 +167,53 @@ bool TileMap::setTile(int x, int y, int val)
     level[y * levelWidth + x] = val;
     updateTileQuad(x, y);
     return true;
+}
+
+bool TileMap::smartPaint(int x, int y, bool fill, SmartPaintConfig config)
+{
+    if (fill)
+    {
+        setTile(x, y, config.loneBlock);
+        smartTileReplace(x, y, config);
+    }
+    else
+    {
+        setTile(x, y, 0);
+    }
+
+    smartTileReplace(x-1, y, config);
+    smartTileReplace(x+1, y, config);
+    smartTileReplace(x, y-1, config);
+    smartTileReplace(x, y+1, config);
+}
+
+void TileMap::smartTileReplace(int x, int y, SmartPaintConfig config)
+{
+    if (x < 0 || x >= levelWidth || y < 0 || y >= levelHeight)
+    {
+        return;
+    }
+    else if (level[x + levelWidth * y] == 0)
+    {
+        return;
+    }
+
+    bool leftFilled = getTile(x-1, y) != 0;
+    bool rightFilled = getTile(x+1, y) != 0;
+    bool topFilled = getTile(x, y+1) != 0;
+    bool bottomFilled = getTile(x, y-1) != 0;
+
+    setTile(x, y, config.getTileIndexForNeighbouringFills(topFilled, leftFilled, rightFilled, bottomFilled));
+}
+
+int TileMap::getTile(int x, int y)
+{
+    if (x < 0 || y < 0 || x >= levelWidth || y >= levelHeight) 
+    {
+        return -1;
+    }
+
+    return level[x + y * levelWidth];
 }
 
 bool TileMap::checkWorldCollisions(sf::FloatRect rect)
