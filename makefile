@@ -1,7 +1,8 @@
 rm = rm -f
 
-LIBS=-lsfml-graphics -lsfml-window -lsfml-system
-CXX := g++
+LIBS=-lsfml-graphics -lsfml-window -lsfml-system -lGL
+CC := g++
+CFLAGS = -g
 LINKER = g++
 
 TARGET = twobit

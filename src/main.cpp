@@ -13,6 +13,8 @@
 #include "TileMap.h"
 #include "Player.h"
 #include "WorldEditor.h"
+#include "imgui.h"
+#include "imgui-SFML.h"
 
 #define GB_WIDTH 160
 #define GB_HEIGHT 144
@@ -26,7 +28,7 @@ int main()
     sf::RenderWindow window(sf::VideoMode(GB_WIDTH * WINDOW_SCALE, GB_HEIGHT * WINDOW_SCALE), "twobit");
     window.setVerticalSyncEnabled(true);
 
-    sfg::SFGUI sfgui;
+    ImGui::SFML::Init(window);
 
     sf::Shader grainShader;
     sf::Texture grainTexture;

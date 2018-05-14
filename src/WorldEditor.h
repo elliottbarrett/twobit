@@ -34,10 +34,6 @@ private:
     bool isPanning;
     bool isActive;
 
-    sfg::SFGUI sfgui;
-    sf::RenderWindow* inspectorWindow;
-    sfg::Window::Ptr editorSettingsWindow;
-
 
     sf::Vector2f panWorldCoordinatesLastFrame;
 };
