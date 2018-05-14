@@ -2,6 +2,7 @@
 
 #include <iostream>
 #include <fstream>
+#include "Settings.h"
 
 int SmartPaintConfig::getTileIndexForNeighbouringFills(bool top, bool left, bool right, bool bottom)
 {
@@ -290,11 +291,17 @@ bool TileMap::checkWorldCollisions(sf::FloatRect rect)
 
 void TileMap::draw(sf::RenderTarget& target, sf::RenderStates states) const
 {
+    auto settings = &Settings::instance();
+
     states.transform *= getTransform();
     states.texture = &tileTexture;
     target.draw(vertices, states);
-    target.draw(topLeftCollisionRect, states);
-    target.draw(topRightCollisionRect, states);
-    target.draw(bottomLeftCollisionRect, states);
-    target.draw(bottomRightCollisionRect, states);
+    
+    if (settings->renderTilemapCollisions)
+    {
+        target.draw(topLeftCollisionRect, states);
+        target.draw(topRightCollisionRect, states);
+        target.draw(bottomLeftCollisionRect, states);
+        target.draw(bottomRightCollisionRect, states);
+    }
 }

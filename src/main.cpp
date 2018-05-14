@@ -12,6 +12,7 @@
 #include "ArcadeInput.h"
 #include "TileMap.h"
 #include "Player.h"
+#include "Settings.h"
 #include "WorldEditor.h"
 #include "imgui.h"
 #include "imgui-SFML.h"
@@ -20,15 +21,14 @@
 #define GB_HEIGHT 144
 #define WINDOW_SCALE 4
 
-#define GRAIN_EFFECT_ON true
-
 int main()
 {
+    // Init settings
+    auto settings = &Settings::instance();
+    
     // Main window
     sf::RenderWindow window(sf::VideoMode(GB_WIDTH * WINDOW_SCALE, GB_HEIGHT * WINDOW_SCALE), "twobit");
     window.setVerticalSyncEnabled(true);
-
-    ImGui::SFML::Init(window);
 
     sf::Shader grainShader;
     sf::Texture grainTexture;
@@ -96,7 +96,7 @@ int main()
 
             worldEditor.handleWorldEvent(event);
         }
-
+        
         if (ArcadeInput::isWhiteButtonPressed())
         {
             window.close();
@@ -114,13 +114,30 @@ int main()
         window.draw(tileMap);
         window.draw(player);
 
-#if GRAIN_EFFECT_ON
-        grainTexture.update(window);
-        sf::View currentView = window.getView();
-        window.setView(window.getDefaultView());
-        window.draw(grainSprite, &grainShader);
-        window.setView(currentView);
-#endif
+        if (settings->useGrainShader)
+        {
+            grainTexture.update(window);
+            sf::View currentView = window.getView();
+            window.setView(window.getDefaultView());
+            window.draw(grainSprite, &grainShader);
+            window.setView(currentView);
+        }
+
+
+        // // ImGui testing
+        // ImGui::SFML::Update(window, frameTime);
+
+        // ImGui::Begin("Sample window");
+
+        // if (ImGui::Button("Test button"))
+        // {
+        //     std::cout << "test button clicked" << std::endl;            
+        // }
+
+        // ImGui::End();
+        // ImGui::SFML::Render(window);
+        // END ImGui testing
+
         window.display();
 
         worldEditor.update(dt);

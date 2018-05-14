@@ -1,6 +1,10 @@
-#include "WorldEditor.h"
-#include "TileMap.h"
+#include <SFML/Graphics.hpp>
 
+#include "WorldEditor.h"
+#include "Settings.h"
+#include "TileMap.h"
+#include "imgui.h"
+#include "imgui-SFML.h"
 #include <iostream>
 
 WorldEditor::WorldEditor(sf::RenderWindow *worldWindow, TileMap *world)
@@ -36,6 +40,13 @@ void WorldEditor::instantiateEditorWindows()
     paletteView.setCenter(paletteSize.x / 2, paletteSize.y / 2);
     paletteView.zoom(0.5);
     paletteWindow->setView(paletteView);
+
+    // Inspector window
+    inspectorWindow = new sf::RenderWindow(sf::VideoMode(paletteSize.x * 2, 600), "World Editor");
+    inspectorWindow->setPosition(sf::Vector2i(900, 400));
+    inspectorWindow->setVerticalSyncEnabled(true);
+
+    ImGui::SFML::Init(*inspectorWindow);
 }
 
 void WorldEditor::handleWorldEvent(sf::Event &event)
@@ -103,6 +114,8 @@ void WorldEditor::toggleEditorVisibility()
     {
         paletteWindow->close();
         delete paletteWindow;
+        inspectorWindow->close();
+        delete inspectorWindow; 
     }
     else
     {
@@ -120,6 +133,8 @@ void WorldEditor::update(float dt)
     }
 
     sf::Event event;
+
+    ImGui::SFML::Update(*inspectorWindow, sf::seconds(dt));
 
     while (paletteWindow->pollEvent(event))
     {
@@ -174,6 +189,12 @@ void WorldEditor::update(float dt)
 
         panWorldCoordinatesLastFrame = worldWindow->mapPixelToCoords(sf::Mouse::getPosition(*worldWindow));
     }
+
+    // ImGui window event loop
+    while (inspectorWindow->pollEvent(event))
+    {
+        ImGui::SFML::ProcessEvent(event);
+    }
 }
 
 void WorldEditor::render()
@@ -186,6 +207,17 @@ void WorldEditor::render()
     paletteWindow->draw(paletteSprite);
     paletteWindow->draw(paletteSelectionHighlight);
     paletteWindow->display();
+
+    auto settings = &Settings::instance();
+
+    inspectorWindow->clear();
+    ImGui::SetNextWindowSize(sf::Vector2i(0,0));
+    ImGui::Begin("Global Settings");
+    ImGui::Checkbox("Use Grain Shader", &settings->useGrainShader);
+    ImGui::Checkbox("Render TileMap Collisions", &settings->renderTilemapCollisions);
+    ImGui::End();
+    ImGui::SFML::Render(*inspectorWindow);
+    inspectorWindow->display();
 }
 
 WorldEditor::~WorldEditor()
