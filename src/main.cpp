@@ -16,8 +16,8 @@
 #include <math.h>
 #include <stdlib.h>
 
-#include "imgui.h"
-#include "imgui-SFML.h"
+#include "imgui/imgui.h"
+#include "imgui/imgui-SFML.h"
 
 #define GB_WIDTH 160
 #define GB_HEIGHT 144

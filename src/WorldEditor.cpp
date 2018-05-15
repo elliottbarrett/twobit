@@ -5,8 +5,8 @@
 #include "TileMap.h"
 #include "Camera.h"
 
-#include "imgui.h"
-#include "imgui-SFML.h"
+#include "imgui/imgui.h"
+#include "imgui/imgui-SFML.h"
 #include <iostream>
 
 WorldEditor::WorldEditor(sf::RenderWindow *worldWindow, TileMap *world)
