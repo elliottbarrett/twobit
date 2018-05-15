@@ -17,10 +17,6 @@ private:
     virtual void draw(sf::RenderTarget& target, sf::RenderStates states) const;
     void updatePhysics();
 
-    const float walkSpeed = 80.0;
-    const float jumpSpeed = 250.0;
-    const float gravity = -750.0;
-
     int playerNumber;
 
     sf::Vector2f velocity;

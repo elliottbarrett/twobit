@@ -6,20 +6,34 @@ class Settings
 public:
     bool useGrainShader;
     bool renderTilemapCollisions;
+    bool renderCameraPanRect;
+    bool drawEntityOrigins;
+    bool drawEntityCollisionBounds;
+    float cameraPanWidth;
+    float cameraPanHeight;
+    float gravity;
+    float jumpSpeed;
+    float walkSpeed;
 
     static Settings& instance()
     {
         static Settings instance;
-
         return instance;
     }
 
 private:
     Settings() :
         useGrainShader(true),
-        renderTilemapCollisions(true)
+        renderTilemapCollisions(true),
+        drawEntityOrigins(false),
+        drawEntityCollisionBounds(true),
+        renderCameraPanRect(false),
+        cameraPanWidth(100),
+        cameraPanHeight(100),
+        gravity(-750),
+        jumpSpeed(250),
+        walkSpeed(80)
     {
-
     }
 
 public:

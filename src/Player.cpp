@@ -1,5 +1,6 @@
 #include "Player.h"
 #include "ArcadeInput.h"
+#include "Settings.h"
 
 #include <iostream>
 
@@ -28,14 +29,15 @@ void Player::update(float dt)
     AnimatedSprite::update(dt);
 
     InputState input = playerNumber == 1 ? ArcadeInput::getPlayerOneState() : ArcadeInput::getPlayerTwoState();
+    auto settings = &Settings::instance();
 
     if (input.direction & JoyDirection::LEFT)
     {
-        velocity.x = -walkSpeed;
+        velocity.x = -1 * settings->walkSpeed;
     }
     else if (input.direction & JoyDirection::RIGHT)
     {
-        velocity.x = walkSpeed;
+        velocity.x = settings->walkSpeed;
     }
     else
     {
@@ -47,7 +49,7 @@ void Player::update(float dt)
         if (isOnGround)
         {
             isOnGround = false;
-            velocity.y = jumpSpeed;
+            velocity.y = settings->jumpSpeed;
         }
     }
     if (input.direction & JoyDirection::DOWN)
@@ -57,13 +59,12 @@ void Player::update(float dt)
 
     if (!isOnGround)
     {
-        velocity.y += gravity * dt;
+        velocity.y += settings->gravity * dt;
     }
 
     if (input.rightButton) // this is z
     {
-        velocity.y = jumpSpeed;
-        std::cout << "right button" << std::endl;
+        velocity.y = settings->jumpSpeed;
     }
 
     updatePhysics();
@@ -99,7 +100,15 @@ void Player::handleWorldCollision(bool didCollide)
 
 void Player::draw(sf::RenderTarget& target, sf::RenderStates states) const
 {
+    auto settings = &Settings::instance();
+
     AnimatedSprite::draw(target, states);
     states.transform *= getTransform();
-    target.draw(collisionRect, states);
+
+    if (settings->drawEntityCollisionBounds)
+    {
+        target.draw(collisionRect, states);
+    }
+
+    
 }

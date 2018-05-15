@@ -143,17 +143,15 @@ void TileMap::updateTileQuad(int x, int y)
 
     sf::Vertex* quad = &vertices[(x + y * levelWidth) * 4];
 
-    // define its 4 corners
     quad[0].position = sf::Vector2f(x * tileSize.x, y * tileSize.y);
     quad[1].position = sf::Vector2f((x + 1) * tileSize.x, y * tileSize.y);
     quad[2].position = sf::Vector2f((x + 1) * tileSize.x, (y + 1) * tileSize.y);
     quad[3].position = sf::Vector2f(x * tileSize.x, (y + 1) * tileSize.y);
 
-    // define its 4 texture coordinates
-    quad[3].texCoords = sf::Vector2f(tu * tileSize.x, tv * tileSize.y);
-    quad[2].texCoords = sf::Vector2f((tu + 1) * tileSize.x, tv * tileSize.y);
-    quad[1].texCoords = sf::Vector2f((tu + 1) * tileSize.x, (tv + 1) * tileSize.y);
     quad[0].texCoords = sf::Vector2f(tu * tileSize.x, (tv + 1) * tileSize.y);
+    quad[1].texCoords = sf::Vector2f((tu + 1) * tileSize.x, (tv + 1) * tileSize.y);
+    quad[2].texCoords = sf::Vector2f((tu + 1) * tileSize.x, tv * tileSize.y);
+    quad[3].texCoords = sf::Vector2f(tu * tileSize.x, tv * tileSize.y);
 }
 
 bool TileMap::setTile(int x, int y, int val)
@@ -230,7 +228,6 @@ bool TileMap::checkWorldCollisions(sf::FloatRect rect)
     int bottomRightTile = tileMapRight + tileMapBottom * levelWidth;
 
     // TODO: Better level defined tile collision info. For now, 0 is no collision, 1 is collision
-    // TODO: Do something about flipped Y-axis (top-left is rendering on bottom and vice-versa)
 
     bool collided = false;
 
@@ -296,7 +293,7 @@ void TileMap::draw(sf::RenderTarget& target, sf::RenderStates states) const
     states.transform *= getTransform();
     states.texture = &tileTexture;
     target.draw(vertices, states);
-    
+
     if (settings->renderTilemapCollisions)
     {
         target.draw(topLeftCollisionRect, states);

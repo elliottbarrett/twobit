@@ -3,6 +3,8 @@
 #include "WorldEditor.h"
 #include "Settings.h"
 #include "TileMap.h"
+#include "Camera.h"
+
 #include "imgui.h"
 #include "imgui-SFML.h"
 #include <iostream>
@@ -42,7 +44,7 @@ void WorldEditor::instantiateEditorWindows()
     paletteWindow->setView(paletteView);
 
     // Inspector window
-    inspectorWindow = new sf::RenderWindow(sf::VideoMode(paletteSize.x * 2, 600), "World Editor");
+    inspectorWindow = new sf::RenderWindow(sf::VideoMode(600, 600), "World Editor");
     inspectorWindow->setPosition(sf::Vector2i(900, 400));
     inspectorWindow->setVerticalSyncEnabled(true);
 
@@ -215,7 +217,31 @@ void WorldEditor::render()
     ImGui::Begin("Global Settings");
     ImGui::Checkbox("Use Grain Shader", &settings->useGrainShader);
     ImGui::Checkbox("Render TileMap Collisions", &settings->renderTilemapCollisions);
+    ImGui::Checkbox("Draw Entity Collision Bounds", &settings->drawEntityCollisionBounds);
     ImGui::End();
+
+    ImGui::SetNextWindowSize(sf::Vector2i(0,0));
+    ImGui::Begin("Camera");
+    if (ImGui::Button("Reset Zoom"))
+    {
+        Camera::instance().resetZoom();
+    }
+    if (ImGui::Button("Center on Player"))
+    {
+        // Camera::instance().centerOn()
+    }
+    ImGui::Checkbox("Render Pan Bounds", &settings->renderCameraPanRect);
+    ImGui::SliderFloat("Pan Bounds Width", &settings->cameraPanWidth, 0, 160);
+    ImGui::SliderFloat("Pan Bounds Height", &settings->cameraPanHeight, 0, 144);
+    ImGui::End();
+
+    ImGui::SetNextWindowSize(sf::Vector2i(0,0));
+    ImGui::Begin("Physics");
+    ImGui::SliderFloat("Gravity", &settings->gravity, -1000, 0);
+    ImGui::SliderFloat("Jump Speed", &settings->jumpSpeed, 0, 400);
+    ImGui::SliderFloat("Walk Speed", &settings->walkSpeed, 0, 125);
+    ImGui::End();
+
     ImGui::SFML::Render(*inspectorWindow);
     inspectorWindow->display();
 }
@@ -223,4 +249,5 @@ void WorldEditor::render()
 WorldEditor::~WorldEditor()
 {
     delete paletteWindow;
+    delete inspectorWindow;
 }

@@ -1,11 +1,3 @@
-#include <SFML/Graphics.hpp>
-#include <vector>
-#include <string>
-#include <map>
-#include <iostream>
-#include <math.h>
-#include <stdlib.h>
-
 #include "AnimatedSprite.h"
 #include "GameContext.h"
 #include "TitleContext.h"
@@ -14,6 +6,16 @@
 #include "Player.h"
 #include "Settings.h"
 #include "WorldEditor.h"
+#include "Camera.h"
+
+#include <SFML/Graphics.hpp>
+#include <vector>
+#include <string>
+#include <map>
+#include <iostream>
+#include <math.h>
+#include <stdlib.h>
+
 #include "imgui.h"
 #include "imgui-SFML.h"
 
@@ -35,6 +37,8 @@ int main()
     sf::Sprite grainSprite;
     grainTexture.create(GB_WIDTH * WINDOW_SCALE, GB_HEIGHT * WINDOW_SCALE);
     grainSprite.setTexture(grainTexture);
+
+    Camera::instance().init(&window);
 
     if (!grainShader.loadFromFile("shaders/grain.frag", sf::Shader::Type::Fragment))
     {
