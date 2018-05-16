@@ -4,9 +4,9 @@
 
 #include <iostream>
 
-Player::Player(std::string name) :
-    Entity(name),
-    playerNumber(name == "Player 1" ? 1 : 2),
+Player::Player(unsigned int id, std::string name, std::vector<std::string> params) :
+    Entity(id, name, params),
+    playerNumber(name == "Player1" ? 1 : 2),
     isOnGround(true), wasOnGround(true),
     isAtCeiling(false), wasAtCeiling(false),
     isPushingLeftWall(false), wasPushingLeftWall(false),
@@ -17,11 +17,30 @@ Player::Player(std::string name) :
     collisionRect.setOutlineColor(sf::Color(255,0,255));
     collisionRect.setOutlineThickness(-1);
     move(20,20);
-    isOnGround ;
+
+    initParameters(params);
 }
 
 Player::~Player()
 {
+}
+
+void Player::initParameters(std::vector<std::string> params)
+{
+    for (auto it : params)
+    {
+        // TODO: Set this up.
+        // std::cout << it << "\n";
+    }
+}
+
+std::string Player::getEntityDescription()
+{
+    return std::to_string(id) + " Player " + name + "\n"
+        + writeParameter("playerNum", playerNumber)
+        + writeParameter("posX", getPosition().x)
+        + writeParameter("posY", getPosition().y);
+
 }
 
 void Player::update(float dt)

@@ -6,14 +6,17 @@
 class Player : public Entity
 {
 public:
-    Player(std::string name);
+    Player(unsigned int id, std::string name, std::vector<std::string> params);
     ~Player();
     void update(float dt);
+    std::string getEntityDescription();
 
     sf::FloatRect getCollisionBounds();
     void handleWorldCollision(bool didCollide);
 
+
 private:
+    void initParameters(std::vector<std::string> params);
     virtual void draw(sf::RenderTarget& target, sf::RenderStates states) const;
     void updatePhysics();
 

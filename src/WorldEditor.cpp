@@ -229,7 +229,7 @@ void WorldEditor::render()
     }
     if (ImGui::Button("Center on Player"))
     {
-        Camera::instance().centerOn(Entities::findByName("Player 1"));
+        Camera::instance().centerOn(Entities::findByName("Player1"));
     }
     ImGui::Checkbox("Render Pan Bounds", &settings->drawCameraPanRect);
     ImGui::SliderFloat("Pan Bounds Width", &settings->cameraPanWidth, 0, 160);
@@ -244,10 +244,12 @@ void WorldEditor::render()
     ImGui::End();
 
     ImGui::SetNextWindowSize(sf::Vector2i(0,0));
-    ImGui::Begin("Global Settings");
-    ImGui::Checkbox("Use Grain Shader", &settings->useGrainShader);
-    ImGui::Checkbox("Render TileMap Collisions", &settings->renderTilemapCollisions);
-    ImGui::Checkbox("Draw Entity Collision Bounds", &settings->drawEntityCollisionBounds);
+    ImGui::Begin("Entities");
+    ImGui::Text("Entity count: %d", Entities::getCount());
+    if (ImGui::Button("Save File"))
+    {
+        Entities::writeFile("assets/entities.tbe");
+    }
     ImGui::End();    
 
     ImGui::SFML::Render(*inspectorWindow);

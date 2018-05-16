@@ -7,6 +7,7 @@
 #include "Settings.h"
 #include "WorldEditor.h"
 #include "Camera.h"
+#include "Entities.h"
 
 #include <SFML/Graphics.hpp>
 #include <vector>
@@ -50,6 +51,9 @@ int main()
     // Test some TileMap stuff
     TileMap tileMap;
 
+    // Test entity system
+    Entities::loadFromFile("assets/entities.tbe");
+
     // Editor window
     WorldEditor worldEditor(&window, &tileMap);
 
@@ -67,10 +71,10 @@ int main()
     yIsUpView.setCenter(GB_WIDTH/2, GB_HEIGHT/2);
     window.setView(yIsUpView);
 
-    Player player("Player 1");
+    Player* player = (Player*) Entities::findByName("Player1");
     sf::Texture pokemonTexture;
     pokemonTexture.loadFromFile("assets/pokemon.png");
-    player.setTexture(&pokemonTexture);
+    player->setTexture(&pokemonTexture);
 
     GameContext* ctx = new TitleContext();
 
@@ -109,17 +113,18 @@ int main()
             window.close();
         }
 
-        player.update(dt);
+        Entities::update(dt);
+
+        // player.update(dt);
         ctx->update(dt);
-
-
-        player.handleWorldCollision(tileMap.checkWorldCollisions(player.getCollisionBounds()));
+        player->handleWorldCollision(tileMap.checkWorldCollisions(player->getCollisionBounds()));
 
         window.clear();
         // ctx->render(window);
 
         window.draw(tileMap);
-        window.draw(player);
+        Entities::draw(window);
+        // window.draw(*player);
 
         if (settings->drawCameraPanRect)
         {
@@ -134,21 +139,6 @@ int main()
             window.draw(grainSprite, &grainShader);
             window.setView(currentView);
         }
-
-
-        // // ImGui testing
-        // ImGui::SFML::Update(window, frameTime);
-
-        // ImGui::Begin("Sample window");
-
-        // if (ImGui::Button("Test button"))
-        // {
-        //     std::cout << "test button clicked" << std::endl;            
-        // }
-
-        // ImGui::End();
-        // ImGui::SFML::Render(window);
-        // END ImGui testing
 
         window.display();
 

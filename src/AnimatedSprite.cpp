@@ -3,7 +3,8 @@
 
 #include <iostream>
 
-AnimatedSprite::AnimatedSprite()
+AnimatedSprite::AnimatedSprite() :
+    timeInFrame(0)
 {
     vertices.setPrimitiveType(sf::Quads);
     vertices.resize(4);
