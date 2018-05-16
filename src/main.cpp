@@ -38,7 +38,8 @@ int main()
     grainTexture.create(GB_WIDTH * WINDOW_SCALE, GB_HEIGHT * WINDOW_SCALE);
     grainSprite.setTexture(grainTexture);
 
-    Camera::instance().init(&window);
+    auto camera = &Camera::instance();
+    camera->init(&window);
 
     if (!grainShader.loadFromFile("shaders/grain.frag", sf::Shader::Type::Fragment))
     {
@@ -66,7 +67,7 @@ int main()
     yIsUpView.setCenter(GB_WIDTH/2, GB_HEIGHT/2);
     window.setView(yIsUpView);
 
-    Player player(1);
+    Player player("Player 1");
     sf::Texture pokemonTexture;
     pokemonTexture.loadFromFile("assets/pokemon.png");
     player.setTexture(&pokemonTexture);
@@ -86,6 +87,8 @@ int main()
         float dt = frameTime.asSeconds();
 
         frameCount++;
+
+        camera->update(dt);
 
         // Update shader params
         grainShader.setUniform("time", elapsedTimeClock.getElapsedTime().asSeconds());
@@ -117,6 +120,11 @@ int main()
 
         window.draw(tileMap);
         window.draw(player);
+
+        if (settings->drawCameraPanRect)
+        {
+            camera->drawBoundsRect();
+        }
 
         if (settings->useGrainShader)
         {

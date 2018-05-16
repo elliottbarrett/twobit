@@ -4,6 +4,7 @@
 #include "Settings.h"
 #include "TileMap.h"
 #include "Camera.h"
+#include "Entities.h"
 
 #include "imgui/imgui.h"
 #include "imgui/imgui-SFML.h"
@@ -228,9 +229,9 @@ void WorldEditor::render()
     }
     if (ImGui::Button("Center on Player"))
     {
-        // Camera::instance().centerOn()
+        Camera::instance().centerOn(Entities::findByName("Player 1"));
     }
-    ImGui::Checkbox("Render Pan Bounds", &settings->renderCameraPanRect);
+    ImGui::Checkbox("Render Pan Bounds", &settings->drawCameraPanRect);
     ImGui::SliderFloat("Pan Bounds Width", &settings->cameraPanWidth, 0, 160);
     ImGui::SliderFloat("Pan Bounds Height", &settings->cameraPanHeight, 0, 144);
     ImGui::End();
@@ -241,6 +242,13 @@ void WorldEditor::render()
     ImGui::SliderFloat("Jump Speed", &settings->jumpSpeed, 0, 400);
     ImGui::SliderFloat("Walk Speed", &settings->walkSpeed, 0, 125);
     ImGui::End();
+
+    ImGui::SetNextWindowSize(sf::Vector2i(0,0));
+    ImGui::Begin("Global Settings");
+    ImGui::Checkbox("Use Grain Shader", &settings->useGrainShader);
+    ImGui::Checkbox("Render TileMap Collisions", &settings->renderTilemapCollisions);
+    ImGui::Checkbox("Draw Entity Collision Bounds", &settings->drawEntityCollisionBounds);
+    ImGui::End();    
 
     ImGui::SFML::Render(*inspectorWindow);
     inspectorWindow->display();

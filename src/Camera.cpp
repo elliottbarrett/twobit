@@ -1,13 +1,25 @@
 #include "Camera.h"
 
+#include <assert.h>
+#include <iostream>
+
+#include "Settings.h"
+#include "Entity.h"
+
 void Camera::init(sf::RenderWindow *window)
 {
     this->window = window;
+    panBoundsRect.setFillColor(sf::Color::Transparent);
+    panBoundsRect.setOutlineColor(sf::Color(120,0,120,190));
+    panBoundsRect.setOutlineThickness(-1);   
 }
 
 void Camera::update(float dt)
 {
-
+    auto settings = &Settings::instance();
+    panBoundsRect.setSize(sf::Vector2f(settings->cameraPanWidth, settings->cameraPanHeight));
+    panBoundsRect.setOrigin(settings->cameraPanWidth / 2, settings->cameraPanHeight / 2);
+    panBoundsRect.setPosition(window->getView().getCenter());
 }
 
 void Camera::resetZoom()
@@ -21,9 +33,17 @@ void Camera::resetZoom()
     window->setView(defaultView);
 }
 
-void Camera::centerOn(sf::Transformable &t)
+void Camera::centerOn(Entity *t)
 {
     auto currentCenterView = window->getView();
-    currentCenterView.setCenter(t.getPosition());
+    currentCenterView.setCenter(t->getPosition());
+    std::cout << t->getPosition().x << ", " << t->getPosition().y << std::endl;
     window->setView(currentCenterView);
+}
+
+void Camera::drawBoundsRect()
+{
+    assert(window != 0);
+
+    window->draw(panBoundsRect);
 }

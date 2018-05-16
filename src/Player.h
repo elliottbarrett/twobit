@@ -1,12 +1,12 @@
 #ifndef PLAYER_H_INCLUDED
 #define PLAYER_H_INCLUDED
 
-#include "AnimatedSprite.h"
+#include "Entity.h"
 
-class Player : public AnimatedSprite
+class Player : public Entity
 {
 public:
-    Player(int playerNumber);
+    Player(std::string name);
     ~Player();
     void update(float dt);
 

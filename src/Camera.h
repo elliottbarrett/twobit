@@ -3,6 +3,8 @@
 
 #include <SFML/Graphics.hpp>
 
+class Entity;
+
 class Camera
 {
 public:
@@ -15,11 +17,13 @@ public:
     void init(sf::RenderWindow *window);
     void update(float dt);
     void resetZoom();
-    void centerOn(sf::Transformable &t);
+    void centerOn(Entity *t);
+    void drawBoundsRect();
 
 private:
     Camera() {}
     sf::RenderWindow *window;
+    sf::RectangleShape panBoundsRect;
 
 public:
     Camera(Camera const&) = delete;

@@ -4,14 +4,14 @@
 
 #include <iostream>
 
-Player::Player(int playerNumber) :
-    playerNumber(playerNumber),
+Player::Player(std::string name) :
+    Entity(name),
+    playerNumber(name == "Player 1" ? 1 : 2),
     isOnGround(true), wasOnGround(true),
     isAtCeiling(false), wasAtCeiling(false),
     isPushingLeftWall(false), wasPushingLeftWall(false),
     isPushingRightWall(false), wasPushingRightWall(false)
 {
-    AnimatedSprite();
     collisionRect = sf::RectangleShape(sf::Vector2f(16,16));
     collisionRect.setFillColor(sf::Color::Transparent);
     collisionRect.setOutlineColor(sf::Color(255,0,255));

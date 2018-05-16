@@ -6,7 +6,7 @@ class Settings
 public:
     bool useGrainShader;
     bool renderTilemapCollisions;
-    bool renderCameraPanRect;
+    bool drawCameraPanRect;
     bool drawEntityOrigins;
     bool drawEntityCollisionBounds;
     float cameraPanWidth;
@@ -27,7 +27,7 @@ private:
         renderTilemapCollisions(true),
         drawEntityOrigins(false),
         drawEntityCollisionBounds(true),
-        renderCameraPanRect(false),
+        drawCameraPanRect(false),
         cameraPanWidth(100),
         cameraPanHeight(100),
         gravity(-750),
