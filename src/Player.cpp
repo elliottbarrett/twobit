@@ -18,6 +18,8 @@ Player::Player(unsigned int id, std::string name, std::vector<std::string> param
     collisionRect.setOutlineThickness(-1);
     move(20,20);
 
+    setOrigin(8,0);
+
     initParameters(params);
 }
 

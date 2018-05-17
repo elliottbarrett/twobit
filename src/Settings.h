@@ -4,6 +4,7 @@
 class Settings
 {
 public:
+    bool runGame;
     bool useGrainShader;
     bool renderTilemapCollisions;
     bool drawCameraPanRect;
@@ -23,6 +24,7 @@ public:
 
 private:
     Settings() :
+        runGame(true),
         useGrainShader(true),
         renderTilemapCollisions(true),
         drawEntityOrigins(false),

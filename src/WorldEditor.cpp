@@ -220,6 +220,7 @@ void WorldEditor::render()
     // Global Settings window
     ImGui::SetNextWindowSize(sf::Vector2i(0,0));
     ImGui::Begin("Global Settings");
+    ImGui::Checkbox("Run Simulation", &settings->runGame);
     ImGui::Checkbox("Use Grain Shader", &settings->useGrainShader);
     ImGui::Checkbox("Draw TileMap Collisions", &settings->renderTilemapCollisions);
     ImGui::Checkbox("Draw Entity Collision Bounds", &settings->drawEntityCollisionBounds);
@@ -281,7 +282,6 @@ void WorldEditor::render()
 
     ImGui::SFML::Render(*inspectorWindow);
     inspectorWindow->display();
-
 }
 
 WorldEditor::~WorldEditor()

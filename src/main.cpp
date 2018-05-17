@@ -86,6 +86,9 @@ int main()
         return -1;
     }
 
+    // XXX
+    camera->setFollowEntity(player);
+
     while (window.isOpen())
     {
         sf::Event event;
@@ -115,7 +118,10 @@ int main()
             window.close();
         }
 
-        Entities::update(dt);
+        if (settings->runGame)
+        {
+            Entities::update(dt);
+        }
 
         // player.update(dt);
         ctx->update(dt);

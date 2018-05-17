@@ -20,6 +20,53 @@ void Camera::update(float dt)
     panBoundsRect.setSize(sf::Vector2f(settings->cameraPanWidth, settings->cameraPanHeight));
     panBoundsRect.setOrigin(settings->cameraPanWidth / 2, settings->cameraPanHeight / 2);
     panBoundsRect.setPosition(window->getView().getCenter());
+
+    if (followEntity)
+    {
+        auto ePos = followEntity->getPosition();
+        float hw = 0.5 * settings->cameraPanWidth;
+        float hh = 0.5 * settings->cameraPanHeight;
+
+        // TODO: There's probably better math for this. I don't care about that right now.
+        if (!panBoundsRect.getGlobalBounds().contains(ePos))
+        {
+            auto cPos = panBoundsRect.getPosition();
+            float dx = 0;
+            float dy = 0;
+
+            bool moveInX = ePos.x > cPos.x + hw || ePos.x < cPos.x - hw;
+            bool moveInY = ePos.y > cPos.y + hh || ePos.y < cPos.y - hh;
+
+            if (moveInX)
+            {
+                if (ePos.x > cPos.x)
+                {
+                    dx = ePos.x - cPos.x - hw;
+                }
+                else
+                {
+                    dx = ePos.x - cPos.x + hw;
+                }
+            }
+
+            if (moveInY)
+            {
+                if (ePos.y > cPos.y)
+                {
+                    dy = ePos.y - cPos.y - hw;
+                }
+                else
+                {
+                    dy = ePos.y - cPos.y + hw;
+                }
+            }
+
+            cPos = panBoundsRect.getPosition();
+            auto currentCenterView = window->getView();
+            currentCenterView.move(sf::Vector2f(dx, dy));
+            window->setView(currentCenterView);
+        }
+    }
 }
 
 void Camera::resetZoom()
@@ -31,6 +78,11 @@ void Camera::resetZoom()
     defaultView.setSize(defaultView.getSize().x, defaultView.getSize().y * -1);
     defaultView.setCenter(currentCenterView.getCenter());
     window->setView(defaultView);
+}
+
+void Camera::setFollowEntity(Entity* e)
+{
+    followEntity = e;
 }
 
 void Camera::centerOn(Entity *t)

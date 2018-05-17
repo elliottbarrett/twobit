@@ -19,11 +19,13 @@ public:
     void resetZoom();
     void centerOn(Entity *t);
     void drawBoundsRect();
+    void setFollowEntity(Entity* e);
 
 private:
-    Camera() {}
+    Camera() : followEntity(0) {}
     sf::RenderWindow *window;
     sf::RectangleShape panBoundsRect;
+    Entity *followEntity;
 
 public:
     Camera(Camera const&) = delete;
