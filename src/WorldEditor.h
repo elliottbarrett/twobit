@@ -35,7 +35,7 @@ private:
 
     // ImGui stuff
     sf::RenderWindow* inspectorWindow;
-
+    unsigned int selectedEntityId;
 
 };
 

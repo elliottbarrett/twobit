@@ -5,6 +5,7 @@
 #include "TileMap.h"
 #include "Camera.h"
 #include "Entities.h"
+#include "Entity.h"
 
 #include "imgui/imgui.h"
 #include "imgui/imgui-SFML.h"
@@ -17,7 +18,8 @@ WorldEditor::WorldEditor(sf::RenderWindow *worldWindow, TileMap *world)
       paletteTileNumber(0),
       isPainting(false),
       isPanning(false),
-      isActive(true)
+      isActive(true),
+      selectedEntityId(0)
 {
     paletteTexture.loadFromFile("assets/LevelTileset.png");
     paletteSize = paletteTexture.getSize();
@@ -45,7 +47,7 @@ void WorldEditor::instantiateEditorWindows()
     paletteWindow->setView(paletteView);
 
     // Inspector window
-    inspectorWindow = new sf::RenderWindow(sf::VideoMode(600, 600), "World Editor");
+    inspectorWindow = new sf::RenderWindow(sf::VideoMode(650, 600), "World Editor");
     inspectorWindow->setPosition(sf::Vector2i(900, 400));
     inspectorWindow->setVerticalSyncEnabled(true);
 
@@ -214,13 +216,16 @@ void WorldEditor::render()
     auto settings = &Settings::instance();
 
     inspectorWindow->clear();
+
+    // Global Settings window
     ImGui::SetNextWindowSize(sf::Vector2i(0,0));
     ImGui::Begin("Global Settings");
     ImGui::Checkbox("Use Grain Shader", &settings->useGrainShader);
-    ImGui::Checkbox("Render TileMap Collisions", &settings->renderTilemapCollisions);
+    ImGui::Checkbox("Draw TileMap Collisions", &settings->renderTilemapCollisions);
     ImGui::Checkbox("Draw Entity Collision Bounds", &settings->drawEntityCollisionBounds);
     ImGui::End();
 
+    // Camera window
     ImGui::SetNextWindowSize(sf::Vector2i(0,0));
     ImGui::Begin("Camera");
     if (ImGui::Button("Reset Zoom"))
@@ -229,13 +234,14 @@ void WorldEditor::render()
     }
     if (ImGui::Button("Center on Player"))
     {
-        Camera::instance().centerOn(Entities::findByName("Player1"));
+        Camera::instance().centerOn(Entities::getByName("Player1"));
     }
-    ImGui::Checkbox("Render Pan Bounds", &settings->drawCameraPanRect);
+    ImGui::Checkbox("Draw Pan Bounds", &settings->drawCameraPanRect);
     ImGui::SliderFloat("Pan Bounds Width", &settings->cameraPanWidth, 0, 160);
     ImGui::SliderFloat("Pan Bounds Height", &settings->cameraPanHeight, 0, 144);
     ImGui::End();
 
+    // Physics window
     ImGui::SetNextWindowSize(sf::Vector2i(0,0));
     ImGui::Begin("Physics");
     ImGui::SliderFloat("Gravity", &settings->gravity, -1000, 0);
@@ -243,17 +249,39 @@ void WorldEditor::render()
     ImGui::SliderFloat("Walk Speed", &settings->walkSpeed, 0, 125);
     ImGui::End();
 
+    // Entities window
     ImGui::SetNextWindowSize(sf::Vector2i(0,0));
     ImGui::Begin("Entities");
     ImGui::Text("Entity count: %d", Entities::getCount());
+    ImGui::ListBoxHeader("Entities", Entities::getCount());
+    for (auto entity : Entities::getEntities())
+    {
+        if (ImGui::Selectable(entity->getName().c_str(), selectedEntityId == entity->getId()))
+        {
+            selectedEntityId = entity->getId(); 
+        }
+    }
+    ImGui::ListBoxFooter();
     if (ImGui::Button("Save File"))
     {
         Entities::writeFile("assets/entities.tbe");
     }
     ImGui::End();    
+    
+    // Entity Inspector window
+    // TODO: Possibly 
+    if (selectedEntityId != 0)
+    {
+        auto selectedEntity = Entities::getById(selectedEntityId);
+        ImGui::SetNextWindowSize(sf::Vector2i(0,0));
+        ImGui::Begin("Entity Inspector");
+
+        ImGui::End();
+    }
 
     ImGui::SFML::Render(*inspectorWindow);
     inspectorWindow->display();
+
 }
 
 WorldEditor::~WorldEditor()

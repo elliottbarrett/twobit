@@ -8,6 +8,7 @@
 std::map<std::string, Entity*> Entities::entityNameMap = std::map<std::string, Entity*>();
 std::map<unsigned int, Entity*> Entities::entityIdMap = std::map<unsigned int, Entity*>();
 std::vector<Entity*> Entities::entities = std::vector<Entity*>();
+unsigned int Entities::maxId = 0;
 
 void Entities::loadFromFile(std::string fileName)
 {
@@ -79,6 +80,11 @@ bool Entities::registerEntity(Entity *e, unsigned int id, std::string name)
 {
     auto existingEntity = entityIdMap[id];
     
+    if (id > maxId)
+    {
+        maxId = id;
+    }
+
     if (!existingEntity)
     {
         entityNameMap[name] = e;
@@ -93,9 +99,19 @@ bool Entities::registerEntity(Entity *e, unsigned int id, std::string name)
     }
 }
 
-Entity* Entities::findByName(std::string name)
+std::vector<Entity*> Entities::getEntities()
+{
+    return entities;
+}
+
+Entity* Entities::getByName(std::string name)
 {
     return entityNameMap[name];
+}
+
+Entity* Entities::getById(unsigned int id)
+{
+    return entityIdMap[id];
 }
 
 int Entities::getCount()

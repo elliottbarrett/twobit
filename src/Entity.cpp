@@ -17,6 +17,16 @@ void Entity::update(float dt)
 
 }
 
+std::string Entity::getName()
+{
+    return name;
+}
+
+unsigned int Entity::getId()
+{
+    return id;
+}
+
 std::string Entity::writeParameter(std::string name, int value)
 {
     return name + " " + std::to_string(value) + "\n";

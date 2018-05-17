@@ -71,10 +71,12 @@ int main()
     yIsUpView.setCenter(GB_WIDTH/2, GB_HEIGHT/2);
     window.setView(yIsUpView);
 
-    Player* player = (Player*) Entities::findByName("Player1");
+    Player* player = (Player*) Entities::getByName("Player1");
+    Player* player2 = (Player*) Entities::getByName("Player2");
     sf::Texture pokemonTexture;
     pokemonTexture.loadFromFile("assets/pokemon.png");
     player->setTexture(&pokemonTexture);
+    player2->setTexture(&pokemonTexture);
 
     GameContext* ctx = new TitleContext();
 

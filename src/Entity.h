@@ -13,7 +13,9 @@ public:
 
     virtual void update(float dt);
     virtual std::string getEntityDescription() = 0;
-
+    std::string getName();
+    unsigned int getId();
+    
 protected:
     virtual void initParameters(std::vector<std::string> params) = 0;
     std::string writeParameter(std::string name, int value);

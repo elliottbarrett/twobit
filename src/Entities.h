@@ -16,11 +16,14 @@ public:
     static void writeFile(std::string fileName);
     static bool registerEntity(Entity *e, unsigned int id, std::string name);
     static int getCount();
+    static std::vector<Entity*> getEntities();
 
     static void update(float dt);
     static void draw(sf::RenderWindow &window);
 
-    static Entity* findByName(std::string name);
+    static Entity* getByName(std::string name);
+    static Entity* getById(unsigned int id);
+    static unsigned int getMaxId();
 
 private:
     static void initEntity(unsigned int id, std::string type, std::string name, std::vector<std::string> params);
@@ -28,6 +31,7 @@ private:
     static std::vector<Entity*> entities;
     static std::map<unsigned int, Entity*> entityIdMap;
     static std::map<std::string, Entity*> entityNameMap;
+    static unsigned int maxId;
 };
 
 #endif
