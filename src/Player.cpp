@@ -3,6 +3,8 @@
 #include "Settings.h"
 
 #include <iostream>
+#include "imgui/imgui.h"
+#include "imgui/imgui-SFML.h"
 
 Player::Player(unsigned int id, std::string name, std::vector<std::string> params) :
     Entity(id, name, params),
@@ -29,11 +31,17 @@ Player::~Player()
 
 void Player::initParameters(std::vector<std::string> params)
 {
+    sf::Vector2f pos;
     for (auto it : params)
     {
-        // TODO: Set this up.
-        // std::cout << it << "\n";
+        auto key = it.substr(0, it.find(" "));
+        auto value = it.substr(it.find(" ") + 1);
+        
+        if (key == "posX") pos.x = std::stof(value);
+        else if (key == "posY") pos.y = std::stof(value);
+        else if (key == "playerNum") playerNumber = std::stoi(value);
     }
+    setPosition(pos);
 }
 
 std::string Player::getEntityDescription()
@@ -129,7 +137,17 @@ void Player::draw(sf::RenderTarget& target, sf::RenderStates states) const
     if (settings->drawEntityCollisionBounds)
     {
         target.draw(collisionRect, states);
-    }
+    }   
+}
 
-    
+void Player::drawInspectorWidgets()
+{
+    sf::Vector2f tmpPosition = getPosition();
+    float position[2] = {tmpPosition.x, tmpPosition.y};
+    float tmpVelocity[2] = {velocity.x, velocity.y};
+    // ImGui::InputFloat2("Position", position);
+    ImGui::DragFloat2("Position", position);
+    ImGui::DragFloat2("Velocity", tmpVelocity);
+
+    setPosition(sf::Vector2f(position[0], position[1]));
 }

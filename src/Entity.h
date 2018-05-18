@@ -15,6 +15,9 @@ public:
     virtual std::string getEntityDescription() = 0;
     std::string getName();
     unsigned int getId();
+    sf::Vector2f getVelocity();
+
+    virtual void drawInspectorWidgets() = 0;
     
 protected:
     virtual void initParameters(std::vector<std::string> params) = 0;
@@ -22,8 +25,10 @@ protected:
     std::string writeParameter(std::string name, float value);
     std::string writeParameter(std::string name, std::string value);
 
+
     unsigned int id;
     std::string name;
+    sf::Vector2f velocity;
 };
 
 #endif

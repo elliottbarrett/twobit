@@ -5,65 +5,35 @@
 
 #include "Settings.h"
 #include "Entity.h"
+#include "sfmath.h"
 
 void Camera::init(sf::RenderWindow *window)
 {
     this->window = window;
-    panBoundsRect.setFillColor(sf::Color::Transparent);
-    panBoundsRect.setOutlineColor(sf::Color(120,0,120,190));
-    panBoundsRect.setOutlineThickness(-1);   
+    panBoundsCircle.setFillColor(sf::Color::Transparent);
+    panBoundsCircle.setOutlineColor(sf::Color(120,120,0,190));
+    panBoundsCircle.setOutlineThickness(-1);   
 }
 
 void Camera::update(float dt)
 {
     auto settings = &Settings::instance();
-    panBoundsRect.setSize(sf::Vector2f(settings->cameraPanWidth, settings->cameraPanHeight));
-    panBoundsRect.setOrigin(settings->cameraPanWidth / 2, settings->cameraPanHeight / 2);
-    panBoundsRect.setPosition(window->getView().getCenter());
+    panBoundsCircle.setRadius(settings->cameraPanRadius);
+    panBoundsCircle.setOrigin(settings->cameraPanRadius, settings->cameraPanRadius);
+    panBoundsCircle.setPosition(window->getView().getCenter() + settings->cameraPanOffset);
 
     if (followEntity)
     {
+        auto cPos = panBoundsCircle.getPosition();
         auto ePos = followEntity->getPosition();
-        float hw = 0.5 * settings->cameraPanWidth;
-        float hh = 0.5 * settings->cameraPanHeight;
 
-        // TODO: There's probably better math for this. I don't care about that right now.
-        if (!panBoundsRect.getGlobalBounds().contains(ePos))
+        float distanceFromBoundsCenter = distance(cPos, ePos);
+        auto vectorFromCameraCenter = ePos - cPos;
+
+        if (distanceFromBoundsCenter > settings->cameraPanRadius)
         {
-            auto cPos = panBoundsRect.getPosition();
-            float dx = 0;
-            float dy = 0;
-
-            bool moveInX = ePos.x > cPos.x + hw || ePos.x < cPos.x - hw;
-            bool moveInY = ePos.y > cPos.y + hh || ePos.y < cPos.y - hh;
-
-            if (moveInX)
-            {
-                if (ePos.x > cPos.x)
-                {
-                    dx = ePos.x - cPos.x - hw;
-                }
-                else
-                {
-                    dx = ePos.x - cPos.x + hw;
-                }
-            }
-
-            if (moveInY)
-            {
-                if (ePos.y > cPos.y)
-                {
-                    dy = ePos.y - cPos.y - hw;
-                }
-                else
-                {
-                    dy = ePos.y - cPos.y + hw;
-                }
-            }
-
-            cPos = panBoundsRect.getPosition();
             auto currentCenterView = window->getView();
-            currentCenterView.move(sf::Vector2f(dx, dy));
+            currentCenterView.move((distanceFromBoundsCenter - settings->cameraPanRadius) * normalize(vectorFromCameraCenter));
             window->setView(currentCenterView);
         }
     }
@@ -89,13 +59,12 @@ void Camera::centerOn(Entity *t)
 {
     auto currentCenterView = window->getView();
     currentCenterView.setCenter(t->getPosition());
-    std::cout << t->getPosition().x << ", " << t->getPosition().y << std::endl;
     window->setView(currentCenterView);
 }
 
-void Camera::drawBoundsRect()
+void Camera::drawBoundsRegion()
 {
     assert(window != 0);
 
-    window->draw(panBoundsRect);
+    window->draw(panBoundsCircle);
 }

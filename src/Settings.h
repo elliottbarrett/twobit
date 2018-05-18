@@ -7,11 +7,11 @@ public:
     bool runGame;
     bool useGrainShader;
     bool renderTilemapCollisions;
-    bool drawCameraPanRect;
+    bool drawCameraPanRegion;
     bool drawEntityOrigins;
     bool drawEntityCollisionBounds;
-    float cameraPanWidth;
-    float cameraPanHeight;
+    float cameraPanRadius;
+    sf::Vector2f cameraPanOffset;
     float gravity;
     float jumpSpeed;
     float walkSpeed;
@@ -29,14 +29,17 @@ private:
         renderTilemapCollisions(true),
         drawEntityOrigins(false),
         drawEntityCollisionBounds(true),
-        drawCameraPanRect(false),
-        cameraPanWidth(100),
-        cameraPanHeight(100),
+        drawCameraPanRegion(false),
+        cameraPanRadius(40),
+        cameraPanOffset(sf::Vector2f(0,0)),
         gravity(-750),
         jumpSpeed(250),
         walkSpeed(80)
     {
     }
+
+    // TODO
+    // void loadSettingsFile();
 
 public:
     Settings(Settings const&) = delete;

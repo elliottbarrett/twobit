@@ -13,7 +13,7 @@ public:
 
     sf::FloatRect getCollisionBounds();
     void handleWorldCollision(bool didCollide);
-
+    void drawInspectorWidgets();
 
 private:
     void initParameters(std::vector<std::string> params);
@@ -22,7 +22,6 @@ private:
 
     int playerNumber;
 
-    sf::Vector2f velocity;
     sf::RectangleShape collisionRect;
 
     bool isOnGround;

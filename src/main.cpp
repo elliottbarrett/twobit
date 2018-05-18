@@ -97,7 +97,6 @@ int main()
 
         frameCount++;
 
-        camera->update(dt);
 
         // Update shader params
         grainShader.setUniform("time", elapsedTimeClock.getElapsedTime().asSeconds());
@@ -127,6 +126,7 @@ int main()
         ctx->update(dt);
         player->handleWorldCollision(tileMap.checkWorldCollisions(player->getCollisionBounds()));
 
+        camera->update(dt);
         window.clear();
         // ctx->render(window);
 
@@ -134,9 +134,9 @@ int main()
         Entities::draw(window);
         // window.draw(*player);
 
-        if (settings->drawCameraPanRect)
+        if (settings->drawCameraPanRegion)
         {
-            camera->drawBoundsRect();
+            camera->drawBoundsRegion();
         }
 
         if (settings->useGrainShader)

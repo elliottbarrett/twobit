@@ -27,6 +27,11 @@ unsigned int Entity::getId()
     return id;
 }
 
+sf::Vector2f Entity::getVelocity()
+{
+    return velocity;
+}
+
 std::string Entity::writeParameter(std::string name, int value)
 {
     return name + " " + std::to_string(value) + "\n";

@@ -180,6 +180,7 @@ void WorldEditor::update(float dt)
         if (isPanning == false)
         {
             isPanning = true;
+            Camera::instance().setFollowEntity(nullptr);
         }
         else
         {
@@ -237,9 +238,11 @@ void WorldEditor::render()
     {
         Camera::instance().centerOn(Entities::getByName("Player1"));
     }
-    ImGui::Checkbox("Draw Pan Bounds", &settings->drawCameraPanRect);
-    ImGui::SliderFloat("Pan Bounds Width", &settings->cameraPanWidth, 0, 160);
-    ImGui::SliderFloat("Pan Bounds Height", &settings->cameraPanHeight, 0, 144);
+    ImGui::Checkbox("Draw Pan Bounds", &settings->drawCameraPanRegion);
+    ImGui::SliderFloat("Circle Pan Radius", &settings->cameraPanRadius, 0, 80);
+    float currentPanOffset[2] = { settings->cameraPanOffset.x, settings->cameraPanOffset.y };
+    ImGui::DragFloat2("Pan Bounds Offset", currentPanOffset);
+    settings->cameraPanOffset = sf::Vector2f(currentPanOffset[0], currentPanOffset[1]);
     ImGui::End();
 
     // Physics window
@@ -253,13 +256,26 @@ void WorldEditor::render()
     // Entities window
     ImGui::SetNextWindowSize(sf::Vector2i(0,0));
     ImGui::Begin("Entities");
+    if (ImGui::BeginMenuBar())
+    {
+        bool testMenuItem;
+        if (ImGui::BeginMenu("Add"))
+        {
+            ImGui::MenuItem("Player", NULL, &testMenuItem);
+            ImGui::EndMenu();
+        }
+        ImGui::EndMenuBar();
+        ImGui::Spacing();
+    }
     ImGui::Text("Entity count: %d", Entities::getCount());
     ImGui::ListBoxHeader("Entities", Entities::getCount());
     for (auto entity : Entities::getEntities())
     {
         if (ImGui::Selectable(entity->getName().c_str(), selectedEntityId == entity->getId()))
         {
-            selectedEntityId = entity->getId(); 
+            selectedEntityId = entity->getId();
+            Camera::instance().centerOn(entity);
+            Camera::instance().setFollowEntity(entity);
         }
     }
     ImGui::ListBoxFooter();
@@ -276,7 +292,7 @@ void WorldEditor::render()
         auto selectedEntity = Entities::getById(selectedEntityId);
         ImGui::SetNextWindowSize(sf::Vector2i(0,0));
         ImGui::Begin("Entity Inspector");
-
+        selectedEntity->drawInspectorWidgets();
         ImGui::End();
     }
 
