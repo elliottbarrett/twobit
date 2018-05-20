@@ -17,7 +17,7 @@ public:
     unsigned int getId();
     sf::Vector2f getVelocity();
 
-    virtual void drawInspectorWidgets() = 0;
+    virtual void drawInspectorWidgets();
     
 protected:
     virtual void initParameters(std::vector<std::string> params) = 0;

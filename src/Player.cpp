@@ -3,10 +3,6 @@
 #include "Settings.h"
 #include "ResourceManager.h"
 
-#include <iostream>
-#include "imgui/imgui.h"
-#include "imgui/imgui-SFML.h"
-
 Player::Player(unsigned int id, std::string name, std::vector<std::string> params) :
     Entity(id, name, params),
     playerNumber(name == "Player1" ? 1 : 2),
@@ -144,18 +140,5 @@ void Player::draw(sf::RenderTarget& target, sf::RenderStates states) const
 
 void Player::drawInspectorWidgets()
 {
-    sf::Vector2f tmpPosition = getPosition();
-    float position[2] = {tmpPosition.x, tmpPosition.y};
-    float tmpVelocity[2] = {velocity.x, velocity.y};
-    // ImGui::InputFloat2("Position", position);
-    static char nameInputBuffer[40];
-    strcpy(nameInputBuffer, name.c_str());
-    if (ImGui::InputText("Name", nameInputBuffer, 40))
-    {
-        name = std::string(nameInputBuffer);
-    }
-    ImGui::DragFloat2("Position", position);
-    ImGui::DragFloat2("Velocity", tmpVelocity);
-
-    setPosition(sf::Vector2f(position[0], position[1]));
+    Entity::drawInspectorWidgets();
 }
