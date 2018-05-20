@@ -74,7 +74,7 @@ int main()
     Player* player = (Player*) Entities::getByName("Player1");
     Player* player2 = (Player*) Entities::getByName("Player2");
 
-    GameContext* ctx = new TitleContext();
+    // GameContext* ctx = new TitleContext();
 
     if (!tileMap.load())
     {
@@ -92,7 +92,6 @@ int main()
         float dt = frameTime.asSeconds();
 
         frameCount++;
-
 
         // Update shader params
         grainShader.setUniform("time", elapsedTimeClock.getElapsedTime().asSeconds());
@@ -118,8 +117,7 @@ int main()
             Entities::update(dt);
         }
 
-        // player.update(dt);
-        ctx->update(dt);
+        // ctx->update(dt);
         player->handleWorldCollision(tileMap.checkWorldCollisions(player->getCollisionBounds()));
 
         camera->update(dt);
