@@ -146,6 +146,12 @@ void Player::drawInspectorWidgets()
     float position[2] = {tmpPosition.x, tmpPosition.y};
     float tmpVelocity[2] = {velocity.x, velocity.y};
     // ImGui::InputFloat2("Position", position);
+    static char nameInputBuffer[40];
+    strcpy(nameInputBuffer, name.c_str());
+    if (ImGui::InputText("Name", nameInputBuffer, 40))
+    {
+        name = std::string(nameInputBuffer);
+    }
     ImGui::DragFloat2("Position", position);
     ImGui::DragFloat2("Velocity", tmpVelocity);
 
