@@ -1,11 +1,13 @@
 1 Player Player1
 playerNum 1
-posX 371.633881
+posX 379.628906
 posY 15.588516
+texture pokemon.png
 
 2 Player Player2
 playerNum 2
-posX 20.000000
+posX 32.024319
 posY 20.000000
+texture pokemon.png
 
 END

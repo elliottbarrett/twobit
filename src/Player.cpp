@@ -1,6 +1,7 @@
 #include "Player.h"
 #include "ArcadeInput.h"
 #include "Settings.h"
+#include "ResourceManager.h"
 
 #include <iostream>
 #include "imgui/imgui.h"
@@ -40,6 +41,7 @@ void Player::initParameters(std::vector<std::string> params)
         if (key == "posX") pos.x = std::stof(value);
         else if (key == "posY") pos.y = std::stof(value);
         else if (key == "playerNum") playerNumber = std::stoi(value);
+        else if (key == "texture") setTexture(ResourceManager::getTexture(value));
     }
     setPosition(pos);
 }
