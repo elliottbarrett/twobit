@@ -1,6 +1,6 @@
 rm = rm -f
 
-LIBS=-lsfml-graphics -lsfml-window -lsfml-system -lGL
+LIBS=-lsfml-graphics -lsfml-window -lsfml-system -lsfml-audio -lGL
 CC := g++
 CFLAGS = -g
 LINKER = g++
