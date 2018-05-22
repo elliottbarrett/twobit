@@ -103,9 +103,7 @@ void Player::updatePhysics()
     wasOnGround = isOnGround;
     wasAtCeiling = isAtCeiling;
     wasPushingLeftWall = isPushingLeftWall;
-    wasPushingRightWall = isPushingRightWall;
-
-    
+    wasPushingRightWall = isPushingRightWall;    
 }
 
 sf::FloatRect Player::getCollisionBounds()

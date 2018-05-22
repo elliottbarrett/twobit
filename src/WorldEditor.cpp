@@ -286,7 +286,6 @@ void WorldEditor::render()
     ImGui::End();    
     
     // Entity Inspector window
-    // TODO: Possibly 
     if (selectedEntityId != 0)
     {
         auto selectedEntity = Entities::getById(selectedEntityId);
@@ -295,6 +294,45 @@ void WorldEditor::render()
         selectedEntity->drawInspectorWidgets();
         ImGui::End();
     }
+
+    // Sprite editor
+    ImGui::SetNextWindowSize(sf::Vector2i(0,0));
+    ImGui::Begin("Sprite Editor");
+
+    // ImGui::Columns(2, "SpriteEditor columns", true);
+    ImGui::BeginGroup();
+    {
+        if (ImGui::TreeNode("Category"))
+        {
+            if (ImGui::TreeNode("Entity"))
+            {
+                static bool selected = false;
+                ImGui::Selectable("Selectable", &selected);
+
+                ImGui::TreePop();
+            }
+
+            ImGui::TreePop();
+        }
+    }
+    ImGui::EndGroup(); 
+    // ImGui::Separator();
+    ImGui::SameLine(); ImGui::BeginGroup();
+    {
+        ImGui::Text("Right of tree");
+        ImGui::Text("Stuff goes here");
+        ImGui::Text("Hopefully the editor panel");
+        ImGui::Text("Where we can edit frame data");
+        ImGui::Text("And collision info too!");
+    }
+    ImGui::EndGroup();
+    
+    if (ImGui::Button("Save File"))
+    {
+        // todo
+        std::cout << "saving..\n";
+    }
+    ImGui::End();
 
     ImGui::SFML::Render(*inspectorWindow);
     inspectorWindow->display();

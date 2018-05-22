@@ -25,7 +25,6 @@ protected:
     std::string writeParameter(std::string name, float value);
     std::string writeParameter(std::string name, std::string value);
 
-
     unsigned int id;
     std::string name;
     sf::Vector2f velocity;
