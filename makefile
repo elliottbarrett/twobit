@@ -1,9 +1,9 @@
 rm = rm -f
 
-LIBS=-lsfml-graphics -lsfml-window -lsfml-system -lsfml-audio -lGL
-CC := g++
-CFLAGS = -g
-LINKER = g++
+LIBS=-lsfml-graphics -lsfml-window -lsfml-system -lsfml-audio -lGL -lstdc++ -lz -lm
+CC := clang
+CFLAGS = -g -stdlib=libstdc++ -Wall
+LINKER = clang
 
 TARGET = twobit
 

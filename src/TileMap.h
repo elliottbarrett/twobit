@@ -54,7 +54,7 @@ public:
     TileMap();
     bool load();
     bool save();
-    bool smartPaint(int x, int y, bool fill, SmartPaintConfig config);
+    void smartPaint(int x, int y, bool fill, SmartPaintConfig config);
     bool setTile(int x, int y, int val);
     int getTile(int x, int y);
     bool checkWorldCollisions(sf::FloatRect rect);

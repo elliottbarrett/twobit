@@ -54,7 +54,7 @@ void Entities::initEntity(unsigned int id, std::string type, std::string name, s
 {
     if (type == "Player")
     {
-        auto ent = new Player(id, name, params);
+        new Player(id, name, params);
     }
     else
     {

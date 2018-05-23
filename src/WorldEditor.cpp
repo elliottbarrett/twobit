@@ -13,8 +13,8 @@
 
 WorldEditor::WorldEditor(sf::RenderWindow *worldWindow, TileMap *world)
     : worldWindow(worldWindow), 
-      world(world),
       paletteSelectionHighlight(sf::Vector2f(16, 16)),
+      world(world),
       paletteTileNumber(0),
       isPainting(false),
       isPanning(false),

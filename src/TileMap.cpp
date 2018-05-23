@@ -12,7 +12,7 @@ int SmartPaintConfig::getTileIndexForNeighbouringFills(bool top, bool left, bool
     state |= (right ? 0b0010 : 0b0000);
     state |= (bottom ? 0b0001 : 0b0000);
 
-    switch (state)
+    switch (state & 0xf)
     {
         case 0b0000:
             return loneBlock;
@@ -47,6 +47,9 @@ int SmartPaintConfig::getTileIndexForNeighbouringFills(bool top, bool left, bool
         case 0b1111:
             return fillInner;
     }
+
+    // Unreachable
+    return 0;
 }
 
 TileMap::TileMap()
@@ -110,9 +113,14 @@ bool TileMap::load()
 bool TileMap::save()
 {
     std::ofstream outputStream;
-    int tileCount = levelWidth * levelHeight;
 
     outputStream.open("assets/TwoBit.tbw");
+
+    if (!outputStream.is_open())
+    {
+        return false;
+    }
+
     outputStream << levelWidth << " " << levelHeight << " ";
 
     for (int i = 0; i < levelWidth * levelHeight; i++)
@@ -121,6 +129,7 @@ bool TileMap::save()
     }
 
     outputStream.close();
+    return true;
 }
 
 void TileMap::build()
@@ -168,7 +177,7 @@ bool TileMap::setTile(int x, int y, int val)
     return true;
 }
 
-bool TileMap::smartPaint(int x, int y, bool fill, SmartPaintConfig config)
+void TileMap::smartPaint(int x, int y, bool fill, SmartPaintConfig config)
 {
     if (fill)
     {

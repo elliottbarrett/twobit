@@ -72,9 +72,6 @@ int main()
     window.setView(yIsUpView);
 
     Player* player = (Player*) Entities::getByName("Player1");
-    Player* player2 = (Player*) Entities::getByName("Player2");
-
-    // GameContext* ctx = new TitleContext();
 
     if (!tileMap.load())
     {
