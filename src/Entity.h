@@ -5,6 +5,7 @@
 
 #include "AnimatedSprite.h"
 #include "TileMap.h"
+#include "EntityType.h"
 
 class Entity : public AnimatedSprite
 {
@@ -16,6 +17,7 @@ public:
     virtual void handleHorizontalWorldCollision(WorldCollision collision) = 0;
     virtual void handleVerticalWorldCollision(WorldCollision collision) = 0;
     virtual std::string getEntityDescription() = 0;
+    virtual EntityType getEntityType() = 0;
     std::string getName();
     unsigned int getId();
     sf::Vector2f getVelocity();

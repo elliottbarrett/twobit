@@ -21,7 +21,7 @@
 #include "imgui/imgui.h"
 #include "imgui/imgui-SFML.h"
 
-#define GB_WIDTH 160
+#define GB_WIDTH 256
 #define GB_HEIGHT 144
 #define WINDOW_SCALE 4
 

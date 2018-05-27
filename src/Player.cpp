@@ -45,12 +45,18 @@ void Player::initParameters(std::vector<std::string> params)
     setPosition(pos);
 }
 
+EntityType Player::getEntityType()
+{
+    return ET_PLAYER;
+}
+
 std::string Player::getEntityDescription()
 {
     return std::to_string(id) + " Player " + name + "\n"
         + writeParameter("playerNum", playerNumber)
         + writeParameter("posX", getPosition().x)
-        + writeParameter("posY", getPosition().y);
+        + writeParameter("posY", getPosition().y)
+        + writeParameter("texture", "pokemon.png");
 
 }
 

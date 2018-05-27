@@ -11,6 +11,7 @@ public:
     Animation();
     ~Animation();
 
+    void loadFromFile(std::string fileName);
     sf::IntRect getFrame(int frameIndex);
     float getTimePerFrame();
     int getFrameCount();

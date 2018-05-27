@@ -34,6 +34,9 @@ void Camera::update(float dt)
         {
             auto currentCenterView = window->getView();
             currentCenterView.move((distanceFromBoundsCenter - settings->cameraPanRadius) * normalize(vectorFromCameraCenter));
+            auto updatedCenter = currentCenterView.getCenter();
+            // TODO: This should be adjusted to be more smooth somehow.
+            currentCenterView.setCenter(sf::Vector2f(std::floor(updatedCenter.x*10)/10, std::floor(updatedCenter.y*10)/10));
             window->setView(currentCenterView);
         }
     }

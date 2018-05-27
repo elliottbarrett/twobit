@@ -27,6 +27,8 @@ public:
     static Entity* getById(unsigned int id);
     static unsigned int getMaxId();
 
+    static void deleteById();
+
 private:
     static void initEntity(unsigned int id, std::string type, std::string name, std::vector<std::string> params);
 

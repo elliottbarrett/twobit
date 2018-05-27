@@ -17,6 +17,7 @@ public:
     void handleHorizontalWorldCollision(WorldCollision collision);
     void handleVerticalWorldCollision(WorldCollision collision);
     void drawInspectorWidgets();
+    EntityType getEntityType();
 
 private:
     void initParameters(std::vector<std::string> params);
