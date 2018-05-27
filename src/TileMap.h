@@ -87,12 +87,7 @@ private:
     sf::Texture tileTexture;
     sf::VertexArray vertices;
     sf::Vector2u tileSize;
-
-    sf::RectangleShape topLeftCollisionRect;
-    sf::RectangleShape topRightCollisionRect;
-    sf::RectangleShape bottomLeftCollisionRect;
-    sf::RectangleShape bottomRightCollisionRect;
-
+    
     int* level;
     int levelWidth;
     int levelHeight;

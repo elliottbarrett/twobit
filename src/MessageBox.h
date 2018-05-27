@@ -4,15 +4,25 @@
 #include <SFML/Graphics.hpp>
 #include <string>
 
-class MessageBox : public sf::Drawable, sf::Transformable
+class MessageBox : public sf::Drawable, public sf::Transformable
 {
 public:
     MessageBox();
     ~MessageBox();
 
+    void setMessage(std::string message);
+    void show();
+    void hide();
+    void update();
+
 private:
-    std::string message;
     virtual void draw(sf::RenderTarget& target, sf::RenderStates states) const;
+    sf::IntRect textureCoordinatesForChar(char c);
+
+    std::string message;
+    sf::RectangleShape messageBackground;
+    sf::Texture *fontTexture;
+    sf::VertexArray vertices;
 
 };
 

@@ -7,7 +7,6 @@ public:
     bool runGame;
     bool smartPaint;
     bool useGrainShader;
-    bool renderTilemapCollisions;
     bool drawCameraPanRegion;
     bool drawEntityOrigins;
     bool drawEntityCollisionBounds;
@@ -29,7 +28,6 @@ private:
         runGame(true),
         smartPaint(true),
         useGrainShader(true),
-        renderTilemapCollisions(true),
         drawCameraPanRegion(false),
         drawEntityOrigins(false),
         drawEntityCollisionBounds(true),

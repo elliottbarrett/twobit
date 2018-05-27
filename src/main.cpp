@@ -8,6 +8,7 @@
 #include "WorldEditor.h"
 #include "Camera.h"
 #include "Entities.h"
+#include "MessageBox.h"
 
 #include <SFML/Graphics.hpp>
 #include <vector>
@@ -82,6 +83,14 @@ int main()
     // XXX
     camera->setFollowEntity(player);
 
+    // Message box testing
+    MessageBox upperCaseText;
+    MessageBox lowerCaseText;
+    upperCaseText.move(-40, -40);
+    lowerCaseText.move(-40, -60);
+    upperCaseText.setMessage("ABCDEFGHIJKLMNOPQRSTUVWXYZ");
+    lowerCaseText.setMessage("abcdefghijklmnopqrstuvwxyz");
+
     while (window.isOpen())
     {
         sf::Event event;
@@ -115,11 +124,13 @@ int main()
         }
 
         camera->update(dt);
-        window.clear(sf::Color(15,15,15));
+        window.clear(sf::Color(155,154,155));
         // ctx->render(window);
 
         window.draw(tileMap);
         Entities::draw(window);
+        window.draw(upperCaseText);
+        window.draw(lowerCaseText);
         // window.draw(*player);
 
         if (settings->drawCameraPanRegion)

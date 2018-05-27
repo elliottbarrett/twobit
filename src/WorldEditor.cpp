@@ -240,7 +240,6 @@ void WorldEditor::render()
     ImGui::SliderFloat("Time Scale", &settings->timeScale, 0.1, 2);
     ImGui::Checkbox("Use Grain Shader", &settings->useGrainShader);
     ImGui::Checkbox("Smart Tile Paint", &settings->smartPaint);
-    ImGui::Checkbox("Draw TileMap Collisions", &settings->renderTilemapCollisions);
     ImGui::Checkbox("Draw Entity Collision Bounds", &settings->drawEntityCollisionBounds);
     ImGui::End();
 

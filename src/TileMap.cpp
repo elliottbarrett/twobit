@@ -56,22 +56,6 @@ int SmartPaintConfig::getTileIndexForNeighbouringFills(bool top, bool left, bool
 
 TileMap::TileMap()
 {
-    topLeftCollisionRect = sf::RectangleShape(sf::Vector2f(16,16));
-    topLeftCollisionRect.setFillColor(sf::Color::Transparent);
-    topLeftCollisionRect.setOutlineColor(sf::Color(0,255,0));
-    topLeftCollisionRect.setOutlineThickness(-1);
-    topRightCollisionRect = sf::RectangleShape(sf::Vector2f(16,16));
-    topRightCollisionRect.setFillColor(sf::Color::Transparent);
-    topRightCollisionRect.setOutlineColor(sf::Color(0,255,0));
-    topRightCollisionRect.setOutlineThickness(-1);
-    bottomLeftCollisionRect = sf::RectangleShape(sf::Vector2f(16,16));
-    bottomLeftCollisionRect.setFillColor(sf::Color::Transparent);
-    bottomLeftCollisionRect.setOutlineColor(sf::Color(0,255,0));
-    bottomLeftCollisionRect.setOutlineThickness(-1);
-    bottomRightCollisionRect = sf::RectangleShape(sf::Vector2f(16,16));
-    bottomRightCollisionRect.setFillColor(sf::Color::Transparent);
-    bottomRightCollisionRect.setOutlineColor(sf::Color(0,255,0));
-    bottomRightCollisionRect.setOutlineThickness(-1);
 }
 
 bool TileMap::load()
@@ -285,17 +269,7 @@ WorldCollision TileMap::checkVerticalWorldCollisions(Entity *entity)
 
 void TileMap::draw(sf::RenderTarget& target, sf::RenderStates states) const
 {
-    auto settings = &Settings::instance();
-
     states.transform *= getTransform();
     states.texture = &tileTexture;
     target.draw(vertices, states);
-
-    if (settings->renderTilemapCollisions)
-    {
-        target.draw(topLeftCollisionRect, states);
-        target.draw(topRightCollisionRect, states);
-        target.draw(bottomLeftCollisionRect, states);
-        target.draw(bottomRightCollisionRect, states);
-    }
 }
