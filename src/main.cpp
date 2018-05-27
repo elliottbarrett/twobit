@@ -84,12 +84,10 @@ int main()
     camera->setFollowEntity(player);
 
     // Message box testing
-    MessageBox upperCaseText;
-    MessageBox lowerCaseText;
-    upperCaseText.move(-40, -40);
-    lowerCaseText.move(-40, -60);
-    upperCaseText.setMessage("ABCDEFGHIJKLMNOPQRSTUVWXYZ");
-    lowerCaseText.setMessage("abcdefghijklmnopqrstuvwxyz");
+    MessageBox testMessageBox;
+    testMessageBox.setScale(0.5, 0.5);
+    testMessageBox.setMessage("This is a test of how big a message can be\nSecond line\nThird line...\nFourth line --- is this too big?");
+    testMessageBox.move(-200, -200);
 
     while (window.isOpen())
     {
@@ -129,9 +127,8 @@ int main()
 
         window.draw(tileMap);
         Entities::draw(window);
-        window.draw(upperCaseText);
-        window.draw(lowerCaseText);
-        // window.draw(*player);
+
+        window.draw(testMessageBox);
 
         if (settings->drawCameraPanRegion)
         {

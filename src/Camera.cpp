@@ -62,6 +62,18 @@ void Camera::centerOn(Entity *t)
     window->setView(currentCenterView);
 }
 
+void Camera::setCenter(sf::Vector2f center)
+{
+    auto current = window->getView();
+    current.setCenter(center);
+    window->setView(current);
+}
+
+sf::Vector2f Camera::getCenter()
+{
+    return window->getView().getCenter();
+}
+
 void Camera::drawBoundsRegion()
 {
     assert(window != 0);

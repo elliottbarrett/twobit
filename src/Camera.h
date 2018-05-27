@@ -20,6 +20,8 @@ public:
     void centerOn(Entity *t);
     void drawBoundsRegion();
     void setFollowEntity(Entity* e);
+    sf::Vector2f getCenter();
+    void setCenter(sf::Vector2f center);
 
 private:
     Camera() : followEntity(0) {}

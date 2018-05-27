@@ -6,6 +6,10 @@
 MessageBox::MessageBox()
 {
     fontTexture = ResourceManager::getTexture("la-font.png");
+    messageBackground = sf::RectangleShape(sf::Vector2f(300, 80));
+    messageBackground.setOrigin(0, 80);
+    messageBackground.move(-4,20);
+    messageBackground.setFillColor(sf::Color(255,255,255));
 }
 
 MessageBox::~MessageBox()
@@ -31,9 +35,20 @@ void MessageBox::setMessage(std::string message)
     vertices.setPrimitiveType(sf::Quads);
     vertices.resize(messageLength * 4);
 
+    int lineCount = 0;
+    int charCount = 0;
+
     for (int i=0; i < messageLength; i++)
     {
         char currentChar = messageChars[i];
+
+        if (currentChar == '\n')
+        {
+            charCount = 0;
+            lineCount++;
+            continue;
+        }
+
         auto texCoords = textureCoordinatesForChar(currentChar);
         int u0 = texCoords.left;
         int v0 = texCoords.top;
@@ -41,16 +56,17 @@ void MessageBox::setMessage(std::string message)
         int v1 = texCoords.top + texCoords.height;
         sf::Vertex* quad = &vertices[i * 4];
 
-        quad[0].position = sf::Vector2f(i * 15, 0);
-        quad[1].position = sf::Vector2f(i * 15 + 14, 0);
-        quad[2].position = sf::Vector2f(i * 15 + 14, 14);
-        quad[3].position = sf::Vector2f(i * 15, 14);
+        quad[0].position = sf::Vector2f(charCount * 15, -18 * lineCount);
+        quad[1].position = sf::Vector2f(charCount * 15 + 14, -18 * lineCount);
+        quad[2].position = sf::Vector2f(charCount * 15 + 14, -18 * lineCount + 14);
+        quad[3].position = sf::Vector2f(charCount * 15, -18 * lineCount + 14);
 
         quad[0].texCoords = sf::Vector2f(u0, v1);
         quad[1].texCoords = sf::Vector2f(u1, v1);
         quad[2].texCoords = sf::Vector2f(u1, v0);
         quad[3].texCoords = sf::Vector2f(u0, v0);
 
+        charCount++;
     }
 }
 
@@ -122,5 +138,6 @@ void MessageBox::draw(sf::RenderTarget& target, sf::RenderStates states) const
 {
     states.transform *= getTransform();
     states.texture = fontTexture;
+    target.draw(messageBackground, states);
     target.draw(vertices, states);
 }

@@ -230,6 +230,7 @@ void WorldEditor::render()
     paletteWindow->display();
 
     auto settings = &Settings::instance();
+    auto camera = &Camera::instance();
 
     inspectorWindow->clear();
 
@@ -253,6 +254,13 @@ void WorldEditor::render()
     if (ImGui::Button("Center on Player"))
     {
         Camera::instance().centerOn(Entities::getByName("Player1"));
+    }
+    float cameraCenterX = camera->getCenter().x;
+    float cameraCenterY = camera->getCenter().y;
+    float cameraCenterTemp[2] = {cameraCenterX, cameraCenterY};
+    if (ImGui::DragFloat2("Center", cameraCenterTemp))
+    {
+        camera->setCenter(sf::Vector2f(cameraCenterTemp[0], cameraCenterTemp[1]));
     }
     ImGui::Checkbox("Draw Pan Bounds", &settings->drawCameraPanRegion);
     ImGui::SliderFloat("Circle Pan Radius", &settings->cameraPanRadius, 0, 80);
