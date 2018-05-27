@@ -3,6 +3,8 @@
 
 #include "Entity.h"
 
+#include "TileMap.h"
+
 class Player : public Entity
 {
 public:
@@ -12,7 +14,8 @@ public:
     std::string getEntityDescription();
 
     sf::FloatRect getCollisionBounds();
-    void handleWorldCollision(bool didCollide);
+    void handleHorizontalWorldCollision(WorldCollision collision);
+    void handleVerticalWorldCollision(WorldCollision collision);
     void drawInspectorWidgets();
 
 private:

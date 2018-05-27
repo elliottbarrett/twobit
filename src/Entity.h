@@ -4,6 +4,7 @@
 #include <string>
 
 #include "AnimatedSprite.h"
+#include "TileMap.h"
 
 class Entity : public AnimatedSprite
 {
@@ -12,10 +13,14 @@ public:
     ~Entity();
 
     virtual void update(float dt);
+    virtual void handleHorizontalWorldCollision(WorldCollision collision) = 0;
+    virtual void handleVerticalWorldCollision(WorldCollision collision) = 0;
     virtual std::string getEntityDescription() = 0;
     std::string getName();
     unsigned int getId();
     sf::Vector2f getVelocity();
+
+    virtual sf::FloatRect getCollisionBounds() = 0;
 
     virtual void drawInspectorWidgets();
     

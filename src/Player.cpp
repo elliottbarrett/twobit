@@ -2,6 +2,9 @@
 #include "ArcadeInput.h"
 #include "Settings.h"
 #include "ResourceManager.h"
+#include "TileMap.h"
+#include <math.h>
+#include <iostream>
 
 Player::Player(unsigned int id, std::string name, std::vector<std::string> params) :
     Entity(id, name, params),
@@ -66,6 +69,10 @@ void Player::update(float dt)
     {
         velocity.x = settings->walkSpeed;
     }
+    else if (!isOnGround)
+    {
+        velocity.x = velocity.x - 0.05f * velocity.x;
+    }
     else
     {
         velocity.x = 0;
@@ -95,7 +102,6 @@ void Player::update(float dt)
     }
 
     updatePhysics();
-    move(velocity * dt);
 }
 
 void Player::updatePhysics()
@@ -103,7 +109,7 @@ void Player::updatePhysics()
     wasOnGround = isOnGround;
     wasAtCeiling = isAtCeiling;
     wasPushingLeftWall = isPushingLeftWall;
-    wasPushingRightWall = isPushingRightWall;    
+    wasPushingRightWall = isPushingRightWall; 
 }
 
 sf::FloatRect Player::getCollisionBounds()
@@ -113,15 +119,103 @@ sf::FloatRect Player::getCollisionBounds()
     return bounds;
 }
 
-void Player::handleWorldCollision(bool didCollide)
+void Player::handleHorizontalWorldCollision(WorldCollision collision)
 {
-    if (didCollide)
+    if (collision.hitLeft)
     {
+        velocity.x = 0;
+        move(-(collision.xIntersectionDistance - 0.01), 0);
+    }
+    else if (collision.hitRight)
+    {
+        velocity.x = 0;
+        move(-(collision.xIntersectionDistance + 0.01), 0);
+    }
+}
+
+void Player::handleVerticalWorldCollision(WorldCollision collision)
+{
+    if (collision.hitBottom && collision.yIntersectionDistance > 0)
+    {
+        isOnGround = true;
         velocity.y = 0;
+        move(0, 16 - collision.yIntersectionDistance);
+    }
+    else if (collision.hitTop && collision.yIntersectionDistance > 0)
+    {
+        isAtCeiling = true;
+        move(0, -(collision.yIntersectionDistance + 0.01));
+        velocity.y *= 0.3;
+    }
+    else
+    {
+        isOnGround = false;
+    }
+}
+
+#if 0
+void Player::handleWorldCollision(WorldCollision collision)
+{
+    bool hitAny = collision.hitTop || collision.hitLeft || collision.hitRight || collision.hitBottom;
+
+    if (!hitAny)
+    {
+        isAtCeiling = false;
+        isOnGround = false;
     }
 
-    isOnGround = didCollide;
+    // Right wall, walking
+    if (isOnGround && collision.hitTop && collision.hitRight && velocity.x > 0)
+    {
+        isPushingRightWall = true;
+        move(-collision.xIntersectionDistance, 0);
+        velocity.x = 0;
+    }
+
+    // Left wall, walking
+    if (isOnGround && collision.hitTop && collision.hitLeft && velocity.x < 0)
+    {
+        isPushingLeftWall = true;
+        move(collision.xIntersectionDistance, 0);
+        velocity.x = 0;
+    }
+
+    // Right wall, in air
+    if (!isOnGround && collision.hitRight && velocity.y < 0)
+    {
+        move(-collision.xIntersectionDistance, 0);
+        velocity.x = 0;
+    }
+
+    if (!isOnGround && collision.hitLeft && velocity.x < 0)
+    {
+        move(collision.xIntersectionDistance, 0);
+        velocity.x = 0;
+    }
+
+    if (collision.hitTop)
+    {
+        isAtCeiling = true;
+
+        float yCollisionTime = collision.yIntersectionDistance / velocity.y;
+        float xCollisionTime = collision.xIntersectionDistance / velocity.x;
+
+        if (collision.wasCeiling && !isOnGround)
+        {
+            // correct y only
+            move(0, -collision.yIntersectionDistance);
+        }
+        
+        velocity.y *= -0.1;
+    }
+
+    if (collision.hitBottom && velocity.y < 0)
+    {
+        isOnGround = true;
+        velocity.y = 0;
+    }
 }
+#endif
 
 void Player::draw(sf::RenderTarget& target, sf::RenderStates states) const
 {

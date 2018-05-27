@@ -56,6 +56,7 @@ void WorldEditor::instantiateEditorWindows()
 
 void WorldEditor::handleWorldEvent(sf::Event &event)
 {
+    auto settings = &Settings::instance();
     sf::Vector2f mousePositionInWorld = worldWindow->mapPixelToCoords(sf::Mouse::getPosition(*worldWindow));
 
     if (event.type == sf::Event::KeyReleased)
@@ -81,7 +82,14 @@ void WorldEditor::handleWorldEvent(sf::Event &event)
 
         if (event.mouseButton.button == sf::Mouse::Left)
         {
-            world->smartPaint(tileX, tileY, paletteTileNumber != 0, SmartPaintConfig::getDefault());
+            if (settings->smartPaint)
+            {
+                world->smartPaint(tileX, tileY, paletteTileNumber != 0, SmartPaintConfig::getDefault());
+            }
+            else
+            {
+                world->setTile(tileX, tileY, paletteTileNumber);
+            }
             isPainting = true;
         }
     }
@@ -95,12 +103,19 @@ void WorldEditor::handleWorldEvent(sf::Event &event)
     {
         float worldX = mousePositionInWorld.x;
         float worldY = mousePositionInWorld.y;
+        int tileX = ((int) worldX) / 16;
+        int tileY = ((int) worldY) / 16;
 
         if (isPainting)
         {
-            int tileX = ((int) worldX) / 16;
-            int tileY = ((int) worldY) / 16;
-            world->smartPaint(tileX, tileY, paletteTileNumber != 0, SmartPaintConfig::getDefault());
+            if (settings->smartPaint)
+            {
+                world->smartPaint(tileX, tileY, paletteTileNumber != 0, SmartPaintConfig::getDefault());
+            }
+            else
+            {
+                world->setTile(tileX, tileY, paletteTileNumber);
+            }
         }
     }
     else if (event.type == sf::Event::MouseWheelMoved)
@@ -222,7 +237,9 @@ void WorldEditor::render()
     ImGui::SetNextWindowSize(sf::Vector2i(0,0));
     ImGui::Begin("Global Settings");
     ImGui::Checkbox("Run Simulation", &settings->runGame);
+    ImGui::SliderFloat("Time Scale", &settings->timeScale, 0.1, 2);
     ImGui::Checkbox("Use Grain Shader", &settings->useGrainShader);
+    ImGui::Checkbox("Smart Tile Paint", &settings->smartPaint);
     ImGui::Checkbox("Draw TileMap Collisions", &settings->renderTilemapCollisions);
     ImGui::Checkbox("Draw Entity Collision Bounds", &settings->drawEntityCollisionBounds);
     ImGui::End();

@@ -86,7 +86,7 @@ int main()
     {
         sf::Event event;
         sf::Time frameTime = frameTimeClock.restart();
-        float dt = frameTime.asSeconds();
+        float dt = frameTime.asSeconds() * settings->timeScale;
 
         frameCount++;
 
@@ -111,14 +111,11 @@ int main()
 
         if (settings->runGame)
         {
-            Entities::update(dt);
+            Entities::update(dt, tileMap);
         }
 
-        // ctx->update(dt);
-        player->handleWorldCollision(tileMap.checkWorldCollisions(player->getCollisionBounds()));
-
         camera->update(dt);
-        window.clear();
+        window.clear(sf::Color(15,15,15));
         // ctx->render(window);
 
         window.draw(tileMap);
@@ -147,4 +144,5 @@ int main()
 
     tileMap.save();
     return 0;
+
 }

@@ -1,5 +1,6 @@
 #include "Entities.h"
 #include "Player.h"
+#include "TileMap.h"
 
 #include <iostream>
 #include <string>
@@ -119,11 +120,17 @@ int Entities::getCount()
     return entities.size();
 }
 
-void Entities::update(float dt)
+void Entities::update(float dt, TileMap &world)
 {
     for (auto it : entities)
     {
         it->update(dt);
+
+        auto vel = it->getVelocity();
+        it->move(sf::Vector2f(vel.x * dt, 0));
+        it->handleHorizontalWorldCollision(world.checkHorizontalWorldCollisions(it));
+        it->move(sf::Vector2f(0, vel.y * dt));
+        it->handleVerticalWorldCollision(world.checkVerticalWorldCollisions(it));
     }
 }
 

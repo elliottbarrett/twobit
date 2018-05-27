@@ -5,6 +5,7 @@ class Settings
 {
 public:
     bool runGame;
+    bool smartPaint;
     bool useGrainShader;
     bool renderTilemapCollisions;
     bool drawCameraPanRegion;
@@ -15,6 +16,7 @@ public:
     float gravity;
     float jumpSpeed;
     float walkSpeed;
+    float timeScale;
 
     static Settings& instance()
     {
@@ -25,6 +27,7 @@ public:
 private:
     Settings() :
         runGame(true),
+        smartPaint(true),
         useGrainShader(true),
         renderTilemapCollisions(true),
         drawCameraPanRegion(false),
@@ -34,7 +37,8 @@ private:
         cameraPanOffset(sf::Vector2f(0,0)),
         gravity(-750),
         jumpSpeed(250),
-        walkSpeed(80)
+        walkSpeed(80),
+        timeScale(1)
     {
     }
 

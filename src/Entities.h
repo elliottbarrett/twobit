@@ -7,6 +7,7 @@
 
 #include <SFML/Graphics.hpp>
 
+class TileMap;
 class Entity;
 
 class Entities
@@ -18,7 +19,8 @@ public:
     static int getCount();
     static std::vector<Entity*> getEntities();
 
-    static void update(float dt);
+    static void update(float dt, TileMap &world);
+    static void handleWorldCollisions(TileMap &world);
     static void draw(sf::RenderWindow &window);
 
     static Entity* getByName(std::string name);

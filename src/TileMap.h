@@ -3,6 +3,8 @@
 
 #include <SFML/Graphics.hpp>
 
+class Entity;
+
 struct SmartPaintConfig
 {
     int topLeftCorner;
@@ -48,6 +50,21 @@ struct SmartPaintConfig
     }
 };
 
+struct WorldCollision
+{
+    bool hitTop;
+    bool hitLeft;
+    bool hitRight;
+    bool hitBottom;
+    bool wasCeiling;
+    float xIntersectionDistance;
+    float yIntersectionDistance;
+
+    WorldCollision() : 
+        hitTop(false), hitLeft(false), hitRight(false), hitBottom(false), wasCeiling(false) 
+    {}
+};
+
 class TileMap : public sf::Drawable, public sf::Transformable
 {
 public:
@@ -57,7 +74,9 @@ public:
     void smartPaint(int x, int y, bool fill, SmartPaintConfig config);
     bool setTile(int x, int y, int val);
     int getTile(int x, int y);
-    bool checkWorldCollisions(sf::FloatRect rect);
+    int getTile(float worldX, float worldY);
+    WorldCollision checkHorizontalWorldCollisions(Entity *e);
+    WorldCollision checkVerticalWorldCollisions(Entity *e);
 
 private:
     virtual void draw(sf::RenderTarget& target, sf::RenderStates states) const;

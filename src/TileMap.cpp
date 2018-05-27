@@ -2,7 +2,9 @@
 
 #include <iostream>
 #include <fstream>
+#include <math.h>
 #include "Settings.h"
+#include "Entity.h"
 
 int SmartPaintConfig::getTileIndexForNeighbouringFills(bool top, bool left, bool right, bool bottom)
 {
@@ -224,75 +226,61 @@ int TileMap::getTile(int x, int y)
     return level[x + y * levelWidth];
 }
 
-bool TileMap::checkWorldCollisions(sf::FloatRect rect)
+int TileMap::getTile(float worldX, float worldY)
 {
-    int tileMapLeft = (int)(rect.left / 16);
-    int tileMapRight = (int)((rect.left + rect.width) / 16);
-    int tileMapTop = (int)((rect.top + rect.height) / 16);
-    int tileMapBottom = (int)((rect.top) / 16);
+    return getTile((int)(worldX / 16), (int)(worldY / 16));
+}
 
-    int topLeftTile = tileMapLeft + tileMapTop * levelWidth;
-    int topRightTile = tileMapRight + tileMapTop * levelWidth;
-    int bottomLeftTile = tileMapLeft + tileMapBottom * levelWidth;
-    int bottomRightTile = tileMapRight + tileMapBottom * levelWidth;
+WorldCollision TileMap::checkHorizontalWorldCollisions(Entity *entity)
+{
+    WorldCollision collision;
+    auto bounds = entity->getCollisionBounds();
+    auto velocity = entity->getVelocity();
 
-    // TODO: Better level defined tile collision info. For now, 0 is no collision, 1 is collision
-
-    bool collided = false;
-
-    // check top-left collision
-    topLeftCollisionRect.setPosition(tileMapLeft * 16.0, tileMapTop * 16.0);
-
-    if (topLeftTile >= 0 && level[topLeftTile] != 0)
+    if (velocity.x > 0)
     {
-        topLeftCollisionRect.setOutlineColor(sf::Color(255,0,0));
-        collided = true;
+        int topTile = getTile(bounds.left + bounds.width, bounds.top + bounds.height);
+        int bottomTile = getTile(bounds.left + bounds.width, bounds.top);
+
+        collision.hitRight = topTile != 0 || bottomTile != 0;
+        collision.xIntersectionDistance = fmod(bounds.left + bounds.width, 16);
     }
-    else
+    else if (velocity.x < 0)
     {
-        topLeftCollisionRect.setOutlineColor(sf::Color(0,255,0));
-    }
+        int topTile = getTile(bounds.left, bounds.top + bounds.height);
+        int bottomTile = getTile(bounds.left, bounds.top);
 
-    // check top-right collision
-    topRightCollisionRect.setPosition(tileMapRight * 16.0, tileMapTop * 16.0);
-
-    if (topRightTile >= 0 && level[topRightTile] != 0)
-    {
-        topRightCollisionRect.setOutlineColor(sf::Color(255,0,0));
-        collided = true;
-    }
-    else
-    {
-        topRightCollisionRect.setOutlineColor(sf::Color(0,255,0));
+        collision.hitLeft = topTile != 0 || bottomTile != 0;
+        collision.xIntersectionDistance = fmod(bounds.left, 16) - 16;
     }
 
-    // check bottom-left collision
-    bottomLeftCollisionRect.setPosition(tileMapLeft * 16.0, tileMapBottom * 16.0);
+    return collision;
+}
 
-    if (bottomLeftTile >= 0 && level[bottomLeftTile] != 0)
+WorldCollision TileMap::checkVerticalWorldCollisions(Entity *entity)
+{
+    WorldCollision collision;
+    auto bounds = entity->getCollisionBounds();
+    auto velocity = entity->getVelocity();
+
+    if (velocity.y > 0)
     {
-        bottomLeftCollisionRect.setOutlineColor(sf::Color(255,0,0));
-        collided = true;
+        int leftTile = getTile(bounds.left, bounds.top + bounds.height);
+        int rightTile = getTile(bounds.left + bounds.width, bounds.top + bounds.height);
+
+        collision.hitTop = leftTile != 0 || rightTile != 0;
+        collision.yIntersectionDistance = fmod(bounds.top + bounds.height, 16);
     }
-    else
+    else if (velocity.y <= 0)
     {
-        bottomLeftCollisionRect.setOutlineColor(sf::Color(0,255,0));
+        int leftTile = getTile(bounds.left, bounds.top);
+        int rightTile = getTile(bounds.left + bounds.width, bounds.top);
+
+        collision.hitBottom = leftTile != 0 || rightTile != 0;
+        collision.yIntersectionDistance = fmod(bounds.top, 16);
     }
 
-    // check bottom-right collision
-    bottomRightCollisionRect.setPosition(tileMapRight * 16.0, tileMapBottom * 16.0);
-
-    if (bottomRightTile >= 0 && level[bottomRightTile] != 0)
-    {
-        bottomRightCollisionRect.setOutlineColor(sf::Color(255,0,0));
-        collided = true;
-    }
-    else
-    {
-        bottomRightCollisionRect.setOutlineColor(sf::Color(0,255,0));
-    }
-
-    return collided;
+    return collision;
 }
 
 void TileMap::draw(sf::RenderTarget& target, sf::RenderStates states) const
