@@ -8,7 +8,7 @@ enum EntityType
     ET_DOOR,
     ET_SWITCH,
     ET_ENEMY,
-    ET_ARROW
+    ET_PROJECTILE
 };
 
 #endif

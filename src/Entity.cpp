@@ -70,3 +70,8 @@ void Entity::drawInspectorWidgets()
 
     setPosition(sf::Vector2f(position[0], position[1]));
 }
+
+sf::FloatRect Entity::getCollisionBounds()
+{
+    return sf::FloatRect(0,0,0,0);
+}

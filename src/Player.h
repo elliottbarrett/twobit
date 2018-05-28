@@ -16,6 +16,7 @@ public:
     sf::FloatRect getCollisionBounds();
     void handleHorizontalWorldCollision(WorldCollision collision);
     void handleVerticalWorldCollision(WorldCollision collision);
+    void handleEntityCollision(Entity *other);
     void drawInspectorWidgets();
     EntityType getEntityType();
 

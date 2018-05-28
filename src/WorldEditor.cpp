@@ -34,7 +34,7 @@ void WorldEditor::instantiateEditorWindows()
     paletteSprite.setTexture(paletteTexture);
 
     paletteWindow->setSize(sf::Vector2u(2 * paletteSize.x, 2 * paletteSize.y));
-    paletteWindow->setPosition(sf::Vector2i(900, 0));
+    paletteWindow->setPosition(sf::Vector2i(1200, 0));
     paletteWindow->setVerticalSyncEnabled(true);
 
     paletteSelectionHighlight.setFillColor(sf::Color::Transparent);
@@ -48,7 +48,7 @@ void WorldEditor::instantiateEditorWindows()
 
     // Inspector window
     inspectorWindow = new sf::RenderWindow(sf::VideoMode(650, 600), "World Editor");
-    inspectorWindow->setPosition(sf::Vector2i(900, 400));
+    inspectorWindow->setPosition(sf::Vector2i(1200, 400));
     inspectorWindow->setVerticalSyncEnabled(true);
 
     ImGui::SFML::Init(*inspectorWindow);

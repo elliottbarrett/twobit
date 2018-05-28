@@ -4,9 +4,9 @@ Animation::Animation()
 {
     frames = 
     { 
-        sf::IntRect(0,0,16,16), sf::IntRect(0,16,16,16), sf::IntRect(0,32,16,16), sf::IntRect(0,48,16,16) 
+        sf::IntRect(0,0,16,24), sf::IntRect(16,0,16,24), sf::IntRect(32,0,16,24), sf::IntRect(48,0,16,24) 
     };
-    timePerFrame = 2;
+    timePerFrame = 0.2;
 }
 
 sf::IntRect Animation::getFrame(int frameIndex)

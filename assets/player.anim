@@ -1,0 +1,14 @@
+.player_walk
+texture player.png
+frameTime 0.2
+origin 8 0
+0 0 16 24 5 0 5 20
+16 0 16 24 5 0 5 20
+32 0 16 24 5 0 5 20
+48 0 16 24 5 0 5 20
+
+.player_idle
+texture player.png
+frameTime 1
+origin 8 0
+0 0 16 24 5 0 5 20

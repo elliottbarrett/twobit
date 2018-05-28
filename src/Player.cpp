@@ -14,11 +14,11 @@ Player::Player(unsigned int id, std::string name, std::vector<std::string> param
     isPushingLeftWall(false), wasPushingLeftWall(false),
     isPushingRightWall(false), wasPushingRightWall(false)
 {
-    collisionRect = sf::RectangleShape(sf::Vector2f(16,16));
+    collisionRect = sf::RectangleShape(sf::Vector2f(5,20));
+    collisionRect.move(5,0);
     collisionRect.setFillColor(sf::Color::Transparent);
     collisionRect.setOutlineColor(sf::Color(255,0,255));
     collisionRect.setOutlineThickness(-1);
-    move(20,20);
 
     setOrigin(8,0);
 
@@ -57,7 +57,11 @@ std::string Player::getEntityDescription()
         + writeParameter("posX", getPosition().x)
         + writeParameter("posY", getPosition().y)
         + writeParameter("texture", "pokemon.png");
+}
 
+void Player::handleEntityCollision(Entity *other)
+{
+    std::cout << "player collided with an entity\n";
 }
 
 void Player::update(float dt)
@@ -70,10 +74,12 @@ void Player::update(float dt)
     if (input.direction & JoyDirection::LEFT)
     {
         velocity.x = -1 * settings->walkSpeed;
+        setScale(-1,1);
     }
     else if (input.direction & JoyDirection::RIGHT)
     {
         velocity.x = settings->walkSpeed;
+        setScale(1,1);
     }
     else if (!isOnGround)
     {
@@ -121,7 +127,7 @@ void Player::updatePhysics()
 sf::FloatRect Player::getCollisionBounds()
 {
     auto transform = getTransform();
-    sf::FloatRect bounds = transform.transformRect(sf::FloatRect(1,0,14,16));
+    sf::FloatRect bounds = transform.transformRect(sf::FloatRect(5,0,5,20));
     return bounds;
 }
 
@@ -159,69 +165,6 @@ void Player::handleVerticalWorldCollision(WorldCollision collision)
     }
 }
 
-#if 0
-void Player::handleWorldCollision(WorldCollision collision)
-{
-    bool hitAny = collision.hitTop || collision.hitLeft || collision.hitRight || collision.hitBottom;
-
-    if (!hitAny)
-    {
-        isAtCeiling = false;
-        isOnGround = false;
-    }
-
-    // Right wall, walking
-    if (isOnGround && collision.hitTop && collision.hitRight && velocity.x > 0)
-    {
-        isPushingRightWall = true;
-        move(-collision.xIntersectionDistance, 0);
-        velocity.x = 0;
-    }
-
-    // Left wall, walking
-    if (isOnGround && collision.hitTop && collision.hitLeft && velocity.x < 0)
-    {
-        isPushingLeftWall = true;
-        move(collision.xIntersectionDistance, 0);
-        velocity.x = 0;
-    }
-
-    // Right wall, in air
-    if (!isOnGround && collision.hitRight && velocity.y < 0)
-    {
-        move(-collision.xIntersectionDistance, 0);
-        velocity.x = 0;
-    }
-
-    if (!isOnGround && collision.hitLeft && velocity.x < 0)
-    {
-        move(collision.xIntersectionDistance, 0);
-        velocity.x = 0;
-    }
-
-    if (collision.hitTop)
-    {
-        isAtCeiling = true;
-
-        float yCollisionTime = collision.yIntersectionDistance / velocity.y;
-        float xCollisionTime = collision.xIntersectionDistance / velocity.x;
-
-        if (collision.wasCeiling && !isOnGround)
-        {
-            // correct y only
-            move(0, -collision.yIntersectionDistance);
-        }
-        
-        velocity.y *= -0.1;
-    }
-
-    if (collision.hitBottom && velocity.y < 0)
-    {
-        isOnGround = true;
-        velocity.y = 0;
-    }
-}
-#endif
 
 void Player::draw(sf::RenderTarget& target, sf::RenderStates states) const
 {

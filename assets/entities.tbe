@@ -1,13 +1,18 @@
 1 Player Player1
 playerNum 1
-posX 379.628906
-posY 15.588516
-texture pokemon.png
+posX 625.731995
+posY 672.000000
+texture player.png
 
 2 Player Player2
 playerNum 2
-posX 32.024319
-posY 20.000000
-texture pokemon.png
+posX 537.023987
+posY 672.000000
+texture player.png
+
+3 Door Entry1
+posX 420
+poxY 420
+texture door.png
 
 END

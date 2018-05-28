@@ -10,14 +10,16 @@ public:
     ~Door();
 
     void update(float dt);
+    virtual void handleHorizontalWorldCollision(WorldCollision collision);
+    virtual void handleVerticalWorldCollision(WorldCollision collision);
     std::string getEntityDescription();
     EntityType getEntityType();
     sf::FloatRect getCollisionBounds();
-    void handleEntityCollision();
+    void handleEntityCollision(Entity* other);
 
 private:
     void initParameters(std::vector<std::string> params);
-    virtual void draw(sf::RenderTarget& target, sf::RenderStates states) const;
+    // virtual void draw(sf::RenderTarget& target, sf::RenderStates states) const;
 };
 
 #endif

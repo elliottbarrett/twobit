@@ -1,5 +1,6 @@
 #include "Entities.h"
 #include "Player.h"
+#include "Door.h"
 #include "TileMap.h"
 
 #include <iostream>
@@ -56,6 +57,10 @@ void Entities::initEntity(unsigned int id, std::string type, std::string name, s
     if (type == "Player")
     {
         new Player(id, name, params);
+    }
+    else if (type == "Door")
+    {
+        new Door(id, name, params);
     }
     else
     {

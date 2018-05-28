@@ -16,13 +16,14 @@ public:
     virtual void update(float dt);
     virtual void handleHorizontalWorldCollision(WorldCollision collision) = 0;
     virtual void handleVerticalWorldCollision(WorldCollision collision) = 0;
+    virtual void handleEntityCollision(Entity* other) = 0;
     virtual std::string getEntityDescription() = 0;
     virtual EntityType getEntityType() = 0;
     std::string getName();
     unsigned int getId();
     sf::Vector2f getVelocity();
 
-    virtual sf::FloatRect getCollisionBounds() = 0;
+    virtual sf::FloatRect getCollisionBounds();
 
     virtual void drawInspectorWidgets();
     
