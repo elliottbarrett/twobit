@@ -1,5 +1,6 @@
 #include "AnimatedSprite.h"
 #include "Animation.h"
+#include "ResourceManager.h"
 
 #include <iostream>
 
@@ -8,12 +9,6 @@ AnimatedSprite::AnimatedSprite() :
 {
     vertices.setPrimitiveType(sf::Quads);
     vertices.resize(4);
-
-    // XXX
-    currentAnimation = new Animation();
-    // currentAnimation->
-    //
-    setFrame(0);
 }
 
 AnimatedSprite::~AnimatedSprite()
@@ -69,9 +64,13 @@ void AnimatedSprite::setFrame(int newFrame)
     vertices[3].texCoords = sf::Vector2f(right, bottom);
 }
 
-void AnimatedSprite::playAnimation(Animation *animation)
+void AnimatedSprite::playAnimation(std::string name)
 {
-    currentAnimation = animation;
+    if (currentAnimation == ResourceManager::getAnimation(name)) return;
+
+    currentAnimation = ResourceManager::getAnimation(name);
     currentFrame = 0;
     timeInFrame = 0;
+    setFrame(0);
+    setOrigin(currentAnimation->getOrigin());
 }

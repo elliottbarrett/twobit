@@ -9,6 +9,7 @@
 #include "Camera.h"
 #include "Entities.h"
 #include "MessageBox.h"
+#include "ResourceManager.h"
 
 #include <SFML/Graphics.hpp>
 #include <vector>
@@ -53,7 +54,10 @@ int main()
     TileMap tileMap;
 
     // Test entity system
+    ResourceManager::loadAnimationFile("assets/player.anim");
+    ResourceManager::loadAnimationFile("assets/door.anim");
     Entities::loadFromFile("assets/entities.tbe");
+
 
     // Editor window
     WorldEditor worldEditor(&window, &tileMap);

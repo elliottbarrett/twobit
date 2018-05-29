@@ -20,9 +20,9 @@ Player::Player(unsigned int id, std::string name, std::vector<std::string> param
     collisionRect.setOutlineColor(sf::Color(255,0,255));
     collisionRect.setOutlineThickness(-1);
 
-    setOrigin(8,0);
-
     initParameters(params);
+
+    playAnimation("player_walk");
 }
 
 Player::~Player()
@@ -41,6 +41,7 @@ void Player::initParameters(std::vector<std::string> params)
         else if (key == "posY") pos.y = std::stof(value);
         else if (key == "playerNum") playerNumber = std::stoi(value);
         else if (key == "texture") setTexture(ResourceManager::getTexture(value));
+        else if (key == "animation") playAnimation(value);
     }
     setPosition(pos);
 }
@@ -56,7 +57,8 @@ std::string Player::getEntityDescription()
         + writeParameter("playerNum", playerNumber)
         + writeParameter("posX", getPosition().x)
         + writeParameter("posY", getPosition().y)
-        + writeParameter("texture", "pokemon.png");
+        + writeParameter("texture", "player.png")
+        + writeParameter("animation", "player_idle");
 }
 
 void Player::handleEntityCollision(Entity *other)
@@ -73,11 +75,13 @@ void Player::update(float dt)
 
     if (input.direction & JoyDirection::LEFT)
     {
+        playAnimation("player_walk");
         velocity.x = -1 * settings->walkSpeed;
         setScale(-1,1);
     }
     else if (input.direction & JoyDirection::RIGHT)
     {
+        playAnimation("player_walk");
         velocity.x = settings->walkSpeed;
         setScale(1,1);
     }
@@ -88,6 +92,12 @@ void Player::update(float dt)
     else
     {
         velocity.x = 0;
+    }
+
+
+    if (abs(velocity.x) <= 10) 
+    {
+        playAnimation("player_idle");
     }
 
     if (input.direction & JoyDirection::UP)

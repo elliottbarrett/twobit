@@ -14,7 +14,7 @@ public:
 
     virtual void update(float dt);
     void setTexture(sf::Texture *texture);
-    void playAnimation(Animation *animation);
+    void playAnimation(std::string name);
 
 protected:
     virtual void draw(sf::RenderTarget& target, sf::RenderStates states) const;

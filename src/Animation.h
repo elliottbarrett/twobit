@@ -11,9 +11,14 @@ public:
     Animation();
     ~Animation();
 
-    void loadFromFile(std::string fileName);
+    void setTimePerFrame(float t);
+    void setOrigin(sf::Vector2f o);
+    void addFrame(sf::IntRect rect, sf::FloatRect collision);
+
     sf::IntRect getFrame(int frameIndex);
+    sf::FloatRect getFrameCollision(int frameIndex);
     float getTimePerFrame();
+    sf::Vector2f getOrigin();
     int getFrameCount();
 
 private:
@@ -21,7 +26,9 @@ private:
 
     // Members
     float timePerFrame;
+    sf::Vector2f origin;
     std::vector<sf::IntRect> frames;
+    std::vector<sf::FloatRect> collisions;
 };
 
 #endif

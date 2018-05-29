@@ -4,7 +4,7 @@
 Door::Door(unsigned int id, std::string name, std::vector<std::string> params) :
     Entity(id, name, params)
 {
-
+    initParameters(params);
 }
 
 Door::~Door()
@@ -23,7 +23,9 @@ void Door::initParameters(std::vector<std::string> params)
         if (key == "posX") pos.x = std::stof(value);
         else if (key == "posY") pos.y = std::stof(value);
         else if (key == "texture") setTexture(ResourceManager::getTexture(value));
+        else if (key == "animation") playAnimation(value);
     }
+    setPosition(pos);
 }
 
 EntityType Door::getEntityType()
@@ -33,12 +35,16 @@ EntityType Door::getEntityType()
 
 std::string Door::getEntityDescription()
 {
-    // TODO
-    return "";
+    return std::to_string(id) + " Door " + name + "\n"
+        + writeParameter("posX", getPosition().x)
+        + writeParameter("posY", getPosition().y)
+        + writeParameter("texture", "door.png")
+        + writeParameter("animation", "door_closed");
 }
 
 void Door::update(float dt)
 {
+    Entity::update(dt);
     // TODO
 }
 

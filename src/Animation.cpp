@@ -1,19 +1,41 @@
 #include "Animation.h"
 
+#include <iostream>
+
 Animation::Animation()
 {
-    frames = 
-    { 
-        sf::IntRect(0,0,16,24), sf::IntRect(16,0,16,24), sf::IntRect(32,0,16,24), sf::IntRect(48,0,16,24) 
-    };
-    timePerFrame = 0.2;
+
+}
+
+void Animation::setTimePerFrame(float t)
+{
+    timePerFrame = t;
+}
+
+void Animation::setOrigin(sf::Vector2f o)
+{
+    origin = o;
+}
+
+void Animation::addFrame(sf::IntRect rect, sf::FloatRect collision)
+{
+    frames.push_back(rect);
+    collisions.push_back(collision);
+}
+
+sf::Vector2f Animation::getOrigin()
+{
+    return origin;
 }
 
 sf::IntRect Animation::getFrame(int frameIndex)
 {
-    sf::IntRect rect;
-    rect = frames[frameIndex];
-    return rect;
+    return frames[frameIndex];
+}
+
+sf::FloatRect Animation::getFrameCollision(int frameIndex)
+{
+    return collisions[frameIndex];
 }
 
 int Animation::getFrameCount()

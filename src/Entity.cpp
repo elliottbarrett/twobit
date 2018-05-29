@@ -20,7 +20,7 @@ Entity::~Entity()
 
 void Entity::update(float dt)
 {
-
+    AnimatedSprite::update(dt);
 }
 
 std::string Entity::getName()
