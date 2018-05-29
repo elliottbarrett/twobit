@@ -80,9 +80,14 @@ void WorldEditor::handleWorldEvent(sf::Event &event)
         int tileX = worldX / 16;
         int tileY = worldY / 16;
 
+
         if (event.mouseButton.button == sf::Mouse::Left)
         {
-            if (settings->smartPaint)
+            if (sf::Keyboard::isKeyPressed(sf::Keyboard::LShift) && selectedEntityId != 0)
+            {
+                Entities::getById(selectedEntityId)->setPosition(mousePositionInWorld);
+            }
+            else if (settings->smartPaint)
             {
                 world->smartPaint(tileX, tileY, paletteTileNumber != 0, SmartPaintConfig::getDefault());
             }
@@ -108,7 +113,11 @@ void WorldEditor::handleWorldEvent(sf::Event &event)
 
         if (isPainting)
         {
-            if (settings->smartPaint)
+            if (sf::Keyboard::isKeyPressed(sf::Keyboard::LShift) && selectedEntityId != 0)
+            {
+                Entities::getById(selectedEntityId)->setPosition(mousePositionInWorld);
+            }
+            else if (settings->smartPaint)
             {
                 world->smartPaint(tileX, tileY, paletteTileNumber != 0, SmartPaintConfig::getDefault());
             }

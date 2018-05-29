@@ -8,7 +8,7 @@
 
 
 Entity::Entity(unsigned int id, std::string name, std::vector<std::string> params) :
-    id(id), name(name)
+    id(id), name(name), velocity(sf::Vector2f(0,0))
 {
     Entities::registerEntity(this, id, name);
 }
