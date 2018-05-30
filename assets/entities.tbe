@@ -1,21 +1,27 @@
 1 Player Player1
 playerNum 1
-posX 618.835205
-posY 672.000000
+posX 581.349976
+posY 735.849976
 texture player.png
 animation player_idle
 
 2 Player Player2
 playerNum 2
-posX 537.023987
-posY 672.000000
+posX 636.650085
+posY 736.900024
 texture player.png
 animation player_idle
 
-3 Door Entry1
-posX 751.000000
-posY 704.000000
+3 Door RoomExit1
+posX 751.750000
+posY 704.049988
 texture door.png
 animation door_opening
+
+4 Switch Switch_RoomExit1
+posX 700
+posY 704
+texture door.png
+animation switch_inactive
 
 END

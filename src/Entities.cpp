@@ -1,6 +1,7 @@
 #include "Entities.h"
 #include "Player.h"
 #include "Door.h"
+#include "Switch.h"
 #include "TileMap.h"
 
 #include <iostream>
@@ -61,6 +62,10 @@ void Entities::initEntity(unsigned int id, std::string type, std::string name, s
     else if (type == "Door")
     {
         new Door(id, name, params);
+    }
+    else if (type == "Switch")
+    {
+        new Switch(id, name, params);
     }
     else
     {
@@ -137,6 +142,28 @@ void Entities::update(float dt, TileMap &world)
         it->move(sf::Vector2f(0, vel.y * dt));
         it->handleVerticalWorldCollision(world.checkVerticalWorldCollisions(it));
     }
+}
+
+void Entities::handleEntityCollisions()
+{
+    std::vector<Entity*> lowCollider;
+    std::vector<Entity*> highCollider;
+
+    for (unsigned int i=0; i < entities.size() - 1; i++)
+    {
+        Entity* lowEntity = entities[i];
+
+        for (unsigned int j=i+1; j < entities.size(); j++)
+        {
+            Entity* highEntity = entities[j];
+
+            if (lowEntity->isCollidingWith(highEntity))
+            {
+                std::cout << "Entity collision detected! " << lowEntity->getName() << " with " << highEntity->getName() << "\n";
+                lowEntity->handleEntityCollision(highEntity);
+            }
+        }
+    }    
 }
 
 void Entities::draw(sf::RenderWindow &window)

@@ -1,0 +1,11 @@
+.switch_inactive
+origin 8 0
+frameTime 1
+0 0 16 16 0 0 16 16
+
+.switch active
+origin 8 0
+frameTime 1
+0 0 16 16 0 0 16 16
+
+END

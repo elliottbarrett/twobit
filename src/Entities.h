@@ -21,6 +21,7 @@ public:
 
     static void update(float dt, TileMap &world);
     static void handleWorldCollisions(TileMap &world);
+    static void handleEntityCollisions();
     static void draw(sf::RenderWindow &window);
 
     static Entity* getByName(std::string name);

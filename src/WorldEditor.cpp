@@ -240,6 +240,7 @@ void WorldEditor::render()
 
     auto settings = &Settings::instance();
     auto camera = &Camera::instance();
+    auto mousePositionInWorld = worldWindow->mapPixelToCoords(sf::Mouse::getPosition(*worldWindow));
 
     inspectorWindow->clear();
 
@@ -365,6 +366,11 @@ void WorldEditor::render()
         // todo
         std::cout << "saving..\n";
     }
+    ImGui::End();
+
+    ImGui::SetNextWindowSize(sf::Vector2i(0,0));
+    ImGui::Begin("Mouse Info");
+    ImGui::Text("Mouse position: (%f, %f)", mousePositionInWorld.x, mousePositionInWorld.y);
     ImGui::End();
 
     ImGui::SFML::Render(*inspectorWindow);

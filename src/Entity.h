@@ -14,8 +14,8 @@ public:
     ~Entity();
 
     virtual void update(float dt);
-    virtual void handleHorizontalWorldCollision(WorldCollision collision) = 0;
-    virtual void handleVerticalWorldCollision(WorldCollision collision) = 0;
+    virtual void handleHorizontalWorldCollision(WorldCollision collision);
+    virtual void handleVerticalWorldCollision(WorldCollision collision);
     virtual void handleEntityCollision(Entity* other) = 0;
     virtual std::string getEntityDescription() = 0;
     virtual EntityType getEntityType() = 0;
@@ -23,11 +23,13 @@ public:
     unsigned int getId();
     sf::Vector2f getVelocity();
 
-    virtual sf::FloatRect getCollisionBounds();
+    bool isCollidingWith(Entity* other);
 
+    virtual sf::FloatRect getCollisionBounds();
     virtual void drawInspectorWidgets();
     
 protected:
+    virtual void draw(sf::RenderTarget& target, sf::RenderStates states) const;
     virtual void initParameters(std::vector<std::string> params) = 0;
     std::string writeParameter(std::string name, int value);
     std::string writeParameter(std::string name, float value);
@@ -36,6 +38,7 @@ protected:
     unsigned int id;
     std::string name;
     sf::Vector2f velocity;
+    sf::RectangleShape collisionRect;
 };
 
 #endif

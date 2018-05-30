@@ -56,6 +56,7 @@ int main()
     // Test entity system
     ResourceManager::loadAnimationFile("assets/player.anim");
     ResourceManager::loadAnimationFile("assets/door.anim");
+    ResourceManager::loadAnimationFile("assets/switch.anim");
     Entities::loadFromFile("assets/entities.tbe");
 
 
@@ -90,7 +91,7 @@ int main()
     // Message box testing
     MessageBox testMessageBox;
     testMessageBox.setScale(0.5, 0.5);
-    testMessageBox.setMessage("This is a test of how big a message can be\nSecond line\nThird line...\nFourth line --- is this too big?");
+    testMessageBox.setMessage("This is a test of how big a message can be\nSecond line\nThird line...\nFourth line. This might be too big.");
     testMessageBox.move(-200, -200);
 
     while (window.isOpen())
@@ -123,6 +124,7 @@ int main()
         if (settings->runGame)
         {
             Entities::update(dt, tileMap);
+            Entities::handleEntityCollisions();
         }
 
         camera->update(dt);

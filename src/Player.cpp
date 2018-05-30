@@ -14,12 +14,6 @@ Player::Player(unsigned int id, std::string name, std::vector<std::string> param
     isPushingLeftWall(false), wasPushingLeftWall(false),
     isPushingRightWall(false), wasPushingRightWall(false)
 {
-    collisionRect = sf::RectangleShape(sf::Vector2f(5,20));
-    collisionRect.move(5,0);
-    collisionRect.setFillColor(sf::Color::Transparent);
-    collisionRect.setOutlineColor(sf::Color(255,0,255));
-    collisionRect.setOutlineThickness(-1);
-
     initParameters(params);
 
     playAnimation("player_walk");
@@ -31,19 +25,7 @@ Player::~Player()
 
 void Player::initParameters(std::vector<std::string> params)
 {
-    sf::Vector2f pos;
-    for (auto it : params)
-    {
-        auto key = it.substr(0, it.find(" "));
-        auto value = it.substr(it.find(" ") + 1);
-        
-        if (key == "posX") pos.x = std::stof(value);
-        else if (key == "posY") pos.y = std::stof(value);
-        else if (key == "playerNum") playerNumber = std::stoi(value);
-        else if (key == "texture") setTexture(ResourceManager::getTexture(value));
-        else if (key == "animation") playAnimation(value);
-    }
-    setPosition(pos);
+    Entity::initParameters(params);
 }
 
 EntityType Player::getEntityType()
@@ -63,12 +45,29 @@ std::string Player::getEntityDescription()
 
 void Player::handleEntityCollision(Entity *other)
 {
-    std::cout << "player collided with an entity\n";
+    auto myBounds = getCollisionBounds();
+    auto otherBounds = other->getCollisionBounds();
+
+    switch (other->getEntityType())
+    {
+    case ET_DOOR:
+        if (velocity.x > 0)
+        {
+            move(-(myBounds.left + myBounds.width - otherBounds.left), 0);
+        }
+        else
+        {
+            move(otherBounds.left + otherBounds.width - myBounds.left, 0);
+        }
+        break;
+    default:
+        break;
+    }
 }
 
 void Player::update(float dt)
 {
-    AnimatedSprite::update(dt);
+    Entity::update(dt);
 
     InputState input = playerNumber == 1 ? ArcadeInput::getPlayerOneState() : ArcadeInput::getPlayerTwoState();
     auto settings = &Settings::instance();
@@ -134,13 +133,6 @@ void Player::updatePhysics()
     wasPushingRightWall = isPushingRightWall; 
 }
 
-sf::FloatRect Player::getCollisionBounds()
-{
-    auto transform = getTransform();
-    sf::FloatRect bounds = transform.transformRect(sf::FloatRect(5,0,5,20));
-    return bounds;
-}
-
 void Player::handleHorizontalWorldCollision(WorldCollision collision)
 {
     if (collision.hitLeft)
@@ -173,20 +165,6 @@ void Player::handleVerticalWorldCollision(WorldCollision collision)
     {
         isOnGround = false;
     }
-}
-
-
-void Player::draw(sf::RenderTarget& target, sf::RenderStates states) const
-{
-    auto settings = &Settings::instance();
-
-    AnimatedSprite::draw(target, states);
-    states.transform *= getTransform();
-
-    if (settings->drawEntityCollisionBounds)
-    {
-        target.draw(collisionRect, states);
-    }   
 }
 
 void Player::drawInspectorWidgets()

@@ -14,18 +14,7 @@ Door::~Door()
 
 void Door::initParameters(std::vector<std::string> params)
 {
-    sf::Vector2f pos;
-    for (auto it : params)
-    {
-        auto key = it.substr(0, it.find(" "));
-        auto value = it.substr(it.find(" ") + 1);
-
-        if (key == "posX") pos.x = std::stof(value);
-        else if (key == "posY") pos.y = std::stof(value);
-        else if (key == "texture") setTexture(ResourceManager::getTexture(value));
-        else if (key == "animation") playAnimation(value);
-    }
-    setPosition(pos);
+    Entity::initParameters(params);
 }
 
 EntityType Door::getEntityType()
@@ -58,12 +47,3 @@ void Door::handleEntityCollision(Entity *other)
             break;
     }
 }
-
-sf::FloatRect Door::getCollisionBounds()
-{
-    auto transform = getTransform();
-    return transform.transformRect(sf::FloatRect(0,0,8,16));
-}
-
-void Door::handleHorizontalWorldCollision(WorldCollision collision) {}
-void Door::handleVerticalWorldCollision(WorldCollision collision) {}

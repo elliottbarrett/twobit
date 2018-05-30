@@ -15,7 +15,11 @@ sf::Texture* ResourceManager::getTexture(std::string name)
     if (textures.find(name) == textures.end())
     {
         auto newTexture = new sf::Texture();
-        newTexture->loadFromFile("assets/" + name);
+        if (!newTexture->loadFromFile("assets/" + name))
+        {
+            std::cout << "ResourceManager: Failed to load assets/" << name << "\n";
+            return nullptr;
+        }
         textures[name] = newTexture;
     }
 
