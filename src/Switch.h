@@ -3,17 +3,9 @@
 
 #include "Entity.h"
 
-class Door;
-
 class Switch : public Entity
 {
 public:
-    enum SwitchState
-    {
-        UP,
-        DOWN
-    };
-
     Switch(unsigned int id, std::string name, std::vector<std::string> params);
     ~Switch();
 
@@ -21,13 +13,11 @@ public:
     std::string getEntityDescription();
     EntityType getEntityType();
     void handleEntityCollision(Entity* other);
+    bool isPressed();
 
 private:
     void initParameters(std::vector<std::string> params);
-
-    Door* targetDoor;
-    SwitchState currentState;
-    SwitchState previousState;
+    bool pressed;
 };
 
 #endif

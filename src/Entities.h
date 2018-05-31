@@ -31,7 +31,7 @@ public:
     static void deleteById();
 
 private:
-    static void initEntity(unsigned int id, std::string type, std::string name, std::vector<std::string> params);
+    static void instantiateEntity(unsigned int id, std::string type, std::string name, std::vector<std::string> params = std::vector<std::string>());
 
     static std::vector<Entity*> entities;
     static std::map<unsigned int, Entity*> entityIdMap;

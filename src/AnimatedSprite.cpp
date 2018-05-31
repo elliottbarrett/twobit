@@ -74,9 +74,8 @@ void AnimatedSprite::playAnimation(std::string name, int startingFrame)
     loopAnimation = false;
 
     currentAnimation = ResourceManager::getAnimation(name);
-    currentFrame = startingFrame;
     timeInFrame = 0;
-    setFrame(0);
+    setFrame(startingFrame);
     setOrigin(currentAnimation->getOrigin());
 }
 
@@ -87,7 +86,6 @@ void AnimatedSprite::playAnimationLooped(std::string name)
     loopAnimation = true;
 
     currentAnimation = ResourceManager::getAnimation(name);
-    currentFrame = 0;
     timeInFrame = 0;
     setFrame(0);
     setOrigin(currentAnimation->getOrigin());

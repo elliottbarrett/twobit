@@ -15,7 +15,7 @@ unsigned int Entities::maxId = 0;
 
 void Entities::loadFromFile(std::string fileName)
 {
-    std::ifstream readStream(fileName);
+    std::ifstream instantiationReadStream(fileName);
     std::string line;
     bool isEntityDefinitionLine = true;
     unsigned int entityId;
@@ -23,13 +23,42 @@ void Entities::loadFromFile(std::string fileName)
     std::string entityName;
     std::vector<std::string> parameterLines;
 
-    while (std::getline(readStream, line))
+    while (std::getline(instantiationReadStream, line))
     {
         if (line == "END") break;
 
         if (line == "")
         {
-            initEntity(entityId, entityType, entityName, parameterLines);
+            instantiateEntity(entityId, entityType, entityName);
+            parameterLines.empty();
+            isEntityDefinitionLine = true;
+        }
+        else if (isEntityDefinitionLine)
+        {
+            entityId = std::stoi(line.substr(0, line.find(" ")));
+            line.erase(0, line.find(" ") + 1);
+            entityType = line.substr(0, line.find(" "));
+            line.erase(0, line.find(" ") + 1);
+            entityName = line.substr(0, line.find(" "));
+
+            isEntityDefinitionLine = false;
+        }
+        else
+        {
+            // std::cout << "Parameter line: " << line << "\n";
+            parameterLines.push_back(line);
+        }
+    }
+    instantiationReadStream.close();
+
+    std::ifstream initializationReadStream(fileName);
+    while (std::getline(initializationReadStream, line))
+    {
+        if (line == "END") break;
+
+        if (line == "")
+        {
+            getById(entityId)->initParameters(parameterLines);
             parameterLines.empty();
             isEntityDefinitionLine = true;
         }
@@ -50,10 +79,11 @@ void Entities::loadFromFile(std::string fileName)
             parameterLines.push_back(line);
         }
     }
+    initializationReadStream.close();
 }
 
 
-void Entities::initEntity(unsigned int id, std::string type, std::string name, std::vector<std::string> params)
+void Entities::instantiateEntity(unsigned int id, std::string type, std::string name, std::vector<std::string> params)
 {
     if (type == "Player")
     {
@@ -122,6 +152,10 @@ Entity* Entities::getByName(std::string name)
 
 Entity* Entities::getById(unsigned int id)
 {
+    if (entityIdMap.find(id) == entityIdMap.end())
+    {
+        std::cout << "Could not find entity with id " << id << "\n";
+    }
     return entityIdMap[id];
 }
 

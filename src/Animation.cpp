@@ -7,6 +7,11 @@ Animation::Animation()
 
 }
 
+void Animation::setName(std::string name)
+{
+    this->name = name;
+}
+
 void Animation::setTimePerFrame(float t)
 {
     timePerFrame = t;
@@ -26,6 +31,11 @@ void Animation::addFrame(sf::IntRect rect, sf::FloatRect collision)
 sf::Vector2f Animation::getOrigin()
 {
     return origin;
+}
+
+std::string Animation::getName()
+{
+    return name;
 }
 
 sf::IntRect Animation::getFrame(int frameIndex)

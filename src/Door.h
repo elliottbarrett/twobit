@@ -3,6 +3,8 @@
 
 #include "Entity.h"
 
+class Switch;
+
 class Door : public Entity
 {
 public:
@@ -19,6 +21,8 @@ public:
 
 private:
     void initParameters(std::vector<std::string> params);
+    std::vector<Switch*> openSwitches;
+    int openSwitchesRequired;
 };
 
 #endif

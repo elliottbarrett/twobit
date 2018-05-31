@@ -44,6 +44,7 @@ void ResourceManager::loadAnimationFile(std::string fileName)
         if (line == "") // Reach end of frames
         {
             animations[currentName] = currentAnimation;
+            currentAnimation->setName(currentName);
             currentAnimation = new Animation();
         }
         else if (starts_with(line, "."))

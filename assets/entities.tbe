@@ -16,6 +16,8 @@ animation player_idle
 posX 751.750000
 posY 704.049988
 texture door.png
+openSwitches 4 5
+openSwitchesRequired 1
 animation door_closed
 
 4 Switch Switch_RoomExit1_inner
@@ -23,13 +25,11 @@ posX 688.500000
 posY 687.750000
 texture door.png
 animation switch_inactive
-opensDoor 3
 
 5 Switch Switch_RoomExit1_outer
 posX 780.767395
 posY 704.124756
 texture door.png
 animation switch_inactive
-opensDoor 3
 
 END
