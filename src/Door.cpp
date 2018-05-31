@@ -1,5 +1,6 @@
 #include "Door.h"
 #include "ResourceManager.h"
+#include <iostream>
 
 Door::Door(unsigned int id, std::string name, std::vector<std::string> params) :
     Entity(id, name, params)
@@ -25,8 +26,7 @@ EntityType Door::getEntityType()
 std::string Door::getEntityDescription()
 {
     return std::to_string(id) + " Door " + name + "\n"
-        + writeParameter("posX", getPosition().x)
-        + writeParameter("posY", getPosition().y)
+        + getCommonParameters()
         + writeParameter("texture", "door.png")
         + writeParameter("animation", "door_closed");
 }
@@ -46,4 +46,14 @@ void Door::handleEntityCollision(Entity *other)
         default:
             break;
     }
+}
+
+void Door::open()
+{
+    playAnimation("door_opening");
+}
+
+void Door::close()
+{
+    playAnimation("door_closing");
 }

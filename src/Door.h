@@ -14,6 +14,9 @@ public:
     EntityType getEntityType();
     void handleEntityCollision(Entity* other);
 
+    void open();
+    void close();
+
 private:
     void initParameters(std::vector<std::string> params);
 };

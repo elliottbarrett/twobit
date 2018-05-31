@@ -13,6 +13,7 @@ public:
     Entity(unsigned int id, std::string name, std::vector<std::string> params);
     ~Entity();
 
+    virtual void initParameters(std::vector<std::string> params);
     virtual void update(float dt);
     virtual void handleHorizontalWorldCollision(WorldCollision collision);
     virtual void handleVerticalWorldCollision(WorldCollision collision);
@@ -30,15 +31,17 @@ public:
     
 protected:
     virtual void draw(sf::RenderTarget& target, sf::RenderStates states) const;
-    virtual void initParameters(std::vector<std::string> params) = 0;
     std::string writeParameter(std::string name, int value);
+    std::string writeParameter(std::string name, unsigned int value);
     std::string writeParameter(std::string name, float value);
     std::string writeParameter(std::string name, std::string value);
+    std::string getCommonParameters();
 
     unsigned int id;
     std::string name;
     sf::Vector2f velocity;
     sf::RectangleShape collisionRect;
+    std::vector<std::string> params;
 };
 
 #endif

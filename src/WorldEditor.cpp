@@ -65,6 +65,14 @@ void WorldEditor::handleWorldEvent(sf::Event &event)
         {
             toggleEditorVisibility();
         }
+        else if (event.key.code == sf::Keyboard::C)
+        {
+            settings->drawEntityCollisionBounds = !settings->drawEntityCollisionBounds;
+        }
+        else if (event.key.code == sf::Keyboard::Space)
+        {
+            settings->runGame = !settings->runGame;
+        }
     }
 
     // Handle other event types differently

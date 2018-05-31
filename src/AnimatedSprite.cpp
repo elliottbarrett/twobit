@@ -26,6 +26,9 @@ void AnimatedSprite::update(float dt)
     if (timeInFrame >= timePerFrame)
     {
         timeInFrame -= timePerFrame;
+
+        if (!loopAnimation && currentFrame == frameCount -1) return;
+
         setFrame((currentFrame + 1) % frameCount); // TODO: Update this for animation "types"
     }
 }
@@ -64,9 +67,24 @@ void AnimatedSprite::setFrame(int newFrame)
     vertices[3].texCoords = sf::Vector2f(right, bottom);
 }
 
-void AnimatedSprite::playAnimation(std::string name)
+void AnimatedSprite::playAnimation(std::string name, int startingFrame)
 {
     if (currentAnimation == ResourceManager::getAnimation(name)) return;
+
+    loopAnimation = false;
+
+    currentAnimation = ResourceManager::getAnimation(name);
+    currentFrame = startingFrame;
+    timeInFrame = 0;
+    setFrame(0);
+    setOrigin(currentAnimation->getOrigin());
+}
+
+void AnimatedSprite::playAnimationLooped(std::string name)
+{
+    if (currentAnimation == ResourceManager::getAnimation(name)) return;
+
+    loopAnimation = true;
 
     currentAnimation = ResourceManager::getAnimation(name);
     currentFrame = 0;

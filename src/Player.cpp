@@ -16,7 +16,7 @@ Player::Player(unsigned int id, std::string name, std::vector<std::string> param
 {
     initParameters(params);
 
-    playAnimation("player_walk");
+    playAnimation("player_idle");
 }
 
 Player::~Player()
@@ -36,9 +36,8 @@ EntityType Player::getEntityType()
 std::string Player::getEntityDescription()
 {
     return std::to_string(id) + " Player " + name + "\n"
+        + getCommonParameters()
         + writeParameter("playerNum", playerNumber)
-        + writeParameter("posX", getPosition().x)
-        + writeParameter("posY", getPosition().y)
         + writeParameter("texture", "player.png")
         + writeParameter("animation", "player_idle");
 }
@@ -74,13 +73,13 @@ void Player::update(float dt)
 
     if (input.direction & JoyDirection::LEFT)
     {
-        playAnimation("player_walk");
+        playAnimationLooped("player_walk");
         velocity.x = -1 * settings->walkSpeed;
         setScale(-1,1);
     }
     else if (input.direction & JoyDirection::RIGHT)
     {
-        playAnimation("player_walk");
+        playAnimationLooped("player_walk");
         velocity.x = settings->walkSpeed;
         setScale(1,1);
     }

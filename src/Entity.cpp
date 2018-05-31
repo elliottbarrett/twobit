@@ -11,7 +11,7 @@
 #include "imgui/imgui-SFML.h"
 
 Entity::Entity(unsigned int id, std::string name, std::vector<std::string> params) :
-    id(id), name(name), velocity(sf::Vector2f(0,0))
+    id(id), name(name), velocity(sf::Vector2f(0,0)), params(params)
 {
     Entities::registerEntity(this, id, name);
     collisionRect.setFillColor(sf::Color::Transparent);
@@ -53,6 +53,11 @@ void Entity::initParameters(std::vector<std::string> params)
     setPosition(pos);
 }
 
+std::string Entity::getCommonParameters()
+{
+    return writeParameter("posX", getPosition().x) + writeParameter("posY", getPosition().y);
+}
+
 std::string Entity::getName()
 {
     return name;
@@ -69,6 +74,11 @@ sf::Vector2f Entity::getVelocity()
 }
 
 std::string Entity::writeParameter(std::string name, int value)
+{
+    return name + " " + std::to_string(value) + "\n";
+}
+
+std::string Entity::writeParameter(std::string name, unsigned int value)
 {
     return name + " " + std::to_string(value) + "\n";
 }

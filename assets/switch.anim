@@ -1,11 +1,11 @@
 .switch_inactive
 origin 8 0
 frameTime 1
-0 0 16 16 0 0 16 16
+0 48 32 16 10 0 12 4
 
-.switch active
+.switch_active
 origin 8 0
 frameTime 1
-0 0 16 16 0 0 16 16
+32 48 32 16 10 0 12 4
 
 END

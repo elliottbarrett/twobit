@@ -14,7 +14,8 @@ public:
 
     virtual void update(float dt);
     void setTexture(sf::Texture *texture);
-    void playAnimation(std::string name);
+    void playAnimation(std::string name, int startingFrame = 0);
+    void playAnimationLooped(std::string name);
 
 protected:
     virtual void draw(sf::RenderTarget& target, sf::RenderStates states) const;
@@ -25,6 +26,7 @@ protected:
     Animation *currentAnimation;
     float timeInFrame;
     int currentFrame;
+    bool loopAnimation;
 };
 
 #endif

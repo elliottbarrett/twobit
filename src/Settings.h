@@ -30,7 +30,7 @@ private:
         useGrainShader(true),
         drawCameraPanRegion(false),
         drawEntityOrigins(false),
-        drawEntityCollisionBounds(true),
+        drawEntityCollisionBounds(false),
         cameraPanRadius(40),
         cameraPanOffset(sf::Vector2f(0,0)),
         gravity(-750),

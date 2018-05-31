@@ -159,8 +159,8 @@ void Entities::handleEntityCollisions()
 
             if (lowEntity->isCollidingWith(highEntity))
             {
-                std::cout << "Entity collision detected! " << lowEntity->getName() << " with " << highEntity->getName() << "\n";
                 lowEntity->handleEntityCollision(highEntity);
+                highEntity->handleEntityCollision(lowEntity);
             }
         }
     }    
