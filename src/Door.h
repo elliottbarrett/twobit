@@ -21,6 +21,7 @@ public:
 
 private:
     void initParameters(std::vector<std::string> params);
+    
     std::vector<Switch*> openSwitches;
     int openSwitchesRequired;
 };

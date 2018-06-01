@@ -1,0 +1,12 @@
+.poordog_idle
+origin 8 0
+frameTime 0.2
+0 0 16 16 -16 0 48 16
+
+.poordog_talking
+origin 8 0
+frameTime 0.33
+0 0 16 16 -16 0 48 16
+16 0 16 16 -16 0 48 16
+
+END

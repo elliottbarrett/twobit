@@ -48,7 +48,7 @@ void Entity::initParameters(std::vector<std::string> params)
         if (key == "posX") pos.x = std::stof(value);
         else if (key == "posY") pos.y = std::stof(value);
         else if (key == "texture") setTexture(ResourceManager::getTexture(value));
-        else if (key == "animation") playAnimation(value);
+        else if (key == "animation") playAnimationLooped(value);
     }
     setPosition(pos);
 }

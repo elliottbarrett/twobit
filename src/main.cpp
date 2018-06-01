@@ -57,6 +57,7 @@ int main()
     ResourceManager::loadAnimationFile("assets/player.anim");
     ResourceManager::loadAnimationFile("assets/door.anim");
     ResourceManager::loadAnimationFile("assets/switch.anim");
+    ResourceManager::loadAnimationFile("assets/poordog.anim");
     Entities::loadFromFile("assets/entities.tbe");
 
 

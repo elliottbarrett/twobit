@@ -5,6 +5,7 @@ enum EntityType
 {
     ET_NONE,
     ET_PLAYER,
+    ET_NPC,
     ET_DOOR,
     ET_SWITCH,
     ET_ENEMY,

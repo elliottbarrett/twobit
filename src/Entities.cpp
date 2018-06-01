@@ -1,6 +1,7 @@
 #include "Entities.h"
 #include "Player.h"
 #include "Door.h"
+#include "NPC.h"
 #include "Switch.h"
 #include "TileMap.h"
 
@@ -96,6 +97,10 @@ void Entities::instantiateEntity(unsigned int id, std::string type, std::string 
     else if (type == "Switch")
     {
         new Switch(id, name, params);
+    }
+    else if (type == "NPC")
+    {
+        new NPC(id, name, params);
     }
     else
     {

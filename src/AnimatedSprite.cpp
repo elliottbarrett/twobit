@@ -5,7 +5,7 @@
 #include <iostream>
 
 AnimatedSprite::AnimatedSprite() :
-    timeInFrame(0)
+    timeInFrame(0), loopAnimation(true)
 {
     vertices.setPrimitiveType(sf::Quads);
     vertices.resize(4);
