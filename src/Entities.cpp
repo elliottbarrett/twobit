@@ -31,7 +31,7 @@ void Entities::loadFromFile(std::string fileName)
         if (line == "")
         {
             instantiateEntity(entityId, entityType, entityName);
-            parameterLines.empty();
+            parameterLines.clear();
             isEntityDefinitionLine = true;
         }
         else if (isEntityDefinitionLine)
@@ -46,12 +46,12 @@ void Entities::loadFromFile(std::string fileName)
         }
         else
         {
-            // std::cout << "Parameter line: " << line << "\n";
             parameterLines.push_back(line);
         }
     }
     instantiationReadStream.close();
 
+    isEntityDefinitionLine = true;
     std::ifstream initializationReadStream(fileName);
     while (std::getline(initializationReadStream, line))
     {
@@ -60,7 +60,7 @@ void Entities::loadFromFile(std::string fileName)
         if (line == "")
         {
             getById(entityId)->initParameters(parameterLines);
-            parameterLines.empty();
+            parameterLines.clear();
             isEntityDefinitionLine = true;
         }
         else if (isEntityDefinitionLine)
@@ -71,7 +71,6 @@ void Entities::loadFromFile(std::string fileName)
             line.erase(0, line.find(" ") + 1);
             entityName = line.substr(0, line.find(" "));
 
-            // std::cout << "Entity " << entityName << " is a " << entityType << " (id: " << entityId << ")\n";
             isEntityDefinitionLine = false;
         }
         else
@@ -82,7 +81,6 @@ void Entities::loadFromFile(std::string fileName)
     }
     initializationReadStream.close();
 }
-
 
 void Entities::instantiateEntity(unsigned int id, std::string type, std::string name, std::vector<std::string> params)
 {

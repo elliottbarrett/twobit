@@ -1,4 +1,5 @@
 #include "NPC.h"
+#include "UI.h"
 
 #include <iostream>
 
@@ -37,6 +38,7 @@ std::string NPC::getEntityDescription()
 void NPC::update(float dt)
 {
     Entity::update(dt);
+    UI::hideMessage();
 }
 
 void NPC::handleEntityCollision(Entity *other)
@@ -44,7 +46,8 @@ void NPC::handleEntityCollision(Entity *other)
     switch (other->getEntityType())
     {
         case ET_PLAYER:
-
+            UI::showMessage("This works\nWhat a great idea\nP.ONE gets stick\nP.TWO gets ball");
+            break;
         default:
             break;
     }

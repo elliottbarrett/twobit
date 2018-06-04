@@ -8,7 +8,7 @@
 #include "WorldEditor.h"
 #include "Camera.h"
 #include "Entities.h"
-#include "MessageBox.h"
+#include "UI.h"
 #include "ResourceManager.h"
 
 #include <SFML/Graphics.hpp>
@@ -50,6 +50,7 @@ int main()
         return -1;
     }
 
+
     // Test some TileMap stuff
     TileMap tileMap;
 
@@ -59,7 +60,6 @@ int main()
     ResourceManager::loadAnimationFile("assets/switch.anim");
     ResourceManager::loadAnimationFile("assets/poordog.anim");
     Entities::loadFromFile("assets/entities.tbe");
-
 
     // Editor window
     WorldEditor worldEditor(&window, &tileMap);
@@ -86,14 +86,9 @@ int main()
         return -1;
     }
 
-    // XXX
     camera->setFollowEntity(player);
 
-    // Message box testing
-    MessageBox testMessageBox;
-    testMessageBox.setScale(0.5, 0.5);
-    testMessageBox.setMessage("This is a test of how big a message can be\nSecond line\nThird line...\nFourth line. This might be too big.");
-    testMessageBox.move(-200, -200);
+    UI::init(window);
 
     while (window.isOpen())
     {
@@ -112,6 +107,15 @@ int main()
             if (event.type == sf::Event::Closed)
             {
                 window.close();
+            }
+            else if (event.type == sf::Event::Resized)
+            {
+                auto newWidth = event.size.width;
+                auto newHeight = event.size.height;
+
+                grainTexture.create(newWidth, newHeight);
+
+                UI::handleResize(newWidth, newHeight);
             }
 
             worldEditor.handleWorldEvent(event);
@@ -134,8 +138,9 @@ int main()
 
         window.draw(tileMap);
         Entities::draw(window);
+        UI::draw(window);
 
-        window.draw(testMessageBox);
+        // window.draw(testMessageBox);
 
         if (settings->drawCameraPanRegion)
         {
@@ -147,6 +152,7 @@ int main()
             grainTexture.update(window);
             sf::View currentView = window.getView();
             window.setView(window.getDefaultView());
+            window.clear(sf::Color::Black);
             window.draw(grainSprite, &grainShader);
             window.setView(currentView);
         }

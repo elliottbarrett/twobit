@@ -10,7 +10,7 @@
 Door::Door(unsigned int id, std::string name, std::vector<std::string> params) :
     Entity(id, name, params)
 {
-    // initParameters(params);
+
 }
 
 Door::~Door()
@@ -50,10 +50,19 @@ EntityType Door::getEntityType()
 
 std::string Door::getEntityDescription()
 {
+    // TODO --- this entity vector to IDs string will probably be used elsewhere, so maybe move it
+    std::string openSwitchesString = "";
+    for (auto it : openSwitches)
+    {
+        openSwitchesString += std::to_string(it->getId()) + " ";
+    }
+
     return std::to_string(id) + " Door " + name + "\n"
         + getCommonParameters()
         + writeParameter("texture", "door.png")
-        + writeParameter("animation", "door_closed");
+        + writeParameter("animation", "door_closed")
+        + writeParameter("openSwitchesRequired", openSwitchesRequired)
+        + writeParameter("openSwitches", openSwitchesString);
 }
 
 void Door::update(float dt)

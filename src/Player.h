@@ -5,6 +5,13 @@
 
 #include "TileMap.h"
 
+enum PlayerItem
+{
+    PI_NONE,
+    PI_STICK,
+    PI_BALL
+};
+
 class Player : public Entity
 {
 public:
@@ -18,12 +25,14 @@ public:
     void handleEntityCollision(Entity *other);
     void drawInspectorWidgets();
     EntityType getEntityType();
+    PlayerItem getCurrentItem();
 
 private:
     void initParameters(std::vector<std::string> params);
     void updatePhysics();
 
     int playerNumber;
+    PlayerItem currentItem;
 
     bool isOnGround;
     bool wasOnGround;

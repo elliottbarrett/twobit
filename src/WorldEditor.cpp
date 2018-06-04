@@ -248,7 +248,8 @@ void WorldEditor::render()
 
     auto settings = &Settings::instance();
     auto camera = &Camera::instance();
-    auto mousePositionInWorld = worldWindow->mapPixelToCoords(sf::Mouse::getPosition(*worldWindow));
+    auto mousePositionInWindow = sf::Mouse::getPosition(*worldWindow);
+    auto mousePositionInWorld = worldWindow->mapPixelToCoords(mousePositionInWindow);
 
     inspectorWindow->clear();
 
@@ -338,47 +339,46 @@ void WorldEditor::render()
     }
 
     // Sprite editor
-    ImGui::SetNextWindowSize(sf::Vector2i(0,0));
-    ImGui::Begin("Sprite Editor");
+    // ImGui::SetNextWindowSize(sf::Vector2i(0,0));
+    // ImGui::Begin("Sprite Editor");
 
-    // ImGui::Columns(2, "SpriteEditor columns", true);
-    ImGui::BeginGroup();
-    {
-        if (ImGui::TreeNode("Category"))
-        {
-            if (ImGui::TreeNode("Entity"))
-            {
-                static bool selected = false;
-                ImGui::Selectable("Selectable", &selected);
+    // ImGui::BeginGroup();
+    // {
+    //     if (ImGui::TreeNode("Category"))
+    //     {
+    //         if (ImGui::TreeNode("Entity"))
+    //         {
+    //             static bool selected = false;
+    //             ImGui::Selectable("Selectable", &selected);
 
-                ImGui::TreePop();
-            }
+    //             ImGui::TreePop();
+    //         }
 
-            ImGui::TreePop();
-        }
-    }
-    ImGui::EndGroup(); 
-    // ImGui::Separator();
-    ImGui::SameLine(); ImGui::BeginGroup();
-    {
-        ImGui::Text("Right of tree");
-        ImGui::Text("Stuff goes here");
-        ImGui::Text("Hopefully the editor panel");
-        ImGui::Text("Where we can edit frame data");
-        ImGui::Text("And collision info too!");
-    }
-    ImGui::EndGroup();
+    //         ImGui::TreePop();
+    //     }
+    // }
+    // ImGui::EndGroup(); 
+    // ImGui::SameLine(); ImGui::BeginGroup();
+    // {
+    //     ImGui::Text("Right of tree");
+    //     ImGui::Text("Stuff goes here");
+    //     ImGui::Text("Hopefully the editor panel");
+    //     ImGui::Text("Where we can edit frame data");
+    //     ImGui::Text("And collision info too!");
+    // }
+    // ImGui::EndGroup();
     
-    if (ImGui::Button("Save File"))
-    {
-        // todo
-        std::cout << "saving..\n";
-    }
-    ImGui::End();
+    // if (ImGui::Button("Save File"))
+    // {
+    //     // todo
+    //     std::cout << "saving..\n";
+    // }
+    // ImGui::End();
 
     ImGui::SetNextWindowSize(sf::Vector2i(0,0));
     ImGui::Begin("Mouse Info");
-    ImGui::Text("Mouse position: (%f, %f)", mousePositionInWorld.x, mousePositionInWorld.y);
+    ImGui::Text("Window position: (%d, %d)", mousePositionInWindow.x, mousePositionInWindow.y);
+    ImGui::Text("World position: (%f, %f)", mousePositionInWorld.x, mousePositionInWorld.y);
     ImGui::End();
 
     ImGui::SFML::Render(*inspectorWindow);

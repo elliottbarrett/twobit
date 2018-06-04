@@ -8,7 +8,7 @@
 
 Player::Player(unsigned int id, std::string name, std::vector<std::string> params) :
     Entity(id, name, params),
-    playerNumber(name == "Player1" ? 1 : 2),
+    currentItem(PI_NONE),
     isOnGround(true), wasOnGround(true),
     isAtCeiling(false), wasAtCeiling(false),
     isPushingLeftWall(false), wasPushingLeftWall(false),
@@ -26,6 +26,14 @@ Player::~Player()
 void Player::initParameters(std::vector<std::string> params)
 {
     Entity::initParameters(params);
+
+    for (auto it : params)
+    {
+        auto key = it.substr(0, it.find(" "));
+        auto value = it.substr(it.find(" ") + 1);
+
+        if (key == "playerNum") playerNumber = std::stoi(value);
+    }
 }
 
 EntityType Player::getEntityType()
@@ -122,6 +130,13 @@ void Player::update(float dt)
     }
 
     updatePhysics();
+}
+
+PlayerItem Player::getCurrentItem()
+{
+    // XX
+    return playerNumber == 1 ? PI_STICK : PI_BALL;
+    return currentItem;
 }
 
 void Player::updatePhysics()

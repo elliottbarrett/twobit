@@ -11,8 +11,6 @@ public:
     ~MessageBox();
 
     void setMessage(std::string message);
-    void show();
-    void hide();
     void update();
 
 private:

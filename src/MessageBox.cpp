@@ -5,7 +5,7 @@
 
 MessageBox::MessageBox()
 {
-    fontTexture = ResourceManager::getTexture("la-font.png");
+    // fontTexture = ResourceManager::getTexture("la-font.png");
     messageBackground = sf::RectangleShape(sf::Vector2f(300, 80));
     messageBackground.setOrigin(0, 80);
     messageBackground.move(-4,20);
@@ -17,18 +17,13 @@ MessageBox::~MessageBox()
 
 }
 
-void MessageBox::show()
-{
-
-}
-
-void MessageBox::hide()
-{
-
-}
-
 void MessageBox::setMessage(std::string message)
 {
+    if (!fontTexture)
+    {
+        fontTexture = ResourceManager::getTexture("la-font.png");
+    }
+    
     const char* messageChars = message.c_str();
     int messageLength = message.length();
 

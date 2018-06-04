@@ -1,13 +1,13 @@
 1 Player Player1
-posX 734.979614
+posX 866.078613
 posY 704.000000
 playerNum 1
 texture player.png
 animation player_idle
 
 2 Player Player2
-posX 636.650085
-posY 672.000000
+posX 817.414246
+posY 704.000000
 playerNum 2
 texture player.png
 animation player_idle
@@ -17,6 +17,8 @@ posX 751.750000
 posY 704.049988
 texture door.png
 animation door_closed
+openSwitchesRequired 1
+openSwitches 4 5
 
 4 Switch Switch_RoomExit1_inner
 posX 688.500000
@@ -31,9 +33,23 @@ texture door.png
 animation switch_inactive
 
 6 NPC PoorDoggo
-posX 871.767029
-posY 704.125000
+posX 840.517029
+posY 703.875000
 texture poordog.png
 animation poordog_talking
+
+7 Door RoomExit2
+posX 928.000000
+posY 704.039978
+texture door.png
+animation door_closed
+openSwitchesRequired 1
+openSwitches 8
+
+8 Switch Switch_RoomExit2
+posX 751.900024
+posY 783.650024
+texture door.png
+animation switch_inactive
 
 END

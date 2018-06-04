@@ -7,7 +7,6 @@
 Switch::Switch(unsigned int id, std::string name, std::vector<std::string> params) :
     Entity(id, name, params)
 {
-    initParameters(params);
 }
 
 Switch::~Switch()
@@ -33,7 +32,6 @@ EntityType Switch::getEntityType()
 
 std::string Switch::getEntityDescription()
 {
-    // auto standardComponent = Entity::getEntityDescription();
     return std::to_string(id) + " Switch " + name + "\n"
         + getCommonParameters()
         + writeParameter("texture", "door.png")
