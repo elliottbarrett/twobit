@@ -261,6 +261,7 @@ void WorldEditor::render()
     ImGui::Checkbox("Use Grain Shader", &settings->useGrainShader);
     ImGui::Checkbox("Smart Tile Paint", &settings->smartPaint);
     ImGui::Checkbox("Draw Entity Collision Bounds", &settings->drawEntityCollisionBounds);
+    ImGui::Checkbox("Draw UI Layer", &settings->drawUI);
     ImGui::End();
 
     // Camera window

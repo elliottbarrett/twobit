@@ -3,6 +3,7 @@
 #include "Settings.h"
 #include "ResourceManager.h"
 #include "TileMap.h"
+#include "Animation.h"
 #include <math.h>
 #include <iostream>
 
@@ -101,7 +102,7 @@ void Player::update(float dt)
     }
 
 
-    if (abs(velocity.x) <= 10) 
+    if (abs(velocity.x) <= 10 && currentAnimation->getName() != "player_stick") 
     {
         playAnimation("player_idle");
     }
@@ -129,6 +130,11 @@ void Player::update(float dt)
         velocity.y = settings->jumpSpeed;
     }
 
+    if (input.leftButton)
+    {
+        tryUseCurrentItem();
+    }
+
     updatePhysics();
 }
 
@@ -137,6 +143,26 @@ PlayerItem Player::getCurrentItem()
     // XX
     return playerNumber == 1 ? PI_STICK : PI_BALL;
     return currentItem;
+}
+
+void Player::tryUseCurrentItem()
+{
+    switch (currentItem)
+    {
+    case PI_STICK:
+        break;
+    case PI_BALL:
+
+        break;
+    default:
+        playAnimation("player_stick", 0, false);
+        break;
+    }
+}
+
+void Player::switchItem()
+{
+    
 }
 
 void Player::updatePhysics()

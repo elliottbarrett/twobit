@@ -50,7 +50,6 @@ int main()
         return -1;
     }
 
-
     // Test some TileMap stuff
     TileMap tileMap;
 
@@ -138,7 +137,11 @@ int main()
 
         window.draw(tileMap);
         Entities::draw(window);
-        UI::draw(window);
+
+        if (settings->drawUI)
+        {
+            UI::draw(window);
+        }
 
         // window.draw(testMessageBox);
 

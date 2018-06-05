@@ -30,6 +30,8 @@ public:
 private:
     void initParameters(std::vector<std::string> params);
     void updatePhysics();
+    void tryUseCurrentItem();
+    void switchItem();
 
     int playerNumber;
     PlayerItem currentItem;

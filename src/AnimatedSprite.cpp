@@ -5,7 +5,7 @@
 #include <iostream>
 
 AnimatedSprite::AnimatedSprite() :
-    timeInFrame(0), loopAnimation(true)
+    currentAnimation(nullptr), timeInFrame(0), loopAnimation(true)
 {
     vertices.setPrimitiveType(sf::Quads);
     vertices.resize(4);
@@ -67,11 +67,16 @@ void AnimatedSprite::setFrame(int newFrame)
     vertices[3].texCoords = sf::Vector2f(right, bottom);
 }
 
-void AnimatedSprite::playAnimation(std::string name, int startingFrame)
+void AnimatedSprite::playAnimation(std::string name, int startingFrame, bool interruptable)
 {
     if (currentAnimation == ResourceManager::getAnimation(name)) return;
+    if (currentAnimation != nullptr)
+    {
+        if (!currentAnimationIsInterruptable && currentFrame != currentAnimation->getFrameCount() - 1) return;
+    }
 
     loopAnimation = false;
+    currentAnimationIsInterruptable = interruptable;
 
     currentAnimation = ResourceManager::getAnimation(name);
     timeInFrame = 0;
@@ -82,8 +87,13 @@ void AnimatedSprite::playAnimation(std::string name, int startingFrame)
 void AnimatedSprite::playAnimationLooped(std::string name)
 {
     if (currentAnimation == ResourceManager::getAnimation(name)) return;
+    if (currentAnimation != nullptr)
+    {
+        if (!currentAnimationIsInterruptable && currentFrame != currentAnimation->getFrameCount() - 1) return;
+    }
 
     loopAnimation = true;
+    currentAnimationIsInterruptable = true;
 
     currentAnimation = ResourceManager::getAnimation(name);
     timeInFrame = 0;

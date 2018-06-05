@@ -14,7 +14,7 @@ public:
 
     virtual void update(float dt);
     void setTexture(sf::Texture *texture);
-    void playAnimation(std::string name, int startingFrame = 0);
+    void playAnimation(std::string name, int startingFrame = 0, bool interruptable = true);
     void playAnimationLooped(std::string name);
 
 protected:
@@ -27,6 +27,7 @@ protected:
     float timeInFrame;
     int currentFrame;
     bool loopAnimation;
+    bool currentAnimationIsInterruptable;
 };
 
 #endif

@@ -26,7 +26,7 @@ InputState ArcadeInput::getPlayerOneState()
 
     state.direction = (JoyDirection) direction;
     state.leftButton = sf::Keyboard::isKeyPressed(sf::Keyboard::Key::Z);
-    state.rightButton = sf::Keyboard::isKeyPressed(sf::Keyboard::Key::Z);
+    state.rightButton = sf::Keyboard::isKeyPressed(sf::Keyboard::Key::X);
 
     return state;
 }

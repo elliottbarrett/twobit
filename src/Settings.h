@@ -10,6 +10,7 @@ public:
     bool drawCameraPanRegion;
     bool drawEntityOrigins;
     bool drawEntityCollisionBounds;
+    bool drawUI;
     float cameraPanRadius;
     sf::Vector2f cameraPanOffset;
     float gravity;
@@ -31,6 +32,7 @@ private:
         drawCameraPanRegion(false),
         drawEntityOrigins(false),
         drawEntityCollisionBounds(false),
+        drawUI(false),
         cameraPanRadius(40),
         cameraPanOffset(sf::Vector2f(0,0)),
         gravity(-750),
