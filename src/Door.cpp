@@ -59,7 +59,7 @@ std::string Door::getEntityDescription()
 
     return std::to_string(id) + " Door " + name + "\n"
         + getCommonParameters()
-        + writeParameter("texture", "door.png")
+        + writeParameter("texture", "world_entities.png")
         + writeParameter("animation", "door_closed")
         + writeParameter("openSwitchesRequired", openSwitchesRequired)
         + writeParameter("openSwitches", openSwitchesString);

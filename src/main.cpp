@@ -58,6 +58,7 @@ int main()
     ResourceManager::loadAnimationFile("assets/door.anim");
     ResourceManager::loadAnimationFile("assets/switch.anim");
     ResourceManager::loadAnimationFile("assets/poordog.anim");
+    ResourceManager::loadAnimationFile("assets/platform.anim");
     Entities::loadFromFile("assets/entities.tbe");
 
     // Editor window
@@ -128,7 +129,7 @@ int main()
         if (settings->runGame)
         {
             Entities::update(dt, tileMap);
-            Entities::handleEntityCollisions();
+            // Entities::handleEntityCollisions();
         }
 
         camera->update(dt);

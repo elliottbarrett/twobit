@@ -34,7 +34,7 @@ std::string Switch::getEntityDescription()
 {
     return std::to_string(id) + " Switch " + name + "\n"
         + getCommonParameters()
-        + writeParameter("texture", "door.png")
+        + writeParameter("texture", "world_entities.png")
         + writeParameter("animation", "switch_inactive");
 }
 

@@ -44,6 +44,7 @@ private:
     bool wasPushingLeftWall;
     bool isPushingRightWall;
     bool wasPushingRightWall;
+    int framesSinceJump;
 };
 
 #endif

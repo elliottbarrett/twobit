@@ -7,6 +7,7 @@ enum EntityType
     ET_PLAYER,
     ET_NPC,
     ET_DOOR,
+    ET_PLATFORM,
     ET_SWITCH,
     ET_ENEMY,
     ET_PROJECTILE

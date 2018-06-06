@@ -4,8 +4,10 @@
 #include "ResourceManager.h"
 #include "TileMap.h"
 #include "Animation.h"
+#include "sfmath.h"
 #include <math.h>
 #include <iostream>
+
 
 Player::Player(unsigned int id, std::string name, std::vector<std::string> params) :
     Entity(id, name, params),
@@ -13,7 +15,8 @@ Player::Player(unsigned int id, std::string name, std::vector<std::string> param
     isOnGround(true), wasOnGround(true),
     isAtCeiling(false), wasAtCeiling(false),
     isPushingLeftWall(false), wasPushingLeftWall(false),
-    isPushingRightWall(false), wasPushingRightWall(false)
+    isPushingRightWall(false), wasPushingRightWall(false),
+    framesSinceJump(0)
 {
     initParameters(params);
 
@@ -51,31 +54,12 @@ std::string Player::getEntityDescription()
         + writeParameter("animation", "player_idle");
 }
 
-void Player::handleEntityCollision(Entity *other)
-{
-    auto myBounds = getCollisionBounds();
-    auto otherBounds = other->getCollisionBounds();
-
-    switch (other->getEntityType())
-    {
-    case ET_DOOR:
-        if (velocity.x > 0)
-        {
-            move(-(myBounds.left + myBounds.width - otherBounds.left), 0);
-        }
-        else
-        {
-            move(otherBounds.left + otherBounds.width - myBounds.left, 0);
-        }
-        break;
-    default:
-        break;
-    }
-}
 
 void Player::update(float dt)
 {
     Entity::update(dt);
+
+    framesSinceJump++;
 
     InputState input = playerNumber == 1 ? ArcadeInput::getPlayerOneState() : ArcadeInput::getPlayerTwoState();
     auto settings = &Settings::instance();
@@ -113,6 +97,7 @@ void Player::update(float dt)
         {
             isOnGround = false;
             velocity.y = settings->jumpSpeed;
+            framesSinceJump = 0;
         }
     }
     if (input.direction & JoyDirection::DOWN)
@@ -123,11 +108,17 @@ void Player::update(float dt)
     if (!isOnGround)
     {
         velocity.y += settings->gravity * dt;
+        velocity.y = clamp(velocity.y, -200, 300);
     }
 
     if (input.rightButton) // this is z
     {
-        velocity.y = settings->jumpSpeed;
+        if (isOnGround)
+        {
+            isOnGround = false;
+            velocity.y = settings->jumpSpeed;
+            framesSinceJump = 0;
+        }
     }
 
     if (input.leftButton)
@@ -204,6 +195,37 @@ void Player::handleVerticalWorldCollision(WorldCollision collision)
     else
     {
         isOnGround = false;
+    }
+}
+
+void Player::handleEntityCollision(Entity *other)
+{
+    auto myBounds = getCollisionBounds();
+    auto myPosition = getPosition();
+    auto otherBounds = other->getCollisionBounds();
+
+    switch (other->getEntityType())
+    {
+    case ET_DOOR:
+        if (velocity.x > 0)
+        {
+            move(-(myBounds.left + myBounds.width - otherBounds.left), 0);
+        }
+        else
+        {
+            move(otherBounds.left + otherBounds.width - myBounds.left, 0);
+        }
+        break;
+    case ET_PLATFORM:
+
+        if (otherBounds.contains(myPosition) && framesSinceJump > 4)
+        {
+            isOnGround = true;
+            velocity = sf::Vector2f(velocity.x, other->getVelocity().y);
+            // setPosition(myPosition.x, otherBounds.top + otherBounds.height);
+        }
+    default:
+        break;
     }
 }
 

@@ -122,10 +122,6 @@ void Entity::drawInspectorWidgets()
     ImGui::DragFloat2("Position", position);
     ImGui::DragFloat2("Velocity", tmpVelocity);
 
-    auto bounds = getCollisionBounds();
-    ImGui::Text("Bounds X: %f to %f", bounds.left, bounds.left + bounds.width);
-    ImGui::Text("Bounds Y: %f to %f", bounds.top, bounds.top + bounds.height);
-
     setPosition(sf::Vector2f(position[0], position[1]));
 }
 

@@ -3,6 +3,7 @@
 #include "Door.h"
 #include "NPC.h"
 #include "Switch.h"
+#include "Platform.h"
 #include "TileMap.h"
 
 #include <iostream>
@@ -59,7 +60,13 @@ void Entities::loadFromFile(std::string fileName)
 
         if (line == "")
         {
-            getById(entityId)->initParameters(parameterLines);
+            auto currentEntity = getById(entityId);
+
+            if (currentEntity != nullptr)
+            {
+                currentEntity->initParameters(parameterLines);
+            }
+
             parameterLines.clear();
             isEntityDefinitionLine = true;
         }
@@ -99,6 +106,10 @@ void Entities::instantiateEntity(unsigned int id, std::string type, std::string 
     else if (type == "NPC")
     {
         new NPC(id, name, params);
+    }
+    else if (type == "Platform")
+    {
+        new Platform(id, name, params);
     }
     else
     {
@@ -176,9 +187,18 @@ void Entities::update(float dt, TileMap &world)
         auto vel = it->getVelocity();
         it->move(sf::Vector2f(vel.x * dt, 0));
         it->handleHorizontalWorldCollision(world.checkHorizontalWorldCollisions(it));
+    }
+
+    handleEntityCollisions();
+
+    for (auto it : entities)
+    {
+        auto vel = it->getVelocity();
         it->move(sf::Vector2f(0, vel.y * dt));
         it->handleVerticalWorldCollision(world.checkVerticalWorldCollisions(it));
     }
+
+    handleEntityCollisions();    
 }
 
 void Entities::handleEntityCollisions()

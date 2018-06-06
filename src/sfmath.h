@@ -18,4 +18,9 @@ inline sf::Vector2f normalize(sf::Vector2f v)
     return sf::Vector2f(v.x / length(v), v.y / length(v));
 }
 
+inline float clamp(float v, float lo, float hi)
+{
+    return v < lo ? lo : (v > hi ? hi : v);
+}
+
 #endif
