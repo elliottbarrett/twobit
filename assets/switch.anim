@@ -1,11 +1,23 @@
-.switch_inactive
+.floor_switch_inactive
 origin 8 0
 frameTime 1
 0 48 32 16 10 0 12 4
 
-.switch_active
+.floor_switch_active
 origin 8 0
 frameTime 1
 32 48 32 16 10 0 12 4
+
+.toggle_switch_inactive
+origin 8 0
+frameTime 1
+0 64 16 32 0 4 16 12
+
+.toggle_switch_active
+origin 8 0
+frameTime 0.05
+16 64 16 32 0 4 16 12
+32 64 16 32 0 4 16 12
+48 64 16 32 0 4 16 12
 
 END

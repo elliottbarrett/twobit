@@ -3,6 +3,12 @@
 
 #include "Entity.h"
 
+enum SwitchType
+{
+    ST_FLOOR,
+    ST_TOGGLE
+};
+
 class Switch : public Entity
 {
 public:
@@ -17,6 +23,8 @@ public:
 
 private:
     void initParameters(std::vector<std::string> params);
+
+    SwitchType type;
     bool pressed;
 };
 

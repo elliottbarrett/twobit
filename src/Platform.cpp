@@ -1,12 +1,14 @@
 #include "Platform.h"
 #include "Animation.h"
+#include "Entities.h"
+#include "Switch.h"
 #include "util/parsing.h"
 #include "sfmath.h"
 #include "imgui/imgui.h"
 #include "imgui/imgui-SFML.h"
 
 Platform::Platform(unsigned int id, std::string name, std::vector<std::string> params) :
-    Entity(id, name, params), currentWaypoint(0), isAtWaypoint(true), isWaypointDirectionAscending(true)
+    Entity(id, name, params), currentWaypoint(0), isAtWaypoint(true), isWaypointDirectionAscending(true), moveSwitchesRequired(0)
 {
 
 }
@@ -33,7 +35,19 @@ void Platform::initParameters(std::vector<std::string> params)
             auto floats = parse_floats(value);
             waypoints.push_back(sf::Vector2f(floats[0], floats[1]));
         }
+        else if (key == "moveSwitchesRequired") moveSwitchesRequired = std::stoi(value);
+        else if (key == "moveSwitches")
+        {
+            auto switches = parse_ints(value);
+            
+            for (auto id : switches)
+            {
+                moveSwitches.push_back((Switch*) Entities::getById(id));
+            }   
+        }
     }
+
+    setPosition(waypoints[0]);
 }
 
 EntityType Platform::getEntityType()
@@ -44,10 +58,24 @@ EntityType Platform::getEntityType()
 std::string Platform::getEntityDescription()
 {
     std::string waypointParams = "";
+    std::string moveSwitchParams = "";
 
     for (auto it : waypoints) 
     {
         waypointParams += writeParameter("waypoint", std::to_string(it.x) + " " + std::to_string(it.y)); 
+    }
+
+    if (moveSwitchesRequired > 0)
+    {
+        std::string moveIds = "";
+        moveSwitchParams += writeParameter("moveSwitchesRequired", moveSwitchesRequired);
+
+        for (auto it : moveSwitches)
+        {
+            moveIds += std::to_string(it->getId()) + " ";
+        }
+
+        moveSwitchParams += writeParameter("moveSwitches", moveIds);
     }
 
     return std::to_string(id) + " Platform " + name + "\n"
@@ -55,7 +83,9 @@ std::string Platform::getEntityDescription()
         + writeParameter("texture", "world_entities.png")
         + writeParameter("animation", currentAnimation->getName())
         + writeParameter("pauseTime", waypointPauseTime)
-        + waypointParams;
+        + writeParameter("speed", speed)
+        + waypointParams
+        + moveSwitchParams;
 }
 
 void Platform::update(float dt)
@@ -64,6 +94,27 @@ void Platform::update(float dt)
 
     // No motion required
     if (waypoints.size() == 1) return;
+
+    
+    if (moveSwitchesRequired > 0)
+    {
+        int moveSwitchesActive = 0;
+
+        for (auto it : moveSwitches)
+        {
+            if (it->isPressed())
+            {
+                moveSwitchesActive++;
+            }
+        }
+
+        if (moveSwitchesActive < moveSwitchesRequired)
+        {
+            velocity.x = 0;
+            velocity.y = 0;
+            return;
+        }   
+    }
 
     // Check if we should move to next waypoint and figure out what that should be
     if (isAtWaypoint)

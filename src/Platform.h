@@ -28,6 +28,9 @@ private:
     float timeAtCurrentWaypoint;
     bool isAtWaypoint;
     bool isWaypointDirectionAscending;
+
+    int moveSwitchesRequired;
+    std::vector<Switch*> moveSwitches;
 };
 
 #endif

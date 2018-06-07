@@ -22,6 +22,18 @@ void Switch::initParameters(std::vector<std::string> params)
     {
         auto key = it.substr(0, it.find(" "));
         auto value = it.substr(it.find(" ") + 1);
+
+        if (key == "type")
+        {
+            if (value == "floor")
+            {
+                type = ST_FLOOR;
+            }
+            else if (value == "toggle")
+            {
+                type = ST_TOGGLE;
+            }
+        }
     }
 }
 
@@ -32,17 +44,38 @@ EntityType Switch::getEntityType()
 
 std::string Switch::getEntityDescription()
 {
+    std::string switchParams;
+
+    if (type == ST_FLOOR)
+    {
+        switchParams = writeParameter("animation", "floor_switch_inactive");
+        switchParams += writeParameter("type", "floor");
+    }
+    else if (type == ST_TOGGLE)
+    {
+        switchParams = writeParameter("animation", "toggle_switch_inactive");
+        switchParams += writeParameter("type", "toggle");
+    }
+
     return std::to_string(id) + " Switch " + name + "\n"
         + getCommonParameters()
         + writeParameter("texture", "world_entities.png")
-        + writeParameter("animation", "switch_inactive");
+        + switchParams;
 }
 
 void Switch::update(float dt)
 {
     Entity::update(dt);
-    playAnimation("switch_inactive");
-    pressed = false;
+
+    switch (type)
+    {
+    case ST_FLOOR:
+        playAnimation("floor_switch_inactive");
+        pressed = false;
+        break;
+    case ST_TOGGLE:
+        break;
+    }
 }
 
 bool Switch::isPressed()
@@ -52,14 +85,29 @@ bool Switch::isPressed()
 
 void Switch::handleEntityCollision(Entity *other)
 {
-    switch (other->getEntityType())
+    if (type == ST_FLOOR)
     {
-    case ET_PLAYER:
-        playAnimation("switch_active");
-        pressed = true;
-        break;
-    default:
-        break;
+        switch (other->getEntityType())
+        {
+        case ET_PLAYER:
+            playAnimation("floor_switch_active");
+            pressed = true;
+            break;
+        default:
+            break;
+        }
+    } 
+    else if (type == ST_TOGGLE)
+    {
+        switch (other->getEntityType())
+        {
+        case ET_PLAYER:
+            playAnimationLooped("toggle_switch_active");
+            pressed = true;
+            break;
+        default:
+            break;
+        }
     }
 
 }

@@ -20,4 +20,8 @@ frameTime 0.02
 72 24 24 24 5 0 5 20
 72 24 24 24 5 0 5 20
 
+.player_throw_ball
+origin 8 0
+frameTime 0.02
+
 END
