@@ -3,6 +3,7 @@
 #include "Settings.h"
 #include "Animation.h"
 #include "ResourceManager.h"
+#include "util/parsing.h"
 
 #include <string.h>
 #include <stdio.h>
@@ -45,8 +46,12 @@ void Entity::initParameters(std::vector<std::string> params)
         auto key = it.substr(0, it.find(" "));
         auto value = it.substr(it.find(" ") + 1);
 
-        if (key == "posX") pos.x = std::stof(value);
-        else if (key == "posY") pos.y = std::stof(value);
+        if (key == "position")
+        {
+            auto coords = parse_floats(value);
+            pos.x = coords[0];
+            pos.y = coords[1];
+        }
         else if (key == "texture") setTexture(ResourceManager::getTexture(value));
         else if (key == "animation") playAnimationLooped(value);
     }
@@ -55,7 +60,8 @@ void Entity::initParameters(std::vector<std::string> params)
 
 std::string Entity::getCommonParameters()
 {
-    return writeParameter("posX", getPosition().x) + writeParameter("posY", getPosition().y);
+    auto pos = getPosition();
+    return writeParameter("position", std::to_string(pos.x) + " " + std::to_string(pos.y));
 }
 
 std::string Entity::getName()

@@ -1,63 +1,54 @@
 1 Player Player1
-posX 907.257568
-posY 752.000000
+position 907.257568 752.000000
 playerNum 1
 texture player.png
 animation player_idle
 
 2 Player Player2
-posX 819.499939
-posY 760.856445
+position 819.499939 760.856445
 playerNum 2
 texture player.png
 animation player_idle
 
 3 Door RoomExit1
-posX 751.750000
-posY 704.049988
+position 751.750000 704.049988
 texture world_entities.png
 animation door_closed
 openSwitchesRequired 1
 openSwitches 4 5 
 
 4 Switch Switch_RoomExit1_inner
-posX 688.500000
-posY 687.750000
+position 688.500000 687.750000
 texture world_entities.png
 animation floor_switch_inactive
 type floor
 
 5 Switch Switch_RoomExit1_outer
-posX 780.767395
-posY 704.124756
+position 780.767395 704.124756
 texture world_entities.png
 animation floor_switch_inactive
 type floor
 
 6 NPC PoorDoggo
-posX 840.517029
-posY 703.875000
+position 840.517029 703.875000
 texture poordog.png
 animation poordog_talking
 
 7 Door RoomExit2
-posX 928.000000
-posY 704.039978
+position 928.000000 704.039978
 texture world_entities.png
 animation door_closed
 openSwitchesRequired 1
 openSwitches 8 
 
 8 Switch Switch_RoomExit2
-posX 760.150024
-posY 783.150024
+position 760.150024 783.150024
 texture world_entities.png
 animation toggle_switch_inactive
 type toggle
 
 9 Platform Elevator1
-posX 868.500000
-posY 732.849792
+position 868.500000 732.849792
 texture world_entities.png
 animation platform_1
 pauseTime 0.500000
@@ -66,8 +57,7 @@ waypoint 868.500000 703.510010
 waypoint 868.500000 743.500000
 
 10 Platform Elevator2
-posX 819.399109
-posY 758.176575
+position 819.399109 758.176575
 texture world_entities.png
 animation platform_1
 pauseTime 0.500000
@@ -78,8 +68,7 @@ moveSwitchesRequired 1
 moveSwitches 11 
 
 11 Switch EnableElevator2
-posX 895.549988
-posY 751.650024
+position 895.549988 751.650024
 texture world_entities.png
 animation floor_switch_inactive
 type floor
