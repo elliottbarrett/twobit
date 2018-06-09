@@ -10,7 +10,7 @@ enum EntityType
     ET_PLATFORM,
     ET_SWITCH,
     ET_ENEMY,
-    ET_PROJECTILE
+    ET_BALL
 };
 
 #endif

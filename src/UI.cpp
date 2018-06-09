@@ -38,16 +38,8 @@ void UI::init(sf::RenderWindow &window)
 void UI::handleResize(unsigned int newWidth, unsigned int newHeight)
 {
     auto pixelsPerBlock = newHeight / 9;
-    auto playerOneItemRect = getPlayerItemTextureRect(playerOne->getCurrentItem());
-    auto playerTwoItemRect = getPlayerItemTextureRect(playerTwo->getCurrentItem());
-
-    playerOneItemBG.setTextureRect(sf::IntRect(0, 0, 16, 16));
-    playerOneItem.setTextureRect(playerOneItemRect);
-    playerOneIndicator.setTextureRect(sf::IntRect(16, 0, 16, 16));
-
-    playerTwoItemBG.setTextureRect(sf::IntRect(0, 0, 16, 16));
-    playerTwoItem.setTextureRect(playerTwoItemRect);
-    playerTwoIndicator.setTextureRect(sf::IntRect(32, 0, 16, 16));
+    
+    updateItemRects();
 
     playerOneItemBG.setScale(pixelsPerBlock / 16, pixelsPerBlock / 16);
     playerOneItem.setScale(pixelsPerBlock / 16, pixelsPerBlock / 16);
@@ -110,7 +102,21 @@ void UI::draw(sf::RenderWindow &window)
 
 void UI::update(float dt)
 {
+    // update 
+}
 
+void UI::updateItemRects()
+{
+    auto playerOneItemRect = getPlayerItemTextureRect(playerOne->getCurrentItem());
+    auto playerTwoItemRect = getPlayerItemTextureRect(playerTwo->getCurrentItem());
+
+    playerOneItemBG.setTextureRect(sf::IntRect(0, 0, 16, 16));
+    playerOneItem.setTextureRect(playerOneItemRect);
+    playerOneIndicator.setTextureRect(sf::IntRect(16, 0, 16, 16));
+
+    playerTwoItemBG.setTextureRect(sf::IntRect(0, 0, 16, 16));
+    playerTwoItem.setTextureRect(playerTwoItemRect);
+    playerTwoIndicator.setTextureRect(sf::IntRect(32, 0, 16, 16));    
 }
 
 void UI::showMessage(std::string message)

@@ -93,10 +93,8 @@ void Door::handleEntityCollision(Entity *other)
 {
     switch (other->getEntityType())
     {
-        case ET_PROJECTILE:
-
-        default:
-            break;
+    default:
+        break;
     }
 }
 

@@ -102,6 +102,7 @@ void Switch::handleEntityCollision(Entity *other)
         switch (other->getEntityType())
         {
         case ET_PLAYER:
+        case ET_BALL:
             playAnimationLooped("toggle_switch_active");
             pressed = true;
             break;

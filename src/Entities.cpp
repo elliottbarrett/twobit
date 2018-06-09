@@ -5,6 +5,7 @@
 #include "Switch.h"
 #include "Platform.h"
 #include "TileMap.h"
+#include "Ball.h"
 
 #include <iostream>
 #include <string>
@@ -110,6 +111,10 @@ void Entities::instantiateEntity(unsigned int id, std::string type, std::string 
     else if (type == "Platform")
     {
         new Platform(id, name, params);
+    }
+    else if (type == "Ball")
+    {
+        new Ball(id, name, params);
     }
     else
     {

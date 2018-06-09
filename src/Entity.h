@@ -22,6 +22,7 @@ public:
     virtual EntityType getEntityType() = 0;
     std::string getName();
     unsigned int getId();
+    void setVelocity(sf::Vector2f v);
     sf::Vector2f getVelocity();
 
     bool isCollidingWith(Entity* other);

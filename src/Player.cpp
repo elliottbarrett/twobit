@@ -1,9 +1,12 @@
 #include "Player.h"
 #include "ArcadeInput.h"
 #include "Settings.h"
+#include "Entities.h"
 #include "ResourceManager.h"
 #include "TileMap.h"
 #include "Animation.h"
+#include "Ball.h"
+#include "UI.h"
 #include "sfmath.h"
 #include <math.h>
 #include <iostream>
@@ -21,6 +24,10 @@ Player::Player(unsigned int id, std::string name, std::vector<std::string> param
     initParameters(params);
 
     playAnimation("player_idle");
+
+    // TEST
+    giveItem(PI_STICK);
+    giveItem(PI_BALL);
 }
 
 Player::~Player()
@@ -38,6 +45,9 @@ void Player::initParameters(std::vector<std::string> params)
 
         if (key == "playerNum") playerNumber = std::stoi(value);
     }
+
+    // TODO: Find a more elegant solution to this
+    ball = (Ball*) Entities::getByName("Ball");
 }
 
 EntityType Player::getEntityType()
@@ -126,34 +136,71 @@ void Player::update(float dt)
         tryUseCurrentItem();
     }
 
+    if (lastFrameInput.direction & JoyDirection::DOWN 
+        && (input.direction & JoyDirection::DOWN) == 0)
+    {
+        switchItem();
+    }
+
     updatePhysics();
+    lastFrameInput = input;
 }
 
 PlayerItem Player::getCurrentItem()
 {
     // XX
-    return playerNumber == 1 ? PI_STICK : PI_BALL;
+    // return playerNumber == 1 ? PI_STICK : PI_BALL;
     return currentItem;
 }
 
 void Player::tryUseCurrentItem()
 {
+    auto transform = getTransform();
+
     switch (currentItem)
     {
     case PI_STICK:
-        break;
-    case PI_BALL:
-
-        break;
-    default:
         playAnimation("player_stick", 0, false);
         break;
+    case PI_BALL:
+        playAnimation("player_throw_ball", 0, false);
+        ball->setPosition(transform.transformPoint(4, 10));
+        ball->setVelocity(sf::Vector2f(160 * getScale().x, 80));
+        break;
+    default:
+        break;
+    }
+}
+
+void Player::giveItem(PlayerItem item)
+{
+    if (std::find(items.begin(), items.end(), item) == items.end())
+    {
+        items.push_back(item);
     }
 }
 
 void Player::switchItem()
 {
-    
+    if (currentItem == PI_NONE && items.size() > 0)
+    {
+        currentItem = items[0];
+    }
+    else
+    {
+        auto it = std::find(items.begin(), items.end(), currentItem);
+        if (it == items.end() - 1)
+        {
+            currentItem = items[0];
+        }
+        else
+        {
+            int nextIndex = it - items.begin() + 1;
+            currentItem = items[nextIndex];
+        }
+    }
+
+    UI::updateItemRects();
 }
 
 void Player::updatePhysics()

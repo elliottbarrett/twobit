@@ -74,6 +74,11 @@ unsigned int Entity::getId()
     return id;
 }
 
+void Entity::setVelocity(sf::Vector2f v)
+{
+    velocity = v;
+}
+
 sf::Vector2f Entity::getVelocity()
 {
     return velocity;

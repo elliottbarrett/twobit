@@ -1,11 +1,11 @@
 1 Player Player1
-position 907.257568 752.000000
+position 893.864258 752.000000
 playerNum 1
 texture player.png
 animation player_idle
 
 2 Player Player2
-position 819.499939 760.856445
+position 816.915405 782.911560
 playerNum 2
 texture player.png
 animation player_idle
@@ -48,7 +48,7 @@ animation toggle_switch_inactive
 type toggle
 
 9 Platform Elevator1
-position 868.500000 732.849792
+position 868.500000 723.526855
 texture world_entities.png
 animation platform_1
 pauseTime 0.500000
@@ -57,7 +57,7 @@ waypoint 868.500000 703.510010
 waypoint 868.500000 743.500000
 
 10 Platform Elevator2
-position 819.399109 758.176575
+position 819.399109 781.510010
 texture world_entities.png
 animation platform_1
 pauseTime 0.500000
@@ -72,5 +72,10 @@ position 895.549988 751.650024
 texture world_entities.png
 animation floor_switch_inactive
 type floor
+
+12 Ball Ball
+position 0 0
+texture world_entities.png
+animation ball
 
 END

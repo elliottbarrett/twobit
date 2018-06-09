@@ -4,6 +4,10 @@
 #include "Entity.h"
 
 #include "TileMap.h"
+#include "ArcadeInput.h"
+
+
+class Ball;
 
 enum PlayerItem
 {
@@ -26,6 +30,7 @@ public:
     void drawInspectorWidgets();
     EntityType getEntityType();
     PlayerItem getCurrentItem();
+    void giveItem(PlayerItem item);
 
 private:
     void initParameters(std::vector<std::string> params);
@@ -36,6 +41,8 @@ private:
     int playerNumber;
     PlayerItem currentItem;
 
+    Ball* ball;
+
     bool isOnGround;
     bool wasOnGround;
     bool isAtCeiling;
@@ -45,6 +52,11 @@ private:
     bool isPushingRightWall;
     bool wasPushingRightWall;
     int framesSinceJump;
+
+    InputState lastFrameInput;
+
+    // Inventory
+    std::vector<PlayerItem> items;
 };
 
 #endif

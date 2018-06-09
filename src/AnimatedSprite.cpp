@@ -75,10 +75,17 @@ void AnimatedSprite::playAnimation(std::string name, int startingFrame, bool int
         if (!currentAnimationIsInterruptable && currentFrame != currentAnimation->getFrameCount() - 1) return;
     }
 
+    auto requestedAnimation = ResourceManager::getAnimation(name);
+    
+    if (requestedAnimation == nullptr)
+    {
+        return;
+    }
+
     loopAnimation = false;
     currentAnimationIsInterruptable = interruptable;
 
-    currentAnimation = ResourceManager::getAnimation(name);
+    currentAnimation = requestedAnimation;
     timeInFrame = 0;
     setFrame(startingFrame);
     setOrigin(currentAnimation->getOrigin());
@@ -92,10 +99,17 @@ void AnimatedSprite::playAnimationLooped(std::string name)
         if (!currentAnimationIsInterruptable && currentFrame != currentAnimation->getFrameCount() - 1) return;
     }
 
+    auto requestedAnimation = ResourceManager::getAnimation(name);
+    
+    if (requestedAnimation == nullptr)
+    {
+        return;
+    }
+
     loopAnimation = true;
     currentAnimationIsInterruptable = true;
 
-    currentAnimation = ResourceManager::getAnimation(name);
+    currentAnimation = requestedAnimation;
     timeInFrame = 0;
     setFrame(0);
     setOrigin(currentAnimation->getOrigin());

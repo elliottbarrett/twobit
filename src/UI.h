@@ -14,6 +14,7 @@ public:
     static void init(sf::RenderWindow &window);
     static void handleResize(unsigned int newWidth, unsigned int newHeight);
     static void update(float dt);
+    static void updateItemRects();
     static void draw(sf::RenderWindow &window);
     static void showMessage(std::string message);
     static void hideMessage();
