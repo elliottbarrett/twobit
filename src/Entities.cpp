@@ -90,6 +90,11 @@ void Entities::loadFromFile(std::string fileName)
     initializationReadStream.close();
 }
 
+unsigned int Entities::getMaxId()
+{
+    return maxId;
+}
+
 void Entities::instantiateEntity(unsigned int id, std::string type, std::string name, std::vector<std::string> params)
 {
     if (type == "Player")

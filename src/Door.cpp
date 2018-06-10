@@ -10,7 +10,6 @@
 Door::Door(unsigned int id, std::string name, std::vector<std::string> params) :
     Entity(id, name, params)
 {
-
 }
 
 Door::~Door()

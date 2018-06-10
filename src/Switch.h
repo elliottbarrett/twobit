@@ -21,6 +21,8 @@ public:
     void handleEntityCollision(Entity* other);
     bool isPressed();
 
+    void drawInspectorWidgets();
+
 private:
     void initParameters(std::vector<std::string> params);
 

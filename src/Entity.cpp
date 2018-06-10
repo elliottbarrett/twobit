@@ -27,6 +27,12 @@ Entity::~Entity()
 
 void Entity::update(float dt)
 {
+    if (currentAnimation == nullptr)
+    {
+        std::cout << "Entity " << name << " cannot update, no animation\n";
+        return;
+    }
+
     AnimatedSprite::update(dt);
 
     if (Settings::instance().drawEntityCollisionBounds)
@@ -143,6 +149,11 @@ bool Entity::isCollidingWith(Entity *other)
 
 sf::FloatRect Entity::getCollisionBounds()
 {
+    if (currentAnimation == nullptr)
+    {
+        return sf::FloatRect(0,0,0,0);
+    }
+    
     sf::Transform t = getTransform();
     auto bounds = t.transformRect(currentAnimation->getFrameCollision(currentFrame));
     return bounds;

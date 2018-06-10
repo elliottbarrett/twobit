@@ -40,6 +40,11 @@ void AnimatedSprite::setTexture(sf::Texture *newTexture)
 
 void AnimatedSprite::draw(sf::RenderTarget& target, sf::RenderStates states) const
 {
+    if (texture == nullptr || currentAnimation == nullptr)
+    {
+        return;
+    }
+
     states.transform *= getTransform();
     states.texture = texture;
     target.draw(vertices, states);

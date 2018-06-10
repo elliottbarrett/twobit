@@ -1,12 +1,13 @@
 #include "Switch.h"
 #include "Door.h"
 #include "Entities.h"
-
+#include "imgui/imgui.h"
 #include <iostream>
 
 Switch::Switch(unsigned int id, std::string name, std::vector<std::string> params) :
     Entity(id, name, params)
 {
+    initParameters(params);
 }
 
 Switch::~Switch()
@@ -111,4 +112,23 @@ void Switch::handleEntityCollision(Entity *other)
         }
     }
 
+}
+
+void Switch::drawInspectorWidgets()
+{
+    Entity::drawInspectorWidgets();
+
+    const char* typeStrings[] = { "Floor", "Toggle" };
+    if (ImGui::Combo("Switch Type", (int*)&type, typeStrings, IM_ARRAYSIZE(typeStrings)))
+    {
+        switch (type)
+        {
+        case ST_TOGGLE:
+            playAnimation("toggle_switch_inactive");
+            break;
+        case ST_FLOOR:
+            playAnimation("floor_switch_inactive");
+            break;
+        }
+    }
 }

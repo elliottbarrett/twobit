@@ -6,6 +6,9 @@
 #include "Camera.h"
 #include "Entities.h"
 #include "Entity.h"
+#include "Switch.h"
+#include "Door.h"
+#include "Platform.h"
 
 #include "imgui/imgui.h"
 #include "imgui/imgui-SFML.h"
@@ -338,6 +341,57 @@ void WorldEditor::render()
         selectedEntity->drawInspectorWidgets();
         ImGui::End();
     }
+
+    // Entity Palette Window
+    static int selectedEntityTypeIndex;
+    ImGui::SetNextWindowSize(sf::Vector2i(130,0));
+    ImGui::Begin("Entity Palette");
+    ImGui::ListBoxHeader("");
+    if (ImGui::Selectable("Door", selectedEntityTypeIndex == 0))
+    {
+        selectedEntityTypeIndex = 0;
+    }
+    if (ImGui::Selectable("Switch", selectedEntityTypeIndex == 1))
+    {
+        selectedEntityTypeIndex = 1;
+    }
+    if (ImGui::Selectable("Platform", selectedEntityTypeIndex == 2))
+    {
+        selectedEntityTypeIndex = 2;
+    }
+    ImGui::ListBoxFooter();
+    if (ImGui::Button("Add New"))
+    {
+        std::vector<std::string> defaultParams;
+        auto newEntityId = Entities::getMaxId() + 1;
+        auto cameraPositionString = std::to_string(camera->getCenter().x) + " " + std::to_string(camera->getCenter().y);
+
+        defaultParams.push_back("position " + cameraPositionString);
+
+        switch (selectedEntityTypeIndex)
+        {
+        case 0:
+            defaultParams.push_back("texture world_entities.png");
+            defaultParams.push_back("animation door_closed");
+            new Door(newEntityId, "NewDoor", defaultParams);
+            break;
+        case 1:
+            defaultParams.push_back("texture world_entities.png");
+            defaultParams.push_back("animation floor_switch_inactive");
+            defaultParams.push_back("type floor");
+            new Switch(newEntityId, "NewSwitch", defaultParams);
+            break;
+        case 2:
+            defaultParams.push_back("texture world_entities.png");
+            defaultParams.push_back("animation platform_1");
+            defaultParams.push_back("speed 40");
+            defaultParams.push_back("pauseTime 0.5");
+            defaultParams.push_back("waypoint " + cameraPositionString);
+            new Platform(newEntityId, "NewPlatform", defaultParams);
+            break;
+        }
+    }
+    ImGui::End();
 
     // Sprite editor
     // ImGui::SetNextWindowSize(sf::Vector2i(0,0));
