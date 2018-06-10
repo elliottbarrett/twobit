@@ -60,7 +60,7 @@ void WorldEditor::instantiateEditorWindows()
 void WorldEditor::handleWorldEvent(sf::Event &event)
 {
     auto settings = &Settings::instance();
-    sf::Vector2f mousePositionInWorld = worldWindow->mapPixelToCoords(sf::Mouse::getPosition(*worldWindow));
+    sf::Vector2f mousePositionInWorld = Camera::getMousePositionInWorld();
 
     if (event.type == sf::Event::KeyReleased)
     {
@@ -215,7 +215,7 @@ void WorldEditor::update(float dt)
         if (isPanning == false)
         {
             isPanning = true;
-            Camera::instance().setFollowEntity(nullptr);
+            Camera::setFollowEntity(nullptr);
         }
         else
         {
@@ -250,9 +250,8 @@ void WorldEditor::render()
     paletteWindow->display();
 
     auto settings = &Settings::instance();
-    auto camera = &Camera::instance();
     auto mousePositionInWindow = sf::Mouse::getPosition(*worldWindow);
-    auto mousePositionInWorld = worldWindow->mapPixelToCoords(mousePositionInWindow);
+    auto mousePositionInWorld = Camera::getMousePositionInWorld();
 
     inspectorWindow->clear();
 
@@ -272,18 +271,18 @@ void WorldEditor::render()
     ImGui::Begin("Camera");
     if (ImGui::Button("Reset Zoom"))
     {
-        Camera::instance().resetZoom();
+        Camera::resetZoom();
     }
     if (ImGui::Button("Center on Player"))
     {
-        Camera::instance().centerOn(Entities::getByName("Player1"));
+        Camera::centerOn(Entities::getByName("Player1"));
     }
-    float cameraCenterX = camera->getCenter().x;
-    float cameraCenterY = camera->getCenter().y;
+    float cameraCenterX = Camera::getCenter().x;
+    float cameraCenterY = Camera::getCenter().y;
     float cameraCenterTemp[2] = {cameraCenterX, cameraCenterY};
     if (ImGui::DragFloat2("Center", cameraCenterTemp))
     {
-        camera->setCenter(sf::Vector2f(cameraCenterTemp[0], cameraCenterTemp[1]));
+        Camera::setCenter(sf::Vector2f(cameraCenterTemp[0], cameraCenterTemp[1]));
     }
     ImGui::Checkbox("Draw Pan Bounds", &settings->drawCameraPanRegion);
     ImGui::SliderFloat("Circle Pan Radius", &settings->cameraPanRadius, 0, 80);
@@ -321,8 +320,8 @@ void WorldEditor::render()
         if (ImGui::Selectable(entity->getName().c_str(), selectedEntityId == entity->getId()))
         {
             selectedEntityId = entity->getId();
-            Camera::instance().centerOn(entity);
-            Camera::instance().setFollowEntity(entity);
+            Camera::centerOn(entity);
+            Camera::setFollowEntity(entity);
         }
     }
     ImGui::ListBoxFooter();
@@ -364,7 +363,7 @@ void WorldEditor::render()
     {
         std::vector<std::string> defaultParams;
         auto newEntityId = Entities::getMaxId() + 1;
-        auto cameraPositionString = std::to_string(camera->getCenter().x) + " " + std::to_string(camera->getCenter().y);
+        auto cameraPositionString = std::to_string(Camera::getCenter().x) + " " + std::to_string(Camera::getCenter().y);
 
         defaultParams.push_back("position " + cameraPositionString);
 
@@ -392,43 +391,6 @@ void WorldEditor::render()
         }
     }
     ImGui::End();
-
-    // Sprite editor
-    // ImGui::SetNextWindowSize(sf::Vector2i(0,0));
-    // ImGui::Begin("Sprite Editor");
-
-    // ImGui::BeginGroup();
-    // {
-    //     if (ImGui::TreeNode("Category"))
-    //     {
-    //         if (ImGui::TreeNode("Entity"))
-    //         {
-    //             static bool selected = false;
-    //             ImGui::Selectable("Selectable", &selected);
-
-    //             ImGui::TreePop();
-    //         }
-
-    //         ImGui::TreePop();
-    //     }
-    // }
-    // ImGui::EndGroup(); 
-    // ImGui::SameLine(); ImGui::BeginGroup();
-    // {
-    //     ImGui::Text("Right of tree");
-    //     ImGui::Text("Stuff goes here");
-    //     ImGui::Text("Hopefully the editor panel");
-    //     ImGui::Text("Where we can edit frame data");
-    //     ImGui::Text("And collision info too!");
-    // }
-    // ImGui::EndGroup();
-    
-    // if (ImGui::Button("Save File"))
-    // {
-    //     // todo
-    //     std::cout << "saving..\n";
-    // }
-    // ImGui::End();
 
     ImGui::SetNextWindowSize(sf::Vector2i(0,0));
     ImGui::Begin("Mouse Info");

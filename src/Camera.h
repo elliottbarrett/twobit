@@ -8,26 +8,20 @@ class Entity;
 class Camera
 {
 public:
-    static Camera& instance()
-    {
-        static Camera instance;
-        return instance;
-    }
-
-    void init(sf::RenderWindow *window);
-    void update(float dt);
-    void resetZoom();
-    void centerOn(Entity *t);
-    void drawBoundsRegion();
-    void setFollowEntity(Entity* e);
-    sf::Vector2f getCenter();
-    void setCenter(sf::Vector2f center);
+    static void init(sf::RenderWindow *window);
+    static void update(float dt);
+    static void resetZoom();
+    static void centerOn(Entity *t);
+    static void drawBoundsRegion();
+    static void setFollowEntity(Entity* e);
+    static sf::Vector2f getCenter();
+    static sf::Vector2f getMousePositionInWorld();
+    static void setCenter(sf::Vector2f center);
 
 private:
-    Camera() : followEntity(0) {}
-    sf::RenderWindow *window;
-    sf::CircleShape panBoundsCircle;
-    Entity *followEntity;
+    static sf::RenderWindow *window;
+    static sf::CircleShape panBoundsCircle;
+    static Entity *followEntity;
 
 public:
     Camera(Camera const&) = delete;

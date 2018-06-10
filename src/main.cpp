@@ -41,8 +41,7 @@ int main()
     grainTexture.create(GB_WIDTH * WINDOW_SCALE, GB_HEIGHT * WINDOW_SCALE);
     grainSprite.setTexture(grainTexture);
 
-    auto camera = &Camera::instance();
-    camera->init(&window);
+    Camera::init(&window);
 
     if (!grainShader.loadFromFile("shaders/grain.frag", sf::Shader::Type::Fragment))
     {
@@ -86,7 +85,7 @@ int main()
         return -1;
     }
 
-    camera->setFollowEntity(player);
+    Camera::setFollowEntity(player);
 
     UI::init(window);
 
@@ -132,7 +131,7 @@ int main()
             // Entities::handleEntityCollisions();
         }
 
-        camera->update(dt);
+        Camera::update(dt);
         window.clear(sf::Color(155,154,155));
         // ctx->render(window);
 
@@ -148,7 +147,7 @@ int main()
 
         if (settings->drawCameraPanRegion)
         {
-            camera->drawBoundsRegion();
+            Camera::drawBoundsRegion();
         }
 
         if (settings->useGrainShader)

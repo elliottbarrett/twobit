@@ -7,9 +7,13 @@
 #include "Entity.h"
 #include "sfmath.h"
 
+sf::RenderWindow* Camera::window = nullptr;
+sf::CircleShape Camera::panBoundsCircle;
+Entity* Camera::followEntity;
+
 void Camera::init(sf::RenderWindow *window)
 {
-    this->window = window;
+    Camera::window = window;
     panBoundsCircle.setFillColor(sf::Color::Transparent);
     panBoundsCircle.setOutlineColor(sf::Color(120,120,0,190));
     panBoundsCircle.setOutlineThickness(-1);   
@@ -75,6 +79,11 @@ void Camera::setCenter(sf::Vector2f center)
 sf::Vector2f Camera::getCenter()
 {
     return window->getView().getCenter();
+}
+
+sf::Vector2f Camera::getMousePositionInWorld()
+{
+    return window->mapPixelToCoords(sf::Mouse::getPosition(*window));
 }
 
 void Camera::drawBoundsRegion()

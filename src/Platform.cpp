@@ -2,6 +2,7 @@
 #include "Animation.h"
 #include "Entities.h"
 #include "Switch.h"
+#include "Camera.h"
 #include "util/parsing.h"
 #include "sfmath.h"
 #include "imgui/imgui.h"
@@ -178,11 +179,23 @@ void Platform::handleEntityCollision(Entity *other)
 void Platform::drawInspectorWidgets()
 {
     Entity::drawInspectorWidgets();
-    // TODO: Make viewable, addable, editable
-    // ImGui::Text("Waypoints");
-    // for (auto wp : waypoints)
-    // {
-    //     float wayPointCoords[2] = {wp.x, wp.y};
-    //     ImGui::SliderFloat2    
-    // }
+    // TODO: Make waypoints removable, addable. Draw them in the world.
+    ImGui::Text("Waypoints");
+    ImGui::ListBoxHeader("");
+    static int selectedWaypoint;
+    int wpi = 0;
+    for (auto wp : waypoints)
+    {
+        if (ImGui::Selectable((std::to_string(wp.x) + ", " + std::to_string(wp.y)).c_str(), selectedWaypoint == wpi))
+        {
+            selectedWaypoint = wpi;
+        }
+        wpi++; 
+    }
+    ImGui::ListBoxFooter();
+
+    if (sf::Mouse::isButtonPressed(sf::Mouse::Left) && sf::Keyboard::isKeyPressed(sf::Keyboard::LAlt))
+    {
+        waypoints[selectedWaypoint] = Camera::getMousePositionInWorld();   
+    }
 }
