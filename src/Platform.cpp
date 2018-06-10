@@ -198,4 +198,14 @@ void Platform::drawInspectorWidgets()
     {
         waypoints[selectedWaypoint] = Camera::getMousePositionInWorld();   
     }
+
+    if (ImGui::Button("Add"))
+    {
+        waypoints.push_back(sf::Vector2f(0,0));
+    }
+    ImGui::SameLine();
+    if (ImGui::Button("Remove Selected"))
+    {
+        waypoints.erase(waypoints.begin() + selectedWaypoint);
+    }
 }
