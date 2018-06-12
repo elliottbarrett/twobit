@@ -59,7 +59,6 @@ void WorldEditor::instantiateEditorWindows()
 
 void WorldEditor::handleWorldEvent(sf::Event &event)
 {
-    auto settings = &Settings::instance();
     sf::Vector2f mousePositionInWorld = Camera::getMousePositionInWorld();
 
     if (event.type == sf::Event::KeyReleased)
@@ -70,11 +69,11 @@ void WorldEditor::handleWorldEvent(sf::Event &event)
         }
         else if (event.key.code == sf::Keyboard::C)
         {
-            settings->drawEntityCollisionBounds = !settings->drawEntityCollisionBounds;
+            Settings::drawEntityCollisionBounds = !Settings::drawEntityCollisionBounds;
         }
         else if (event.key.code == sf::Keyboard::Space)
         {
-            settings->runGame = !settings->runGame;
+            Settings::runGame = !Settings::runGame;
         }
     }
 
@@ -98,7 +97,7 @@ void WorldEditor::handleWorldEvent(sf::Event &event)
             {
                 Entities::getById(selectedEntityId)->setPosition(mousePositionInWorld);
             }
-            else if (settings->smartPaint)
+            else if (Settings::smartPaint)
             {
                 world->smartPaint(tileX, tileY, paletteTileNumber != 0, SmartPaintConfig::getDefault());
             }
@@ -128,7 +127,7 @@ void WorldEditor::handleWorldEvent(sf::Event &event)
             {
                 Entities::getById(selectedEntityId)->setPosition(mousePositionInWorld);
             }
-            else if (settings->smartPaint)
+            else if (Settings::smartPaint)
             {
                 world->smartPaint(tileX, tileY, paletteTileNumber != 0, SmartPaintConfig::getDefault());
             }
@@ -249,7 +248,6 @@ void WorldEditor::render()
     paletteWindow->draw(paletteSelectionHighlight);
     paletteWindow->display();
 
-    auto settings = &Settings::instance();
     auto mousePositionInWindow = sf::Mouse::getPosition(*worldWindow);
     auto mousePositionInWorld = Camera::getMousePositionInWorld();
 
@@ -258,12 +256,12 @@ void WorldEditor::render()
     // Global Settings window
     ImGui::SetNextWindowSize(sf::Vector2i(0,0));
     ImGui::Begin("Global Settings");
-    ImGui::Checkbox("Run Simulation", &settings->runGame);
-    ImGui::SliderFloat("Time Scale", &settings->timeScale, 0.1, 2);
-    ImGui::Checkbox("Use Grain Shader", &settings->useGrainShader);
-    ImGui::Checkbox("Smart Tile Paint", &settings->smartPaint);
-    ImGui::Checkbox("Draw Entity Collision Bounds", &settings->drawEntityCollisionBounds);
-    ImGui::Checkbox("Draw UI Layer", &settings->drawUI);
+    ImGui::Checkbox("Run Simulation", &Settings::runGame);
+    ImGui::SliderFloat("Time Scale", &Settings::timeScale, 0.1, 2);
+    ImGui::Checkbox("Use Grain Shader", &Settings::useGrainShader);
+    ImGui::Checkbox("Smart Tile Paint", &Settings::smartPaint);
+    ImGui::Checkbox("Draw Entity Collision Bounds", &Settings::drawEntityCollisionBounds);
+    ImGui::Checkbox("Draw UI Layer", &Settings::drawUI);
     ImGui::End();
 
     // Camera window
@@ -284,19 +282,19 @@ void WorldEditor::render()
     {
         Camera::setCenter(sf::Vector2f(cameraCenterTemp[0], cameraCenterTemp[1]));
     }
-    ImGui::Checkbox("Draw Pan Bounds", &settings->drawCameraPanRegion);
-    ImGui::SliderFloat("Circle Pan Radius", &settings->cameraPanRadius, 0, 80);
-    float currentPanOffset[2] = { settings->cameraPanOffset.x, settings->cameraPanOffset.y };
+    ImGui::Checkbox("Draw Pan Bounds", &Settings::drawCameraPanRegion);
+    ImGui::SliderFloat("Circle Pan Radius", &Settings::cameraPanRadius, 0, 80);
+    float currentPanOffset[2] = { Settings::cameraPanOffset.x, Settings::cameraPanOffset.y };
     ImGui::DragFloat2("Pan Bounds Offset", currentPanOffset);
-    settings->cameraPanOffset = sf::Vector2f(currentPanOffset[0], currentPanOffset[1]);
+    Settings::cameraPanOffset = sf::Vector2f(currentPanOffset[0], currentPanOffset[1]);
     ImGui::End();
 
     // Physics window
     ImGui::SetNextWindowSize(sf::Vector2i(0,0));
     ImGui::Begin("Physics");
-    ImGui::SliderFloat("Gravity", &settings->gravity, -1000, 0);
-    ImGui::SliderFloat("Jump Speed", &settings->jumpSpeed, 0, 400);
-    ImGui::SliderFloat("Walk Speed", &settings->walkSpeed, 0, 125);
+    ImGui::SliderFloat("Gravity", &Settings::gravity, -1000, 0);
+    ImGui::SliderFloat("Jump Speed", &Settings::jumpSpeed, 0, 400);
+    ImGui::SliderFloat("Walk Speed", &Settings::walkSpeed, 0, 125);
     ImGui::End();
 
     // Entities window

@@ -21,12 +21,10 @@ void Ball::update(float dt)
 {
     Entity::update(dt);
 
-    auto settings = &Settings::instance();
-
     if (isActive)
     {
         // velocity.x
-        velocity.y += settings->gravity * dt;
+        velocity.y += Settings::gravity * dt;
     }
 }
 

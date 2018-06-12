@@ -21,10 +21,9 @@ void Camera::init(sf::RenderWindow *window)
 
 void Camera::update(float dt)
 {
-    auto settings = &Settings::instance();
-    panBoundsCircle.setRadius(settings->cameraPanRadius);
-    panBoundsCircle.setOrigin(settings->cameraPanRadius, settings->cameraPanRadius);
-    panBoundsCircle.setPosition(window->getView().getCenter() + settings->cameraPanOffset);
+    panBoundsCircle.setRadius(Settings::cameraPanRadius);
+    panBoundsCircle.setOrigin(Settings::cameraPanRadius, Settings::cameraPanRadius);
+    panBoundsCircle.setPosition(window->getView().getCenter() + Settings::cameraPanOffset);
 
     if (followEntity)
     {
@@ -34,10 +33,10 @@ void Camera::update(float dt)
         float distanceFromBoundsCenter = distance(cPos, ePos);
         auto vectorFromCameraCenter = ePos - cPos;
 
-        if (distanceFromBoundsCenter > settings->cameraPanRadius)
+        if (distanceFromBoundsCenter > Settings::cameraPanRadius)
         {
             auto currentCenterView = window->getView();
-            currentCenterView.move((distanceFromBoundsCenter - settings->cameraPanRadius) * normalize(vectorFromCameraCenter));
+            currentCenterView.move((distanceFromBoundsCenter - Settings::cameraPanRadius) * normalize(vectorFromCameraCenter));
             auto updatedCenter = currentCenterView.getCenter();
             // TODO: This should be adjusted to be more smooth somehow.
             currentCenterView.setCenter(sf::Vector2f(std::floor(updatedCenter.x*10)/10, std::floor(updatedCenter.y*10)/10));

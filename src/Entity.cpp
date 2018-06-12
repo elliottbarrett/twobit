@@ -35,7 +35,7 @@ void Entity::update(float dt)
 
     AnimatedSprite::update(dt);
 
-    if (Settings::instance().drawEntityCollisionBounds)
+    if (Settings::drawEntityCollisionBounds)
     {
         auto currentCollision = currentAnimation->getFrameCollision(currentFrame);
         collisionRect.setPosition(sf::Vector2f(currentCollision.left, currentCollision.top));
@@ -117,7 +117,7 @@ void Entity::draw(sf::RenderTarget& target, sf::RenderStates states) const
 {
     AnimatedSprite::draw(target, states);
 
-    if (Settings::instance().drawEntityCollisionBounds)
+    if (Settings::drawEntityCollisionBounds)
     {
         states.transform *= getTransform();
         target.draw(collisionRect, states);

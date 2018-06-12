@@ -1,53 +1,27 @@
 #ifndef SETTINGS_H_INCLUDED
 #define SETTINGS_H_INCLUDED
 
+#include <SFML/Graphics.hpp>
+
 class Settings
 {
 public:
-    bool runGame;
-    bool smartPaint;
-    bool useGrainShader;
-    bool drawCameraPanRegion;
-    bool drawEntityOrigins;
-    bool drawEntityCollisionBounds;
-    bool drawUI;
-    float cameraPanRadius;
-    sf::Vector2f cameraPanOffset;
-    float gravity;
-    float jumpSpeed;
-    float walkSpeed;
-    float timeScale;
-
-    static Settings& instance()
-    {
-        static Settings instance;
-        return instance;
-    }
+    static bool runGame;
+    static bool smartPaint;
+    static bool useGrainShader;
+    static bool drawCameraPanRegion;
+    static bool drawEntityOrigins;
+    static bool drawEntityCollisionBounds;
+    static bool drawUI;
+    static float cameraPanRadius;
+    static sf::Vector2f cameraPanOffset;
+    static float gravity;
+    static float jumpSpeed;
+    static float walkSpeed;
+    static float timeScale;
 
 private:
-    Settings() :
-        runGame(true),
-        smartPaint(true),
-        useGrainShader(true),
-        drawCameraPanRegion(false),
-        drawEntityOrigins(false),
-        drawEntityCollisionBounds(false),
-        drawUI(false),
-        cameraPanRadius(40),
-        cameraPanOffset(sf::Vector2f(0,0)),
-        gravity(-750),
-        jumpSpeed(250),
-        walkSpeed(80),
-        timeScale(1)
-    {
-    }
 
-    // TODO
-    // void loadSettingsFile();
-
-public:
-    Settings(Settings const&) = delete;
-    void operator=(Settings const&)  = delete;
 };
 
 #endif

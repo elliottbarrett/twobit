@@ -178,19 +178,21 @@ void Platform::handleEntityCollision(Entity *other)
 
 void Platform::drawInspectorWidgets()
 {
+    static int selectedWaypoint;
+
     Entity::drawInspectorWidgets();
-    // TODO: Make waypoints removable, addable. Draw them in the world.
+    
+    // TODO: Draw them in the world.
     ImGui::Text("Waypoints");
     ImGui::ListBoxHeader("");
-    static int selectedWaypoint;
-    int wpi = 0;
+    int currentWaypointIndex = 0;
     for (auto wp : waypoints)
     {
-        if (ImGui::Selectable((std::to_string(wp.x) + ", " + std::to_string(wp.y)).c_str(), selectedWaypoint == wpi))
+        if (ImGui::Selectable((std::to_string(wp.x) + ", " + std::to_string(wp.y)).c_str(), selectedWaypoint == currentWaypointIndex))
         {
-            selectedWaypoint = wpi;
+            selectedWaypoint = currentWaypointIndex;
         }
-        wpi++; 
+        currentWaypointIndex++; 
     }
     ImGui::ListBoxFooter();
 

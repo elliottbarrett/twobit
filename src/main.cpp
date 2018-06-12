@@ -27,10 +27,7 @@
 #define WINDOW_SCALE 4
 
 int main()
-{
-    // Init settings
-    auto settings = &Settings::instance();
-    
+{    
     // Main window
     sf::RenderWindow window(sf::VideoMode(GB_WIDTH * WINDOW_SCALE, GB_HEIGHT * WINDOW_SCALE), "twobit");
     window.setVerticalSyncEnabled(true);
@@ -93,7 +90,7 @@ int main()
     {
         sf::Event event;
         sf::Time frameTime = frameTimeClock.restart();
-        float dt = frameTime.asSeconds() * settings->timeScale;
+        float dt = frameTime.asSeconds() * Settings::timeScale;
 
         frameCount++;
 
@@ -125,7 +122,7 @@ int main()
             window.close();
         }
 
-        if (settings->runGame)
+        if (Settings::runGame)
         {
             Entities::update(dt, tileMap);
             // Entities::handleEntityCollisions();
@@ -138,19 +135,19 @@ int main()
         window.draw(tileMap);
         Entities::draw(window);
 
-        if (settings->drawUI)
+        if (Settings::drawUI)
         {
             UI::draw(window);
         }
 
         // window.draw(testMessageBox);
 
-        if (settings->drawCameraPanRegion)
+        if (Settings::drawCameraPanRegion)
         {
             Camera::drawBoundsRegion();
         }
 
-        if (settings->useGrainShader)
+        if (Settings::useGrainShader)
         {
             grainTexture.update(window);
             sf::View currentView = window.getView();

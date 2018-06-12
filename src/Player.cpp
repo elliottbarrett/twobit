@@ -72,18 +72,17 @@ void Player::update(float dt)
     framesSinceJump++;
 
     InputState input = playerNumber == 1 ? ArcadeInput::getPlayerOneState() : ArcadeInput::getPlayerTwoState();
-    auto settings = &Settings::instance();
 
     if (input.direction & JoyDirection::LEFT)
     {
         playAnimationLooped("player_walk");
-        velocity.x = -1 * settings->walkSpeed;
+        velocity.x = -1 * Settings::walkSpeed;
         setScale(-1,1);
     }
     else if (input.direction & JoyDirection::RIGHT)
     {
         playAnimationLooped("player_walk");
-        velocity.x = settings->walkSpeed;
+        velocity.x = Settings::walkSpeed;
         setScale(1,1);
     }
     else if (!isOnGround)
@@ -106,7 +105,7 @@ void Player::update(float dt)
         if (isOnGround)
         {
             isOnGround = false;
-            velocity.y = settings->jumpSpeed;
+            velocity.y = Settings::jumpSpeed;
             framesSinceJump = 0;
         }
     }
@@ -117,7 +116,7 @@ void Player::update(float dt)
 
     if (!isOnGround)
     {
-        velocity.y += settings->gravity * dt;
+        velocity.y += Settings::gravity * dt;
         velocity.y = clamp(velocity.y, -200, 300);
     }
 
@@ -126,7 +125,7 @@ void Player::update(float dt)
         if (isOnGround)
         {
             isOnGround = false;
-            velocity.y = settings->jumpSpeed;
+            velocity.y = Settings::jumpSpeed;
             framesSinceJump = 0;
         }
     }
