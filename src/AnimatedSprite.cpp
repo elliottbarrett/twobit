@@ -119,3 +119,15 @@ void AnimatedSprite::playAnimationLooped(std::string name)
     setFrame(0);
     setOrigin(currentAnimation->getOrigin());
 }
+
+void AnimatedSprite::faceLeft()
+{
+    auto scale = getScale();
+    setScale(-std::abs(scale.x), scale.y);
+}
+
+void AnimatedSprite::faceRight()
+{
+    auto scale = getScale();
+    setScale(std::abs(scale.x), scale.y);
+}

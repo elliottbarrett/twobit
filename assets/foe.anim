@@ -1,0 +1,19 @@
+.foe_idle
+origin 8 0
+frameTime 1
+0 96 16 16 0 0 16 16
+
+.foe_walk
+origin 8 0
+frameTime 0.3
+0 96 16 16 0 0 16 16
+16 96 16 16 0 0 16 16
+
+.foe_bullet_small
+origin 2.5 2.5
+frameTime 0.1
+0 112 5 5 0 0 5 5
+16 112 5 5 0 0 5 5
+32 112 5 5 0 0 5 5
+
+END

@@ -77,13 +77,13 @@ void Player::update(float dt)
     {
         playAnimationLooped("player_walk");
         velocity.x = -1 * Settings::walkSpeed;
-        setScale(-1,1);
+        faceLeft();
     }
     else if (input.direction & JoyDirection::RIGHT)
     {
         playAnimationLooped("player_walk");
         velocity.x = Settings::walkSpeed;
-        setScale(1,1);
+        faceRight();
     }
     else if (!isOnGround)
     {

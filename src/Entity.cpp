@@ -60,6 +60,13 @@ void Entity::initParameters(std::vector<std::string> params)
         }
         else if (key == "texture") setTexture(ResourceManager::getTexture(value));
         else if (key == "animation") playAnimationLooped(value);
+        else if (key == "facing")
+        {
+            if (value == "left")
+            {
+                faceLeft();
+            }
+        }
     }
     setPosition(pos);
 }

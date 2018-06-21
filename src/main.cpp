@@ -52,6 +52,7 @@ int main()
     // Test entity system
     ResourceManager::loadAnimationFile("assets/player.anim");
     ResourceManager::loadAnimationFile("assets/door.anim");
+    ResourceManager::loadAnimationFile("assets/foe.anim");
     ResourceManager::loadAnimationFile("assets/switch.anim");
     ResourceManager::loadAnimationFile("assets/poordog.anim");
     ResourceManager::loadAnimationFile("assets/platform.anim");

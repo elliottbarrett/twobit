@@ -1,6 +1,8 @@
 #include "Entities.h"
 #include "Player.h"
 #include "Door.h"
+#include "Foe.h"
+#include "FoeBullet.h"
 #include "NPC.h"
 #include "Switch.h"
 #include "Platform.h"
@@ -120,6 +122,14 @@ void Entities::instantiateEntity(unsigned int id, std::string type, std::string 
     else if (type == "Ball")
     {
         new Ball(id, name, params);
+    }
+    else if (type == "Foe")
+    {
+        new Foe(id, name, params);
+    }
+    else if (type == "FoeBullet")
+    {
+        new FoeBullet(id, name, params);
     }
     else
     {

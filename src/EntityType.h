@@ -9,7 +9,8 @@ enum EntityType
     ET_DOOR,
     ET_PLATFORM,
     ET_SWITCH,
-    ET_ENEMY,
+    ET_FOE,
+    ET_FOE_BULLET,
     ET_BALL
 };
 

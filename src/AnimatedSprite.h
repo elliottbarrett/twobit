@@ -20,6 +20,8 @@ public:
 protected:
     virtual void draw(sf::RenderTarget& target, sf::RenderStates states) const;
     void setFrame(int newFrame);
+    void faceLeft();
+    void faceRight();
 
     sf::VertexArray vertices;
     sf::Texture *texture;
