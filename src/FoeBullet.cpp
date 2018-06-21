@@ -48,6 +48,7 @@ void FoeBullet::update(float dt)
         if (distanceTraveled >= range)
         {
             available = true;
+            velocity = sf::Vector2f(0,0);
             setPosition(0,0);
         }
     }
@@ -66,6 +67,10 @@ void FoeBullet::handleEntityCollision(Entity *other)
 {
     switch (other->getEntityType())
     {
+    case ET_PLAYER:
+        available = true;
+        velocity = sf::Vector2f(0,0);
+        setPosition(0,0);
     default:
         break;
     }

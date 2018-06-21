@@ -22,6 +22,7 @@ protected:
     void setFrame(int newFrame);
     void faceLeft();
     void faceRight();
+    void flashForSeconds(float t, float flashPeriod);
 
     sf::VertexArray vertices;
     sf::Texture *texture;
@@ -30,6 +31,10 @@ protected:
     int currentFrame;
     bool loopAnimation;
     bool currentAnimationIsInterruptable;
+
+    float flashTime;
+    float flashPeriod;
+    float flashElapsed;
 };
 
 #endif

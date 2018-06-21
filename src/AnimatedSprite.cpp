@@ -3,6 +3,7 @@
 #include "ResourceManager.h"
 
 #include <iostream>
+#include <cmath>
 
 AnimatedSprite::AnimatedSprite() :
     currentAnimation(nullptr), timeInFrame(0), loopAnimation(true)
@@ -22,6 +23,7 @@ void AnimatedSprite::update(float dt)
     int frameCount = currentAnimation->getFrameCount();
 
     timeInFrame += dt;
+    flashElapsed += dt;
 
     if (timeInFrame >= timePerFrame)
     {
@@ -45,9 +47,13 @@ void AnimatedSprite::draw(sf::RenderTarget& target, sf::RenderStates states) con
         return;
     }
 
-    states.transform *= getTransform();
-    states.texture = texture;
-    target.draw(vertices, states);
+    if (flashElapsed >= flashTime || std::fmod(flashElapsed, flashPeriod) > flashPeriod / 2)
+    {
+        states.transform *= getTransform();
+        states.texture = texture;
+        target.draw(vertices, states);
+    }
+
 }
 
 void AnimatedSprite::setFrame(int newFrame)
@@ -130,4 +136,11 @@ void AnimatedSprite::faceRight()
 {
     auto scale = getScale();
     setScale(std::abs(scale.x), scale.y);
+}
+
+void AnimatedSprite::flashForSeconds(float t, float flashPeriod)
+{
+    this->flashPeriod = flashPeriod;
+    this->flashElapsed = 0;
+    this->flashTime = t;
 }

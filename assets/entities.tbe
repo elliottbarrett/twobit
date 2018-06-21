@@ -82,6 +82,7 @@ animation ball
 position 1004.000000 704.500061
 texture world_entities.png
 animation foe_walk
+attackCooldown 4
 facing left
 
 14 FoeBullet FB1

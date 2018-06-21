@@ -69,17 +69,22 @@ void Player::update(float dt)
 {
     Entity::update(dt);
 
+    ignoreInputElapsed += dt;
+    invincibilityTimeElapsed += dt;
+
     framesSinceJump++;
 
     InputState input = playerNumber == 1 ? ArcadeInput::getPlayerOneState() : ArcadeInput::getPlayerTwoState();
 
-    if (input.direction & JoyDirection::LEFT)
+    bool canMove = ignoreInputTime <= ignoreInputElapsed;
+
+    if (canMove && input.direction & JoyDirection::LEFT)
     {
         playAnimationLooped("player_walk");
         velocity.x = -1 * Settings::walkSpeed;
         faceLeft();
     }
-    else if (input.direction & JoyDirection::RIGHT)
+    else if (canMove && input.direction & JoyDirection::RIGHT)
     {
         playAnimationLooped("player_walk");
         velocity.x = Settings::walkSpeed;
@@ -268,11 +273,31 @@ void Player::handleEntityCollision(Entity *other)
         {
             isOnGround = true;
             velocity = sf::Vector2f(velocity.x, other->getVelocity().y);
-            // setPosition(myPosition.x, otherBounds.top + otherBounds.height);
         }
+        break;
+    case ET_FOE:
+        if (invincibilityTimeElapsed < invincibilityTime) break;
+        break;
+    case ET_FOE_BULLET:
+        if (invincibilityTimeElapsed < invincibilityTime) break;
+        ignoreInputForSeconds(0.1);
+        flashForSeconds(0.4, 0.1);
+        invincibilityTime = 0.4;
+        invincibilityTimeElapsed = 0;
+        velocity.x = -(abs(velocity.x) + 20);
+        velocity.y += 100;
+        isOnGround = false;
+        // Take damage, recoil, flash
+        break;
     default:
         break;
     }
+}
+
+void Player::ignoreInputForSeconds(float t)
+{
+    ignoreInputTime = t;
+    ignoreInputElapsed = 0;
 }
 
 void Player::drawInspectorWidgets()

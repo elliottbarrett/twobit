@@ -29,6 +29,9 @@ private:
 
     std::vector<sf::Vector2f> patrolPoints;
     std::vector<Player*> playerRefs;
+
+    float attackCooldown;
+    float attackCooldownElapsed;
     // int current
 };
 

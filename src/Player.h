@@ -37,6 +37,7 @@ private:
     void updatePhysics();
     void tryUseCurrentItem();
     void switchItem();
+    void ignoreInputForSeconds(float t);
 
     int playerNumber;
     PlayerItem currentItem;
@@ -54,6 +55,13 @@ private:
     int framesSinceJump;
 
     InputState lastFrameInput;
+
+    // Input ignoring
+    float ignoreInputTime;
+    float ignoreInputElapsed;
+
+    float invincibilityTime;
+    float invincibilityTimeElapsed;
 
     // Inventory
     std::vector<PlayerItem> items;
