@@ -9,6 +9,7 @@
 #include "Switch.h"
 #include "Door.h"
 #include "Platform.h"
+#include "JumpPad.h"
 
 #include "imgui/imgui.h"
 #include "imgui/imgui-SFML.h"
@@ -356,6 +357,10 @@ void WorldEditor::render()
     {
         selectedEntityTypeIndex = 2;
     }
+    if (ImGui::Selectable("JumpPad", selectedEntityTypeIndex == 3))
+    {
+        selectedEntityTypeIndex = 3;
+    }
     ImGui::ListBoxFooter();
     if (ImGui::Button("Add New"))
     {
@@ -386,6 +391,11 @@ void WorldEditor::render()
             defaultParams.push_back("waypoint " + cameraPositionString);
             new Platform(newEntityId, "NewPlatform", defaultParams);
             break;
+        case 3:
+            defaultParams.push_back("texture world_entities.png");
+            defaultParams.push_back("animation platform_1");
+            defaultParams.push_back("jumpModifier 90");
+            new JumpPad(newEntityId, "NewJumpPad", defaultParams);
         }
     }
     ImGui::End();
