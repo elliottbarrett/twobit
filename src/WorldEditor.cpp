@@ -8,6 +8,7 @@
 #include "Entity.h"
 #include "Switch.h"
 #include "Door.h"
+#include "Foe.h"
 #include "Platform.h"
 #include "JumpPad.h"
 
@@ -361,6 +362,10 @@ void WorldEditor::render()
     {
         selectedEntityTypeIndex = 3;
     }
+    if (ImGui::Selectable("Foe", selectedEntityTypeIndex == 4))
+    {
+        selectedEntityTypeIndex = 4;
+    }
     ImGui::ListBoxFooter();
     if (ImGui::Button("Add New"))
     {
@@ -375,13 +380,13 @@ void WorldEditor::render()
         case 0:
             defaultParams.push_back("texture world_entities.png");
             defaultParams.push_back("animation door_closed");
-            new Door(newEntityId, "NewDoor", defaultParams);
+            (new Door(newEntityId, "NewDoor", defaultParams))->initParameters(defaultParams);
             break;
         case 1:
             defaultParams.push_back("texture world_entities.png");
             defaultParams.push_back("animation floor_switch_inactive");
             defaultParams.push_back("type floor");
-            new Switch(newEntityId, "NewSwitch", defaultParams);
+            (new Switch(newEntityId, "NewSwitch", defaultParams))->initParameters(defaultParams);
             break;
         case 2:
             defaultParams.push_back("texture world_entities.png");
@@ -389,13 +394,19 @@ void WorldEditor::render()
             defaultParams.push_back("speed 40");
             defaultParams.push_back("pauseTime 0.5");
             defaultParams.push_back("waypoint " + cameraPositionString);
-            new Platform(newEntityId, "NewPlatform", defaultParams);
+            (new Platform(newEntityId, "NewPlatform", defaultParams))->initParameters(defaultParams);
             break;
         case 3:
             defaultParams.push_back("texture world_entities.png");
             defaultParams.push_back("animation platform_1");
             defaultParams.push_back("jumpModifier 90");
-            new JumpPad(newEntityId, "NewJumpPad", defaultParams);
+            (new JumpPad(newEntityId, "NewJumpPad", defaultParams))->initParameters(defaultParams);
+            break;
+        case 4:
+            defaultParams.push_back("texture world_entities.png");
+            defaultParams.push_back("animation foe_idle");
+            defaultParams.push_back("attackCooldown 1.5");
+            (new Foe(newEntityId, "NewFoe", defaultParams))->initParameters(defaultParams);
         }
     }
     ImGui::End();

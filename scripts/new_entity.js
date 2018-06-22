@@ -30,13 +30,13 @@ public:
     ${args.entityName}(unsigned int id, std::string name, std::vector<std::string> params);
     ~${args.entityName}();
 
+    void initParameters(std::vector<std::string> params);
     void update(float dt);
     std::string getEntityDescription();
     EntityType getEntityType();
     void handleEntityCollision(Entity* other);
 
 private:
-    void initParameters(std::vector<std::string> params);
 };
 
 #endif

@@ -11,6 +11,7 @@ public:
     Door(unsigned int id, std::string name, std::vector<std::string> params);
     ~Door();
 
+    void initParameters(std::vector<std::string> params);
     void update(float dt);
     std::string getEntityDescription();
     EntityType getEntityType();
@@ -20,7 +21,6 @@ public:
     void close();
 
 private:
-    void initParameters(std::vector<std::string> params);
     
     std::vector<Switch*> openSwitches;
     int openSwitchesRequired;

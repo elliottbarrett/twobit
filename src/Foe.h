@@ -20,14 +20,13 @@ public:
     Foe(unsigned int id, std::string name, std::vector<std::string> params);
     ~Foe();
 
+    void initParameters(std::vector<std::string> params);
     void update(float dt);
     std::string getEntityDescription();
     EntityType getEntityType();
     void handleEntityCollision(Entity* other);
 
 private:
-    void initParameters(std::vector<std::string> params);
-
     std::vector<sf::Vector2f> patrolPoints;
     std::vector<Player*> playerRefs;
     std::vector<FoeBullet*> bulletRefs;

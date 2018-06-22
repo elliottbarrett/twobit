@@ -9,6 +9,7 @@ public:
     JumpPad(unsigned int id, std::string name, std::vector<std::string> params);
     ~JumpPad();
 
+    void initParameters(std::vector<std::string> params);
     void update(float dt);
     std::string getEntityDescription();
     EntityType getEntityType();
@@ -17,7 +18,6 @@ public:
     float getJumpModifier();
 
 private:
-    void initParameters(std::vector<std::string> params);
 
     float jumpModifier;
 };

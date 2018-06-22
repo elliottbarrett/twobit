@@ -74,7 +74,7 @@ animation floor_switch_inactive
 type floor
 
 12 Ball Ball
-position 0.000000 -11887755.000000
+position 0.000000 -12599492.000000
 texture world_entities.png
 animation ball
 
@@ -99,5 +99,11 @@ position 1218.000000 704.000000
 texture world_entities.png
 animation platform_1
 jumpModifier 95.745003
+
+17 Foe Foe2
+position 1281.914673 768.299744
+texture world_entities.png
+animation foe_idle
+attackCooldown 1.500000
 
 END

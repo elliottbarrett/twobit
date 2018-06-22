@@ -11,6 +11,7 @@ public:
     Platform(unsigned int id, std::string name, std::vector<std::string> params);
     ~Platform();
 
+    void initParameters(std::vector<std::string> params);
     void update(float dt);
     std::string getEntityDescription();
     EntityType getEntityType();
@@ -19,7 +20,6 @@ public:
     void drawInspectorWidgets();
 
 private:
-    void initParameters(std::vector<std::string> params);
     
     std::vector<sf::Vector2f> waypoints;
     int currentWaypoint;

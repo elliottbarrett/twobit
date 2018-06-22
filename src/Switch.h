@@ -15,6 +15,7 @@ public:
     Switch(unsigned int id, std::string name, std::vector<std::string> params);
     ~Switch();
 
+    void initParameters(std::vector<std::string> params);
     void update(float dt);
     std::string getEntityDescription();
     EntityType getEntityType();
@@ -24,7 +25,6 @@ public:
     void drawInspectorWidgets();
 
 private:
-    void initParameters(std::vector<std::string> params);
 
     SwitchType type;
     bool pressed;
