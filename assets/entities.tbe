@@ -1,11 +1,11 @@
 1 Player Player1
-position 871.329407 704.627136
+position 871.329407 705.628418
 playerNum 1
 texture player.png
 animation player_idle
 
 2 Player Player2
-position 816.915405 781.983093
+position 816.915405 704.000000
 playerNum 2
 texture player.png
 animation player_idle
@@ -53,8 +53,8 @@ texture world_entities.png
 animation platform_1
 pauseTime 0.500000
 speed 40.000000
-waypoint 868.500000 703.510010
-waypoint 868.500000 743.500000
+relativeWaypoint 0.000000 0.000000
+relativeWaypoint 0.000000 39.989990
 
 10 Platform Elevator2
 position 819.399109 781.510010
@@ -62,8 +62,8 @@ texture world_entities.png
 animation platform_1
 pauseTime 0.500000
 speed 40.000000
-waypoint 819.399109 781.510010
-waypoint 819.399109 703.500000
+relativeWaypoint 0.000000 0.000000
+relativeWaypoint 0.000000 -78.010010
 moveSwitchesRequired 1
 moveSwitches 11 
 
@@ -74,16 +74,15 @@ animation floor_switch_inactive
 type floor
 
 12 Ball Ball
-position 0.000000 -616400.000000
+position 0.000000 -683809.812500
 texture world_entities.png
 animation ball
 
 13 Foe Foe1
 position 1004.000000 704.500061
 texture world_entities.png
-animation foe_walk
-attackCooldown 2
-facing left
+animation foe_idle
+attackCooldown 1.500000
 
 14 FoeBullet FB1
 position 1655.479858 -64.232285
@@ -91,7 +90,7 @@ texture world_entities.png
 animation foe_bullet_small
 
 15 FoeBullet FB2
-position 0 0
+position 0.000000 0.000000
 texture world_entities.png
 animation foe_bullet_small
 

@@ -48,7 +48,8 @@ std::string Foe::getEntityDescription()
     return std::to_string(id) + " Foe " + name + "\n"
         + getCommonParameters()
         + writeParameter("texture", "world_entities.png")
-        + writeParameter("animation", "foe_idle");
+        + writeParameter("animation", "foe_idle")
+        + writeParameter("attackCooldown", attackCooldown);
 }
 
 void Foe::update(float dt)

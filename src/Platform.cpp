@@ -31,10 +31,11 @@ void Platform::initParameters(std::vector<std::string> params)
 
         if (key == "speed") speed = std::stof(value);
         else if (key == "pauseTime") waypointPauseTime = std::stof(value);
-        else if (key == "waypoint")
+        else if (key == "relativeWaypoint")
         {
             auto floats = parse_floats(value);
-            waypoints.push_back(sf::Vector2f(floats[0], floats[1]));
+            sf::Vector2f absoluteWaypoint = getPosition() + sf::Vector2f(floats[0], floats[1]);
+            waypoints.push_back(absoluteWaypoint);
         }
         else if (key == "moveSwitchesRequired") moveSwitchesRequired = std::stoi(value);
         else if (key == "moveSwitches")
@@ -58,12 +59,14 @@ EntityType Platform::getEntityType()
 
 std::string Platform::getEntityDescription()
 {
-    std::string waypointParams = "";
+    std::string relativeWaypointParams = "";
     std::string moveSwitchParams = "";
+
+    auto position = waypoints[0];
 
     for (auto it : waypoints) 
     {
-        waypointParams += writeParameter("waypoint", std::to_string(it.x) + " " + std::to_string(it.y)); 
+        relativeWaypointParams += writeParameter("relativeWaypoint", std::to_string(it.x - position.x) + " " + std::to_string(it.y - position.y)); 
     }
 
     if (moveSwitchesRequired > 0)
@@ -80,12 +83,12 @@ std::string Platform::getEntityDescription()
     }
 
     return std::to_string(id) + " Platform " + name + "\n"
-        + getCommonParameters()
+        + writeParameter("position", std::to_string(position.x) + " " + std::to_string(position.y))
         + writeParameter("texture", "world_entities.png")
         + writeParameter("animation", currentAnimation->getName())
         + writeParameter("pauseTime", waypointPauseTime)
         + writeParameter("speed", speed)
-        + waypointParams
+        + relativeWaypointParams
         + moveSwitchParams;
 }
 
