@@ -29,6 +29,13 @@ void Foe::initParameters(std::vector<std::string> params)
 
     playerRefs.push_back((Player*)Entities::getById(1));
     playerRefs.push_back((Player*)Entities::getById(2));
+
+    auto bullets = Entities::getByType(ET_FOE_BULLET);
+
+    for (auto it : *bullets)
+    {
+        bulletRefs.push_back((FoeBullet*)it);
+    }
 }
 
 EntityType Foe::getEntityType()
@@ -67,23 +74,34 @@ void Foe::update(float dt)
         }
     }
 
+    if (closestPlayerDirection.x < 0)
+    {
+        faceLeft();
+    }
+    else
+    {
+        faceRight();
+    }
+    
     if (minDistance <= attackRange && attackCooldownElapsed >= attackCooldown)
     {
         // TODO --- better solution for this (store pool of all potential bullets, find first available)
         //      This solution should also take into account an attack cooldown period.
-        FoeBullet* bullet = (FoeBullet*)Entities::getByName("FB1");
         float attackSpeed = 55;
 
-        if (closestPlayerDirection.x < 0)
+
+        FoeBullet* bullet = nullptr;
+
+        for (auto it : bulletRefs)
         {
-            faceLeft();
-        }
-        else
-        {
-            faceRight();
+            if (it->isAvailable())
+            {
+                bullet = it;
+            }
         }
 
-        if (bullet->isAvailable())
+
+        if (bullet != nullptr)
         {
             attackCooldownElapsed = 0;
             auto bulletStartOffset = sf::Vector2f(8 * getScale().x, 14);

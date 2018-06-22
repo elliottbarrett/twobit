@@ -12,6 +12,7 @@ Some things that a foe might be concerned with...
 */
 
 class Player;
+class FoeBullet;
 
 class Foe : public Entity
 {
@@ -29,6 +30,7 @@ private:
 
     std::vector<sf::Vector2f> patrolPoints;
     std::vector<Player*> playerRefs;
+    std::vector<FoeBullet*> bulletRefs;
 
     float attackCooldown;
     float attackCooldownElapsed;

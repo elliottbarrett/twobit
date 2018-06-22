@@ -7,6 +7,8 @@
 
 #include <SFML/Graphics.hpp>
 
+#include "EntityType.h"
+
 class TileMap;
 class Entity;
 
@@ -26,6 +28,7 @@ public:
 
     static Entity* getByName(std::string name);
     static Entity* getById(unsigned int id);
+    static std::vector<Entity*>* getByType(EntityType type);
     static unsigned int getMaxId();
 
     static void deleteById();
@@ -36,6 +39,7 @@ private:
     static std::vector<Entity*> entities;
     static std::map<unsigned int, Entity*> entityIdMap;
     static std::map<std::string, Entity*> entityNameMap;
+    static std::map<EntityType, std::vector<Entity*>*> entityTypeMap;
     static unsigned int maxId;
 };
 

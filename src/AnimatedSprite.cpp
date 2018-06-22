@@ -6,7 +6,7 @@
 #include <cmath>
 
 AnimatedSprite::AnimatedSprite() :
-    currentAnimation(nullptr), timeInFrame(0), loopAnimation(true)
+    currentAnimation(nullptr), timeInFrame(0), loopAnimation(true), flashTime(0), flashElapsed(0)
 {
     vertices.setPrimitiveType(sf::Quads);
     vertices.resize(4);
@@ -138,9 +138,9 @@ void AnimatedSprite::faceRight()
     setScale(std::abs(scale.x), scale.y);
 }
 
-void AnimatedSprite::flashForSeconds(float t, float flashPeriod)
+void AnimatedSprite::flashForSeconds(float flashTime, float flashPeriod)
 {
     this->flashPeriod = flashPeriod;
     this->flashElapsed = 0;
-    this->flashTime = t;
+    this->flashTime = flashTime;
 }

@@ -13,9 +13,10 @@
 #include <string>
 #include <fstream>
 
-std::map<std::string, Entity*> Entities::entityNameMap = std::map<std::string, Entity*>();
-std::map<unsigned int, Entity*> Entities::entityIdMap = std::map<unsigned int, Entity*>();
-std::vector<Entity*> Entities::entities = std::vector<Entity*>();
+std::map<std::string, Entity*> Entities::entityNameMap;
+std::map<unsigned int, Entity*> Entities::entityIdMap;
+std::vector<Entity*> Entities::entities;;
+std::map<EntityType, std::vector<Entity*>*> Entities::entityTypeMap;
 unsigned int Entities::maxId = 0;
 
 void Entities::loadFromFile(std::string fileName)
@@ -191,6 +192,26 @@ Entity* Entities::getById(unsigned int id)
         std::cout << "Could not find entity with id " << id << "\n";
     }
     return entityIdMap[id];
+}
+
+std::vector<Entity*>* Entities::getByType(EntityType type)
+{
+    if (entityTypeMap.find(type) != entityTypeMap.end())
+    {
+        return entityTypeMap[type];
+    }
+
+    auto entitiesForType = new std::vector<Entity*>();
+    for (auto it : entities)
+    {
+        if (it->getEntityType() == type)
+        {
+            entitiesForType->push_back(it);
+        }
+    }
+    entityTypeMap[type] = entitiesForType;
+
+    return entitiesForType;
 }
 
 int Entities::getCount()

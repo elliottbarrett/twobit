@@ -114,10 +114,6 @@ void Player::update(float dt)
             framesSinceJump = 0;
         }
     }
-    if (input.direction & JoyDirection::DOWN)
-    {
-        // move(0,-1);
-    }
 
     if (!isOnGround)
     {
@@ -254,6 +250,7 @@ void Player::handleEntityCollision(Entity *other)
     auto myBounds = getCollisionBounds();
     auto myPosition = getPosition();
     auto otherBounds = other->getCollisionBounds();
+    auto otherVelocity = other->getVelocity();
 
     switch (other->getEntityType())
     {
@@ -284,7 +281,7 @@ void Player::handleEntityCollision(Entity *other)
         flashForSeconds(0.4, 0.1);
         invincibilityTime = 0.4;
         invincibilityTimeElapsed = 0;
-        velocity.x = -(abs(velocity.x) + 20);
+        velocity.x = (abs(velocity.x) + 30) * (otherVelocity.x < 0 ? -1 : 1);
         velocity.y += 100;
         isOnGround = false;
         // Take damage, recoil, flash

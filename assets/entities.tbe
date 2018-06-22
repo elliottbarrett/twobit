@@ -78,15 +78,20 @@ position 0.000000 -616400.000000
 texture world_entities.png
 animation ball
 
-13 Foe Foe
+13 Foe Foe1
 position 1004.000000 704.500061
 texture world_entities.png
 animation foe_walk
-attackCooldown 4
+attackCooldown 2
 facing left
 
 14 FoeBullet FB1
 position 1655.479858 -64.232285
+texture world_entities.png
+animation foe_bullet_small
+
+15 FoeBullet FB2
+position 0 0
 texture world_entities.png
 animation foe_bullet_small
 
