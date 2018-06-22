@@ -50,7 +50,7 @@ void WorldEditor::instantiateEditorWindows()
     paletteWindow->setView(paletteView);
 
     // Inspector window
-    inspectorWindow = new sf::RenderWindow(sf::VideoMode(650, 600), "World Editor");
+    inspectorWindow = new sf::RenderWindow(sf::VideoMode(750, 700), "World Editor");
     inspectorWindow->setPosition(sf::Vector2i(1200, 400));
     inspectorWindow->setVerticalSyncEnabled(true);
 

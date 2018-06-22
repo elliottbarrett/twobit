@@ -1,5 +1,5 @@
 1 Player Player1
-position 871.329407 705.628418
+position 1225.452393 704.000000
 playerNum 1
 texture player.png
 animation player_idle
@@ -74,7 +74,7 @@ animation floor_switch_inactive
 type floor
 
 12 Ball Ball
-position 0.000000 -683809.812500
+position 0.000000 -11887755.000000
 texture world_entities.png
 animation ball
 
@@ -93,5 +93,11 @@ animation foe_bullet_small
 position 0.000000 0.000000
 texture world_entities.png
 animation foe_bullet_small
+
+16 JumpPad JumpPad1
+position 1218.000000 704.000000
+texture world_entities.png
+animation platform_1
+jumpModifier 95.745003
 
 END

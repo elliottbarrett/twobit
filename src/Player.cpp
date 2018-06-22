@@ -6,6 +6,7 @@
 #include "TileMap.h"
 #include "Animation.h"
 #include "Ball.h"
+#include "JumpPad.h"
 #include "UI.h"
 #include "sfmath.h"
 #include <math.h>
@@ -19,7 +20,7 @@ Player::Player(unsigned int id, std::string name, std::vector<std::string> param
     isAtCeiling(false), wasAtCeiling(false),
     isPushingLeftWall(false), wasPushingLeftWall(false),
     isPushingRightWall(false), wasPushingRightWall(false),
-    framesSinceJump(0)
+    framesSinceJump(0), jumpModifier(0)
 {
     initParameters(params);
 
@@ -110,7 +111,7 @@ void Player::update(float dt)
         if (isOnGround)
         {
             isOnGround = false;
-            velocity.y = Settings::jumpSpeed;
+            velocity.y = Settings::jumpSpeed + jumpModifier;
             framesSinceJump = 0;
         }
     }
@@ -118,7 +119,7 @@ void Player::update(float dt)
     if (!isOnGround)
     {
         velocity.y += Settings::gravity * dt;
-        velocity.y = clamp(velocity.y, -200, 300);
+        velocity.y = clamp(velocity.y, -200, 10000);
     }
 
     if (input.rightButton) // this is z
@@ -144,6 +145,7 @@ void Player::update(float dt)
 
     updatePhysics();
     lastFrameInput = input;
+    jumpModifier = 0;
 }
 
 PlayerItem Player::getCurrentItem()
@@ -255,6 +257,7 @@ void Player::handleEntityCollision(Entity *other)
     switch (other->getEntityType())
     {
     case ET_DOOR:
+    {
         if (velocity.x > 0)
         {
             move(-(myBounds.left + myBounds.width - otherBounds.left), 0);
@@ -264,28 +267,44 @@ void Player::handleEntityCollision(Entity *other)
             move(otherBounds.left + otherBounds.width - myBounds.left, 0);
         }
         break;
+    }
     case ET_PLATFORM:
-
+    {
         if (otherBounds.contains(myPosition) && framesSinceJump > 4)
         {
             isOnGround = true;
             velocity = sf::Vector2f(velocity.x, other->getVelocity().y);
         }
         break;
+    }
     case ET_FOE:
+    {
         if (invincibilityTimeElapsed < invincibilityTime) break;
+        // FIXME
         break;
+    }
     case ET_FOE_BULLET:
-        if (invincibilityTimeElapsed < invincibilityTime) break;
+    {
+        if (invincibilityTimeElapsed < invincibilityTime) 
+        {
+            break;
+        }
+
         ignoreInputForSeconds(0.1);
         flashForSeconds(0.4, 0.1);
         invincibilityTime = 0.4;
         invincibilityTimeElapsed = 0;
         velocity.x = (abs(velocity.x) + 30) * (otherVelocity.x < 0 ? -1 : 1);
         velocity.y += 100;
-        isOnGround = false;
-        // Take damage, recoil, flash
+        isOnGround = false;   
         break;
+    }
+    case ET_JUMP_PAD:
+    {
+        JumpPad* pad = (JumpPad*)other;
+        jumpModifier = pad->getJumpModifier();
+        break;
+    }
     default:
         break;
     }

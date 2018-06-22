@@ -62,7 +62,13 @@ ${args.entityName}::~${args.entityName}()
 
 void ${args.entityName}::initParameters(std::vector<std::string> params)
 {
+    Entity::initParameters(params);
 
+    for (auto it : params)
+    {
+        auto key = it.substr(0, it.find(" "));
+        auto value = it.substr(it.find(" ") + 1);
+    }
 }
 
 EntityType ${args.entityName}::getEntityType()

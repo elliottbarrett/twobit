@@ -11,7 +11,8 @@ enum EntityType
     ET_SWITCH,
     ET_FOE,
     ET_FOE_BULLET,
-    ET_BALL
+    ET_BALL,
+    ET_JUMP_PAD
 };
 
 #endif

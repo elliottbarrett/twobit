@@ -8,6 +8,7 @@
 #include "Platform.h"
 #include "TileMap.h"
 #include "Ball.h"
+#include "JumpPad.h"
 
 #include <iostream>
 #include <string>
@@ -131,6 +132,10 @@ void Entities::instantiateEntity(unsigned int id, std::string type, std::string 
     else if (type == "FoeBullet")
     {
         new FoeBullet(id, name, params);
+    }
+    else if (type == "JumpPad")
+    {
+        new JumpPad(id, name, params);
     }
     else
     {

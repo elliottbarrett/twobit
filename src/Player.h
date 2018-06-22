@@ -63,6 +63,8 @@ private:
     float invincibilityTime;
     float invincibilityTimeElapsed;
 
+    float jumpModifier;
+
     // Inventory
     std::vector<PlayerItem> items;
 };
